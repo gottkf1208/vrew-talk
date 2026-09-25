@@ -633,6 +633,98 @@ body.editing #nBody{outline:2px dashed rgba(143,187,250,.6);outline-offset:6px;b
 .topics small{color:var(--t3);font-size:15px}
 .dock .pg{white-space:nowrap}
 
+/* ===== LAB: 브루 비교 실험 ===== */
+.slide.lab-s{padding-top:100px}
+.lab-s .head{margin-bottom:18px;padding-right:250px}
+.lab-s .eyebrow{font-size:19px;margin-bottom:8px}
+.lab-s .eyebrow .lab-no{display:inline-block;background:var(--blue);color:#fff;border-radius:8px;padding:2px 10px;margin-right:10px;font-size:16px;vertical-align:1px}
+.lab-s .s-title{font-size:40px;line-height:1.25}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 364px;grid-template-rows:minmax(0,1fr) auto;gap:16px 22px;flex:1;min-height:0}
+.lab-v{display:flex;flex-direction:column;min-width:0}
+.lab-lb{display:flex;align-items:center;gap:10px;margin-bottom:9px;min-height:30px}
+.lab-lb .ab{flex:none;width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;background:var(--fill2);color:var(--t1)}
+.lab-lb .ab.b{background:var(--blue);color:#fff}
+.lab-lb b{font-size:19px;color:var(--t1);font-weight:800;letter-spacing:-0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lab-lb em{margin-left:auto;font-style:normal;font-size:14.5px;font-weight:800;color:var(--t2);background:var(--fill);border-radius:999px;padding:4px 11px;white-space:nowrap}
+.slide.soft .lab-lb em{background:#fff}
+.lab .vbox{border-radius:18px}
+.lab .vbtn{height:54px;font-size:17px;padding:0 20px}
+.lab-in{margin-top:10px;background:var(--fill);border-radius:16px;padding:12px 15px;font-size:16.5px;line-height:1.5;color:var(--t1);flex:1;min-height:0;overflow:hidden}
+.slide.soft .lab-in{background:#fff}
+.lab-in .k{display:inline-block;font-size:13px;font-weight:900;color:var(--blue);margin-right:6px;letter-spacing:0}
+.lab-in p{margin:0}
+.lab-in p+p{margin-top:5px}
+.lab-in q{quotes:"“" "”";font-weight:700}
+.lab-in .x{color:var(--bad);font-weight:700}
+.lab-in .o{color:var(--good);font-weight:700}
+.lab-in small{color:var(--t3);font-size:13.5px}
+.lab-rx{grid-column:3;grid-row:1 / span 2;background:var(--soft);border-radius:22px;padding:20px 22px;display:flex;flex-direction:column;min-height:0}
+.slide.soft .lab-rx{background:#fff}
+.lab-rx h4{font-size:19px;display:flex;align-items:center;gap:8px}
+.lab-rx h4::before{content:"";width:8px;height:20px;border-radius:3px;background:var(--orange)}
+.lab-rx dl{margin:12px 0 0;display:flex;flex-direction:column;gap:9px}
+.lab-rx dt{font-size:13px;font-weight:900;color:var(--t3);letter-spacing:0}
+.lab-rx dd{margin:1px 0 0;font-size:16.5px;line-height:1.45;color:var(--t1)}
+.lab-rx dd b{color:var(--orange)}
+.lab-rx .cr{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);font-size:14px;color:var(--t2);line-height:1.45}
+.lab-rx .cr b{color:var(--t1)}
+.lab-more{margin-top:12px;border:0;border-radius:14px;height:46px;background:var(--t1);color:#fff;font:800 16px var(--font);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.lab-more:hover{background:#000}
+.lab-gain{grid-column:1 / span 2;grid-row:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);gap:12px}
+.lab-gain .q,.lab-gain .g{border-radius:18px;padding:14px 18px;font-size:17px;line-height:1.5}
+.lab-gain .q{background:var(--blue-s);color:var(--t1)}
+.lab-gain .g{background:var(--ink);color:#DCE3EC}
+.lab-gain .q span,.lab-gain .g span{display:block;font-size:13px;font-weight:900;letter-spacing:0;margin-bottom:3px}
+.lab-gain .q span{color:var(--blue)}
+.lab-gain .g span{color:#FFB37A}
+.lab-gain .g b{color:#fff}
+.lab-both{position:absolute;right:120px;top:112px;border:0;background:var(--fill);color:var(--t1);height:42px;padding:0 16px;border-radius:12px;font:800 15px var(--font);cursor:pointer;display:flex;align-items:center;gap:8px;z-index:3}
+.slide.soft .lab-both{background:#fff;box-shadow:0 1px 0 var(--line)}
+.lab-both svg{width:16px;height:16px;fill:currentColor}
+.lab-both:hover{background:var(--blue-s);color:var(--blue)}
+/* LAB 5: 9:16 */
+.lab.l5{grid-template-columns:568px 300px minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.lab .vbox.tall{aspect-ratio:9/16}
+.lab.l5 .lab-rx{grid-row:1}
+.lab.l5 .lab-gain{grid-column:auto;grid-row:auto;grid-template-columns:1fr;gap:10px;margin-top:12px}
+.lab.l5 .lab-gain .q,.lab.l5 .lab-gain .g{padding:12px 16px}
+/* recipe pop */
+.rx-pop{position:absolute;left:96px;right:96px;top:92px;bottom:66px;background:#fff;border-radius:28px;box-shadow:0 30px 90px rgba(12,20,33,.35),0 0 0 1px var(--line);z-index:30;display:flex;flex-direction:column;overflow:hidden}
+.rx-pop[hidden]{display:none}
+.rx-hd{display:flex;align-items:center;gap:14px;padding:22px 30px 16px;border-bottom:1px solid var(--line)}
+.rx-hd h3{font-size:25px;letter-spacing:-0.03em}
+.rx-hd small{font-size:15px;color:var(--t3);font-weight:600}
+.rx-hd button{margin-left:auto;border:0;background:var(--fill);border-radius:12px;height:40px;padding:0 16px;font:800 15px var(--font);cursor:pointer;color:var(--t1)}
+.rx-bd{flex:1;min-height:0;overflow:auto;padding:20px 30px 26px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px 26px;align-content:start}
+.rx-bd h5{font-size:16px;font-weight:900;color:var(--blue);margin:0 0 8px;letter-spacing:-0.01em}
+.rx-bd .full{grid-column:1 / -1}
+.rx-path{display:flex;flex-wrap:wrap;gap:6px 4px;align-items:center;font-size:15px;color:var(--t1);font-weight:700}
+.rx-path span{background:var(--fill);border-radius:9px;padding:5px 10px}
+.rx-path i{font-style:normal;color:var(--t3)}
+.rx-path span.hot{background:#FFF0E6;color:var(--orange)}
+.rx-tb{width:100%;border-collapse:collapse;font-size:15px;line-height:1.45}
+.rx-tb th,.rx-tb td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+.rx-tb th{color:var(--t3);font-weight:800;width:92px;white-space:nowrap}
+.rx-tb td{color:var(--t1)}
+.rx-tb td b{color:var(--orange)}
+.rx-tb thead th{color:var(--t2);background:var(--soft);width:auto}
+.rx-txt{background:var(--soft);border-radius:14px;padding:12px 15px;font-size:15px;line-height:1.62;color:var(--t1);white-space:pre-line}
+.rx-txt mark{background:#FDE2E2;color:inherit;border-radius:4px;padding:0 2px}
+.rx-txt mark.ok{background:#DDF3E9}
+.rx-txt .lbl{display:block;font-size:12.5px;font-weight:900;color:var(--t3);margin-bottom:4px;white-space:normal}
+.rx-note{font-size:14.5px;line-height:1.55;color:var(--t2)}
+.rx-note b{color:var(--t1)}
+.rx-shot{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.rx-shot img{display:block;width:100%}
+
+/* opening: vertical quokka video */
+.phone-wrap{flex:none;margin:0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.title-slide .monitor.phone{flex:none;height:626px;width:auto;aspect-ratio:9/16;border-radius:40px;border:9px solid #14181F;box-shadow:0 30px 70px rgba(25,31,40,.28)}
+.phone-wrap figcaption{font-size:15.5px;font-weight:800;color:var(--t2);display:flex;align-items:center;gap:8px}
+.phone-wrap figcaption i{width:8px;height:8px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite}
+.monitor .snd{position:absolute;right:14px;top:14px;z-index:2}
+.title-slide .t-sub{max-width:780px}
+
 @media (prefers-reduced-motion: reduce){
   .slide,.slide.on,[data-step]{transition:none!important}
   .tk-run,.onair i,.rec i,.bgm-on .eq i{animation:none!important}
@@ -661,10 +753,11 @@ body.editing #nBody{outline:2px dashed rgba(143,187,250,.6);outline-offset:6px;b
     <div class="t-meta"><span class="b">2026.10.24(토) 13:00</span><span>가산디지털단지 천재교육</span><span>쿼카연구회 · 김햇살</span></div>
     <p class="hint">→ 키나 스페이스로 넘겨요 · N 발표자 대본 · T 설계 타이머 · M 목차 · B 배경음악 · F 전체화면</p>
   </div>
-  <div class="monitor"><video data-src="open.mp4" poster="open.jpg" muted loop playsinline></video><span class="rec"><i></i>REC</span><span class="ai-mark">AI 생성 영상 · Kling 3.0</span></div>
+  <figure class="phone-wrap"><div class="monitor phone"><video data-src="chuseok.mp4" poster="chuseok.jpg" muted loop playsinline></video><button type="button" class="snd" data-msnd>소리 켜기</button></div><figcaption><i></i>쿼카연구회가 만든 AI 영상 · 추석 인사</figcaption></figure>
   <aside class="nt" hidden>안녕하세요, 쿼카연구회 두목쿼카 김햇살입니다 : )
 점심 드시고 바로 오셔서 살짝 졸리실 시간이죠 ㅎㅎ 오늘 40분은 브루를 '어떻게' 쓰는지가 아니라, '왜' 만들어 봐야 하는지, 그리고 선생님이 '무엇을' 만들지 정하는 시간이에요.
-끝날 때 설계도 한 장씩 들고 쉬는 시간 뒤 브루 연수로 넘어가시면 돼요.</aside>
+끝날 때 설계도 한 장씩 들고 쉬는 시간 뒤 브루 연수로 넘어가시면 돼요.
+(오른쪽 화면) 이 영상은 우리 쿼카연구회 쌤들이 추석 인사로 직접 만든 AI 영상이에요. 오른쪽 위 '소리 켜기'를 누르면 소리까지 들을 수 있어요. 이런 영상, 오늘 선생님들도 만드실 수 있어요 : )</aside>
 </section>
 
 <!-- 02 AGENDA -->
@@ -706,7 +799,7 @@ body.editing #nBody{outline:2px dashed rgba(143,187,250,.6);outline-offset:6px;b
 </section>
 
 <!-- 04 REAL OR AI -->
-<section class="slide" data-ep="EP.01" data-title="진짜일까, AI일까" data-plan="13:03–13:08">
+<section class="slide" data-ep="EP.01" data-title="진짜일까, AI일까" data-plan="13:03–13:06">
   <div class="head" style="margin-bottom:28px"><span class="eyebrow">EP.01 · 왜 만들어 봐야 할까</span><h2 class="s-title">이 영상은 실제로 촬영한 걸까요?</h2></div>
   <div class="body"><div class="roa">
     <div class="vbox" data-vbox><video data-src="valley.mp4" poster="valley.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>영상 재생</button><button type="button" class="snd" data-mute>소리 끔</button></div>
@@ -723,7 +816,7 @@ body.editing #nBody{outline:2px dashed rgba(143,187,250,.6);outline-offset:6px;b
 </section>
 
 <!-- 05 DETECTION -->
-<section class="slide soft" data-ep="EP.01" data-title="근거 ① 판별력" data-plan="13:08–13:10">
+<section class="slide soft" data-ep="EP.01" data-title="근거 ① 판별력" data-plan="13:06–13:07">
   <div class="head"><span class="eyebrow">근거 ① 만들어 본 경험과 판별력</span><h2 class="s-title">만들어 보고 단서를 배우면, 눈이 밝아져요</h2></div>
   <div class="body"><div class="row" style="grid-template-columns:1.4fr 1fr;align-items:start">
     <div class="chart"><div class="chart-hd"><div><h4>사람의 AI 합성물 판별 정확도</h4><p>메타분석 · 세로선은 우연 수준 50%</p></div></div><div class="cb" data-chart="detect"></div><p class="cap">출처: Diel et al., 2024, Computers in Human Behavior Reports · 논문 56편, 86,155명</p></div>
@@ -738,7 +831,7 @@ body.editing #nBody{outline:2px dashed rgba(143,187,250,.6);outline-offset:6px;b
 </section>
 
 <!-- 06 STUDENTS -->
-<section class="slide" data-ep="EP.01" data-title="근거 ② 학생의 매체 환경" data-plan="13:10–13:12">
+<section class="slide" data-ep="EP.01" data-title="근거 ② 학생의 매체 환경" data-plan="13:07–13:08">
   <div class="head"><span class="eyebrow">근거 ② 학생의 매체 환경</span><h2 class="s-title">학생은 이미 보고, 쓰고, 만들고 있어요</h2></div>
   <div class="body">
     <div class="row c3">
@@ -753,7 +846,7 @@ body.editing #nBody{outline:2px dashed rgba(143,187,250,.6);outline-offset:6px;b
 </section>
 
 <!-- 07 DIVERSITY -->
-<section class="slide soft" data-ep="EP.01" data-title="근거 ③ 다양성의 역설" data-plan="13:12–13:13">
+<section class="slide soft" data-ep="EP.01" data-title="근거 ③ 다양성의 역설" data-plan="13:08–13:09">
   <div class="head"><span class="eyebrow">근거 ③ 다양성의 역설</span><h2 class="s-title">AI 아이디어를 받으면 좋아지지만, 서로 닮아 가요</h2></div>
   <div class="body">
     <div class="row c2">
@@ -772,13 +865,339 @@ body.editing #nBody{outline:2px dashed rgba(143,187,250,.6);outline-offset:6px;b
 </section>
 
 <!-- 08 HEATMAP -->
-<section class="slide" data-ep="EP.01" data-title="역량 × 제작 단계" data-plan="13:13–13:15">
+<section class="slide" data-ep="EP.01" data-title="역량 × 제작 단계" data-plan="13:09–13:10">
   <div class="head" style="margin-bottom:22px"><span class="eyebrow">미디어교육과 잇는 틀 · PISA 2029 미디어·AI 리터러시</span><h2 class="s-title" style="font-size:44px">AI 영상을 만드는 과정이 곧 미디어교육이에요</h2><p class="s-lead" style="font-size:19px;margin-top:10px">칸을 누르면 근거가 보여요. 통계 상관계수가 아니라 조사 자료를 바탕으로 판단한 연결 강도(약·중·강)예요.</p></div>
   <div class="hm" id="hm"></div>
   <div class="hm-legend"><span><i class="h1"></i>약: 간접 연결</span><span><i class="h2"></i>중: 활동에 따라 연결</span><span><i class="h3"></i>강: 이 단계의 핵심 역량</span></div>
   <div class="hm-detail" id="hmDetail"></div>
   <aside class="nt" hidden>가로는 영상 제작 다섯 단계, 세로는 PISA 2029가 보려는 미디어·AI 리터러시 다섯 역량이에요. 진한 칸이 많죠? 기획부터 공유까지, 만드는 과정 자체가 미디어교육이에요.
-맨 아래 윤리적 성찰 줄도 봐 주세요. 올해 1월 시행된 AI 기본법 제31조가 AI 생성물 표시를 다뤄요. 교실에서 'AI로 만든 장면 포함' 한 줄을 넣는 습관이 곧 윤리 교육이에요.</aside>
+맨 아래 윤리적 성찰 줄도 봐 주세요. 올해 1월 시행된 AI 기본법 제31조가 AI 생성물 표시를 다뤄요. 교실에서 'AI로 만든 장면 포함' 한 줄을 넣는 습관이 곧 윤리 교육이에요.
+이 칸들이 정말 그런지, 다음 다섯 장에서 제가 브루로 직접 만들어 비교한 영상으로 보여 드릴게요.</aside>
+</section>
+
+
+<!-- LAB 1 · 기획 -->
+<section class="slide lab-s" data-ep="EP.01" data-title="LAB 1 · 기획: 한 단어 vs 설계도 한 줄" data-plan="13:10–13:11">
+  <div class="head"><span class="eyebrow"><span class="lab-no">LAB 1/5</span>기획 · 브루로 직접 만들고, 한 번에 한 가지만 바꿨어요</span><h2 class="s-title">무엇을·누구에게를 먼저 정하면, AI 영상이 수업 영상이 돼요</h2></div>
+  <button type="button" class="lab-both" data-both><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>A·B 함께 재생(소리 끔)</button>
+  <div class="body"><div class="lab">
+    <div class="lab-v">
+      <div class="lab-lb"><span class="ab">A</span><b>주제 칸에 한 단어만</b><em>33초</em></div>
+      <div class="vbox" data-vbox><video data-src="v1.mp4" poster="v1.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>A 재생</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+      <div class="lab-in"><p><span class="k">입력</span><q>기후변화</q> <small>대본 프롬프트는 비워 둠</small></p><p><span class="k">결과</span>'~습니다' 뉴스 말투, 출처 없는 숫자(1.4도·420ppm·70%…), 빨간 경고 계기판 같은 이미지, '슈퍼 엘니뇨' 같은 어려운 말</p></div>
+    </div>
+    <div class="lab-v">
+      <div class="lab-lb"><span class="ab b">B</span><b>설계도 한 줄을 넣었더니</b><em>31초</em></div>
+      <div class="vbox" data-vbox><video data-src="v2.mp4" poster="v2.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>B 재생</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+      <div class="lab-in"><p><span class="k">입력</span>메시지 <q>기후변화 대응은 우리 반의 작은 선택에서 시작돼요</q> + 대상(6학년 도입)·네 장면·질문으로 끝내기</p><p><span class="k">결과</span>뜨거운 운동장 → 달아오른 지구 → 급식·등굣길 → 손 드는 교실. 질문으로 끝나요</p></div>
+    </div>
+    <aside class="lab-rx">
+      <h4>어떻게 만들었나</h4>
+      <dl>
+        <dt>기능</dt><dd>새로 만들기 → 텍스트로 비디오 만들기 → AI 글쓰기로 대본 초안</dd>
+        <dt>바꾼 것 하나</dt><dd><b>② 대본 작성의 '주제'와 '대본 프롬프트'</b></dd>
+        <dt>그대로 둔 것</dt><dd>16:9 · 자막 하단 · AI 목소리 KKC · 배경음악 '활기찬' · AI 이미지</dd>
+        <dt>걸린 시간</dt><dd>입력 1분 + 생성 2~3분</dd>
+      </dl>
+      <p class="cr">크레딧 <b>A 35 · B 45</b> · AI 이미지 1장에 5크레딧(A 7장, B 9장)</p>
+      <button type="button" class="lab-more" data-rx>입력 원문·설정 전부 보기</button>
+    </aside>
+    <div class="lab-gain">
+      <p class="q"><span>발문</span>둘 중 우리 반 수업 도입에 바로 틀 수 있는 영상은? 무엇이 달라서일까요?</p>
+      <p class="g" data-step="1"><span>만들어 보면 좋은 점 · 기획력</span><b>목적·대상·메시지를 먼저 정하는 힘</b>이 생겨요. 사람이 정하지 않으면 AI가 대신 정해요. 뉴스 말투, 출처 없는 숫자, 어려운 말로요.</p>
+    </div>
+  </div></div>
+  <div class="rx-pop" hidden role="dialog" aria-label="LAB 1 제작 레시피">
+    <div class="rx-hd"><h3>LAB 1 제작 레시피</h3><small>브루 웹 4.6.3 · 2026.9.25 제작</small><button type="button" data-rx-close>닫기 ✕</button></div>
+    <div class="rx-bd">
+      <div class="full"><h5>클릭 순서 (A·B 똑같이)</h5><div class="rx-path"><span>새로 만들기</span><i>›</i><span>텍스트로 비디오 만들기</span><i>›</i><span>① 스타일 없이 바로 시작하기</span><i>›</i><span class="hot">② 대본 작성: 주제·대본 프롬프트 입력 → AI 글쓰기</span><i>›</i><span>③ 비디오 꾸미기(기본값)</span><i>›</i><span>완료 → 확인</span></div></div>
+      <div>
+        <h5>A에 넣은 글</h5>
+        <div class="rx-txt"><span class="lbl">주제</span>기후변화
+<span class="lbl" style="margin-top:8px">대본 프롬프트</span>(비워 둠) · 글자 수 300자</div>
+        <h5 style="margin-top:16px">A · AI가 쓴 대본 (33초)</h5>
+        <div class="rx-txt">우리가 직면한 기후변화는 이제 상상 이상의 속도로 다가오고 있습니다. 지구 평균 기온은 이미 산업화 이전 대비 <mark>1.4도</mark> 상승했고 대기 중 이산화탄소 농도는 <mark>420피피엠</mark>을 넘어섰습니다. 유엔은 1.5도 목표 달성이 사실상 어렵다고 경고하며 향후 슈퍼 엘니뇨까지 겹쳐 극단적인 폭염과 가뭄이 우려되는 상황입니다. 북극 얼음 면적은 <mark>70퍼센트 이상</mark> 줄어들었고 해수면 온도는 <mark>역대 최고 수준</mark>을 기록하고 있습니다. 이를 해결하기 위해 우리는 재생에너지로의 과감한 전환과 화석연료 감축을 서둘러야 합니다.</div>
+        <p class="rx-note" style="margin-top:8px">빨간 표시는 출처·기준이 없는 숫자예요. 북극 얼음은 면적인지 부피인지, 어느 계절 기준인지에 따라 숫자가 크게 달라져요.<br><b>이미지도 살펴보세요.</b> 1.4도 장면의 계기판에는 이산화탄소가 <b>423ppm</b>, 바로 다음 장면에는 <b>420ppm</b>으로 그려져 있어요. 그래프는 <b>2030년</b>까지 이어지고, 제목 글자(TEMPERATURE)도 뭉개져 있어요. AI가 그럴듯하게 지어낸 숫자와 글자라서, 학생들과 '가짜 단서 찾기'를 하기 딱 좋아요.</p>
+      </div>
+      <div>
+        <h5>B에 넣은 글 (설계도 한 줄)</h5>
+        <div class="rx-txt"><span class="lbl">주제</span>기후변화 대응은 우리 반의 작은 선택에서 시작돼요
+<span class="lbl" style="margin-top:8px">대본 프롬프트</span>초등학교 6학년 과학 수업 도입에서 틀 1분 영상이에요. 초등학생에게 말하듯 쉬운 말과 짧은 문장으로 써 줘. 네 장면 순서로: 1) 폭염으로 텅 빈 학교 운동장 2) 온실가스가 담요처럼 지구를 덮는 모습 3) 급식 남기지 않기, 걸어서 등교하기 같은 우리 반의 선택 4) 마지막 문장은 '우리 반은 무엇을 바꿀 수 있을까?' 질문으로 끝내 줘.</div>
+        <h5 style="margin-top:16px">B · AI가 쓴 대본 (31초)</h5>
+        <div class="rx-txt">따가운 햇살 아래 텅 빈 학교 운동장을 보세요. 너무 더워서 친구들과 뛰어놀 수도 없어요. 왜 이렇게 날씨가 뜨거워진 걸까요? 바로 지구를 둘러싼 온실가스가 두꺼운 담요처럼 열을 가두고 있기 때문이에요. 하지만 너무 걱정하지 마세요. 우리에게는 지구를 구할 방법이 있거든요. 오늘부터 급식을 남기지 않고 다 먹고, 가까운 거리는 걸어서 등교해 보는 건 어떨까요? 우리의 작은 선택이 모이면 뜨거워진 지구를 시원하게 식힐 수 있어요. 자, 우리 반은 오늘부터 무엇을 바꿀 수 있을까요?</div>
+        <p class="rx-note" style="margin-top:8px">네 장면과 마지막 질문이 그대로 들어왔어요. 다만 이 초안에도 고칠 곳이 있어요. <b>LAB 2</b>에서 이어서 봐요.</p>
+      </div>
+      <div class="full">
+        <h5>③ 비디오 꾸미기 설정 (다섯 실험 공통 기본값)</h5>
+        <table class="rx-tb"><tbody>
+          <tr><th>화면 비율</th><td>16:9 (LAB 5 쇼츠만 9:16)</td><th>자막</th><td>하단 · 길게</td></tr>
+          <tr><th>AI 목소리</th><td>KKC</td><th>배경음악</th><td>분위기 '활기찬' → 곡은 브루가 자동으로 골라 줘요</td></tr>
+          <tr><th>AI 이미지</th><td>켬 · GPT Image 2 Low (이미지 1장에 5크레딧)</td><th>고화질·무료 비디오</th><td>끔</td></tr>
+        </tbody></table>
+        <p class="rx-note" style="margin-top:10px"><b>크레딧</b> 다섯 실험(영상 6편)에 모두 176크레딧을 썼어요. AI 이미지 160(장당 5) + AI 목소리 16이에요. 대본 쓰기와 고치기, 무료 비디오에는 크레딧이 들지 않았어요.<br><b>비교 원칙</b> 한 번에 한 가지만 바꿨어요. 그래야 달라진 이유를 설명할 수 있어요. AI는 만들 때마다 결과가 조금씩 달라지니, 교실에서는 한 번의 결과로 단정하지 말고 두세 번 만들어 비교하게 해 주세요.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="nt" hidden>[시간 운영] 여기서부터 LAB 다섯 장에 5분이에요. 영상은 앞 10초씩만 틀거나 'A·B 함께 재생'으로 자막을 나란히 보여 주세요. 시간이 부족하면 LAB 1·2·4만 보여 주고 3·5는 넘겨도 흐름이 이어져요.
+여기서부터 다섯 장은 제가 브루로 직접 만든 실험이에요. 규칙은 하나, 한 번에 한 가지만 바꿨어요.
+A는 주제 칸에 '기후변화' 한 단어만 넣었어요. (A 재생) 뉴스 앵커 같죠? 숫자가 네 개나 나오는데 출처가 하나도 없어요. 6학년에게는 말도 어렵고요.
+재밌는 건 이미지예요. 계기판에는 이산화탄소가 423ppm인데 바로 다음 장면은 420ppm, 그래프는 2030년까지 그려져 있어요. AI가 지어낸 숫자예요. (레시피 창에 자세히 있어요)
+B는 설계도 한 줄을 넣었어요. 메시지 한 문장, 누구에게(6학년 도입), 네 장면, 질문으로 끝내기. (B 재생) 같은 기능, 같은 설정인데 수업에 쓸 수 있는 영상이 됐어요.
+(클릭) 무엇을, 누구에게를 사람이 먼저 정해야 해요. 안 정하면 AI가 대신 정해요. 오늘 뒤에서 쓸 설계도가 바로 이 한 줄이에요.
+[레시피] 오른쪽 아래 '입력 원문·설정 전부 보기'를 누르면 A·B에 넣은 글과 AI가 쓴 대본 전문, 설정표가 나와요.</aside>
+</section>
+
+<!-- LAB 2 · 검증 -->
+<section class="slide soft lab-s" data-ep="EP.01" data-title="LAB 2 · 검증: AI 초안 vs 고친 대본" data-plan="13:11–13:12">
+  <div class="head"><span class="eyebrow"><span class="lab-no">LAB 2/5</span>검증 · LAB 1의 B 대본을 선생님이 고쳤어요</span><h2 class="s-title">AI 초안을 고쳐 쓰면, 사실을 확인하는 눈이 생겨요</h2></div>
+  <button type="button" class="lab-both" data-both><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>A·B 함께 재생(소리 끔)</button>
+  <div class="body"><div class="lab">
+    <div class="lab-v">
+      <div class="lab-lb"><span class="ab">A</span><b>AI 초안 그대로</b><em>31초</em></div>
+      <div class="vbox" data-vbox><video data-src="v2.mp4" poster="v2.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>A 재생</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+      <div class="lab-in">
+        <p><span class="x">✕</span> "왜 이렇게 <u>날씨</u>가 뜨거워진 걸까요?" <small>날씨와 기후를 섞음</small></p>
+        <p><span class="x">✕</span> "지구를 구할 방법이 있거든요" <small>과장</small></p>
+        <p><span class="x">✕</span> "급식을 남기지 않고 다 먹고" <small>왜 도움이 되는지 빠짐</small></p>
+        <p><span class="x">✕</span> "지구를 시원하게 식힐 수 있어요" <small>과장</small></p>
+      </div>
+    </div>
+    <div class="lab-v">
+      <div class="lab-lb"><span class="ab b">B</span><b>선생님이 고친 대본</b><em>35초</em></div>
+      <div class="vbox" data-vbox><video data-src="v3.mp4" poster="v3.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>B 재생</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+      <div class="lab-in">
+        <p><span class="o">○</span> "하루 더운 건 날씨, 더운 날이 해마다 늘어나는 건 기후변화"</p>
+        <p><span class="o">○</span> "그래도 우리가 할 수 있는 일이 있어요"</p>
+        <p><span class="o">○</span> "음식물 쓰레기를 처리하면서 생기는 온실가스를 줄여요"</p>
+        <p><span class="o">○</span> "지구가 더 뜨거워지는 속도를 늦출 수 있어요"</p>
+      </div>
+    </div>
+    <aside class="lab-rx">
+      <h4>어떻게 만들었나</h4>
+      <dl>
+        <dt>바꾼 것 하나</dt><dd><b>대본만.</b> ② 대본 작성에서 AI 글쓰기 대신 '직접 대본' 칸에 고친 대본을 붙여 넣었어요</dd>
+        <dt>고친 기준 네 가지</dt><dd>개념 정확히(날씨≠기후) · 과장 빼기 · '왜'를 넣기 · 확인할 수 있는 말만</dd>
+        <dt>근거 찾을 곳</dt><dd>교과서 · 티셀파 차시 자료(과학 6-1 [보완] 기후변화와 우리 생활)</dd>
+        <dt>그대로 둔 것</dt><dd>16:9 · KKC · AI 이미지 · 음악 분위기 '활기찬'</dd>
+      </dl>
+      <p class="cr">크레딧 <b>45</b>(이미지 9장) · 대본을 고치는 데는 크레딧이 들지 않아요</p>
+      <button type="button" class="lab-more" data-rx>고친 문장 전부 보기</button>
+    </aside>
+    <div class="lab-gain">
+      <p class="q"><span>발문</span>A에서 과장되거나 '왜'가 빠진 문장을 찾아보세요. 몇 개 찾았나요?</p>
+      <p class="g" data-step="1"><span>만들어 보면 좋은 점 · 검증력</span>AI 초안은 그럴듯하지만 과장과 비약이 섞여 있어요. <b>고쳐 쓰는 과정이 곧 개념 학습</b>이 되고, 근거를 찾는 습관이 생겨요.</p>
+    </div>
+  </div></div>
+  <div class="rx-pop" hidden role="dialog" aria-label="LAB 2 제작 레시피">
+    <div class="rx-hd"><h3>LAB 2 제작 레시피 · 무엇을 왜 고쳤나</h3><small>A = LAB 1의 B 영상 · B = 고친 대본으로 새로 만든 영상</small><button type="button" data-rx-close>닫기 ✕</button></div>
+    <div class="rx-bd">
+      <div class="full"><h5>클릭 순서 (B)</h5><div class="rx-path"><span>새로 만들기</span><i>›</i><span>텍스트로 비디오 만들기</span><i>›</i><span>① 스타일 없이 바로 시작하기</span><i>›</i><span class="hot">② 대본 작성: '직접 대본' 칸에 고친 대본 붙여 넣기</span><i>›</i><span>③ 비디오 꾸미기(기본값)</span><i>›</i><span>완료 → 확인</span></div></div>
+      <div class="full">
+        <table class="rx-tb">
+          <thead><tr><th>AI 초안 (A)</th><th>선생님이 고친 문장 (B)</th><th>고친 이유</th></tr></thead>
+          <tbody>
+            <tr><td>왜 이렇게 날씨가 뜨거워진 걸까요?</td><td>하루 더운 건 날씨지만, 이렇게 더운 날이 해마다 늘어나는 건 기후변화 때문이에요.</td><td><b>개념</b> 하루의 더위(날씨)와 오랜 기간의 변화(기후)를 구분해요.</td></tr>
+            <tr><td>하지만 너무 걱정하지 마세요. 우리에게는 지구를 구할 방법이 있거든요.</td><td>그래도 우리가 할 수 있는 일이 있어요.</td><td><b>과장</b> 우리 반의 선택으로 '지구를 구한다'는 건 지나친 약속이에요.</td></tr>
+            <tr><td>오늘부터 급식을 남기지 않고 다 먹고, 가까운 거리는 걸어서 등교해 보는 건 어떨까요?</td><td>급식을 남기지 않으면 음식물 쓰레기를 처리하면서 생기는 온실가스를 줄일 수 있어요. 가까운 거리는 걸어서 등교하면 자동차가 내뿜는 온실가스도 줄어요.</td><td><b>인과</b> 행동만 있고 '왜 도움이 되는지'가 없었어요. 온실가스와 이어 줬어요.</td></tr>
+            <tr><td>우리의 작은 선택이 모이면 뜨거워진 지구를 시원하게 식힐 수 있어요.</td><td>우리의 작은 선택이 모이면 지구가 더 뜨거워지는 속도를 늦출 수 있어요.</td><td><b>정확성</b> '식힌다'가 아니라 '더 뜨거워지는 속도를 늦춘다'가 맞는 표현이에요.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h5>B · 붙여 넣은 대본 전문 (310자 · 35초)</h5>
+        <div class="rx-txt">따가운 햇살 아래 텅 빈 학교 운동장을 보세요. 너무 더워서 친구들과 뛰어놀 수도 없어요. <mark class="ok">하루 더운 건 날씨지만, 이렇게 더운 날이 해마다 늘어나는 건 기후변화 때문이에요.</mark> 지구를 둘러싼 온실가스가 두꺼운 담요처럼 열을 가두고 있거든요. <mark class="ok">그래도 우리가 할 수 있는 일이 있어요.</mark> <mark class="ok">급식을 남기지 않으면 음식물 쓰레기를 처리하면서 생기는 온실가스를 줄일 수 있어요. 가까운 거리는 걸어서 등교하면 자동차가 내뿜는 온실가스도 줄어요.</mark> 우리의 작은 선택이 모이면 <mark class="ok">지구가 더 뜨거워지는 속도를 늦출 수 있어요.</mark> 자, 우리 반은 오늘부터 무엇을 바꿀 수 있을까요?</div>
+      </div>
+      <div>
+        <h5>교실에서는 이렇게</h5>
+        <p class="rx-note">① AI 초안을 모둠에 나눠 주고 <b>'과장·이유 없음·개념 섞임'</b> 세 가지 색으로 밑줄을 그어요.<br>② 교과서와 티셀파 차시 자료에서 근거 문장을 찾아 옆에 적어요.<br>③ 고친 대본을 '직접 대본' 칸에 붙여 넣어 다시 만들고, 두 영상을 나란히 봐요.<br>④ 내보내기 전 첫 장면이나 설명란에 <b>'AI 이미지·AI 목소리 사용'</b>을 한 줄 적어요.</p>
+        <p class="rx-note" style="margin-top:10px">급식 문장 근거: 음식물 쓰레기는 매립·퇴비화 등 처리 과정에서 메탄 같은 온실가스가 생겨요(대한민국 정책브리핑 · 기후솔루션 자료).</p>
+      </div>
+    </div>
+  </div>
+  <aside class="nt" hidden>LAB 1의 B 영상, 그럴듯했죠? 그런데 대본을 한 줄씩 보면 고칠 곳이 네 군데 있어요. 선생님들도 한번 찾아보세요. (10초 기다리기)
+첫째, '왜 이렇게 날씨가 뜨거워진 걸까요'. 하루 더운 건 날씨고, 해마다 더운 날이 늘어나는 게 기후변화예요. 6학년 과학 핵심 개념이 섞여 있어요.
+둘째, '지구를 구할 방법', 넷째 '지구를 시원하게 식힐 수 있어요'는 과장이에요. 셋째, 급식을 다 먹으면 왜 도움이 되는지가 없어요.
+(클릭) 그래서 네 문장만 고쳐서 '직접 대본' 칸에 붙여 넣고 다시 만들었어요. 대본을 고치는 데는 크레딧이 들지 않아요. 고쳐 쓰는 과정이 곧 개념 공부예요. 학생에게도 똑같이 시키면 돼요.</aside>
+</section>
+
+<!-- LAB 3 · 생성 -->
+<section class="slide lab-s" data-ep="EP.01" data-title="LAB 3 · 생성: AI 이미지 vs 실사 영상" data-plan="13:12–13:13">
+  <div class="head"><span class="eyebrow"><span class="lab-no">LAB 3/5</span>생성 · 고친 대본은 그대로, 화면만 바꿨어요</span><h2 class="s-title">AI가 그린 장면과 실사 자료 영상, 무엇이 '진짜'일까요?</h2></div>
+  <button type="button" class="lab-both" data-both><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>A·B 함께 재생(소리 끔)</button>
+  <div class="body"><div class="lab">
+    <div class="lab-v">
+      <div class="lab-lb"><span class="ab">A</span><b>AI 이미지</b><em>35초</em></div>
+      <div class="vbox" data-vbox><video data-src="v3.mp4" poster="v3.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>A 재생</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+      <div class="lab-in"><p><span class="k">설정</span>AI 이미지 켬 · GPT Image 2 Low</p><p><span class="k">결과</span>사진처럼 보이는 AI 이미지 9장. 그네 운동장, 달아오른 지구, 빈 식판, 등굣길까지 대본에 딱 맞아요.</p></div>
+    </div>
+    <div class="lab-v">
+      <div class="lab-lb"><span class="ab b">B</span><b>무료 비디오(실사)</b><em>34초</em></div>
+      <div class="vbox" data-vbox><video data-src="v4.mp4" poster="v4.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>B 재생</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+      <div class="lab-in"><p><span class="k">설정</span>AI 이미지 끔 · 무료 비디오 켬 <small>원래 소리는 자동 음소거</small></p><p><span class="k">결과</span>진짜 촬영이지만 대본과 어긋나요. '할 수 있는 일'에 어른들 악수, 등굣길 대신 도시 거리가 나와요.</p></div>
+    </div>
+    <aside class="lab-rx">
+      <h4>어떻게 만들었나</h4>
+      <dl>
+        <dt>바꾼 것 하나</dt><dd><b>③ 비디오 꾸미기의 'AI 이미지' ↔ '무료 비디오'</b> 스위치</dd>
+        <dt>그대로 둔 것</dt><dd>LAB 2에서 고친 대본 · 16:9 · KKC · 음악 '상쾌한 하루'(자동)</dd>
+        <dt>차이</dt><dd>A는 대본에 딱 맞지만 그림이고, B는 진짜 촬영이지만 대본과 딱 맞지는 않아요</dd>
+      </dl>
+      <p class="cr">크레딧 <b>A 45 · B 0</b> · 무료 비디오는 크레딧이 들지 않아요</p>
+      <button type="button" class="lab-more" data-rx>설정·장면 차이 자세히 보기</button>
+    </aside>
+    <div class="lab-gain">
+      <p class="q"><span>발문</span>B는 실제로 촬영한 영상이에요. 그럼 B가 A보다 더 '사실'일까요?</p>
+      <p class="g" data-step="1"><span>만들어 보면 좋은 점 · 판별력과 출처 감각</span><b>진짜처럼 보이는 것과 사실은 달라요.</b> AI 그림에는 'AI 생성', 실사라도 우리 학교가 아니면 '자료 영상'이라고 밝히는 습관이 생겨요.</p>
+    </div>
+  </div></div>
+  <div class="rx-pop" hidden role="dialog" aria-label="LAB 3 제작 레시피">
+    <div class="rx-hd"><h3>LAB 3 제작 레시피 · 화면 소스만 바꾸기</h3><small>대본은 LAB 2의 고친 대본(310자)을 똑같이 붙여 넣었어요</small><button type="button" data-rx-close>닫기 ✕</button></div>
+    <div class="rx-bd">
+      <div class="full"><h5>클릭 순서</h5><div class="rx-path"><span>새로 만들기</span><i>›</i><span>텍스트로 비디오 만들기</span><i>›</i><span>① 스타일 없이 바로 시작하기</span><i>›</i><span>② '직접 대본'에 고친 대본 붙여 넣기</span><i>›</i><span class="hot">③ 비디오 꾸미기: AI 이미지 / 무료 비디오 스위치</span><i>›</i><span>완료 → 확인</span></div></div>
+      <div class="full">
+        <table class="rx-tb">
+          <thead><tr><th></th><th>A · AI 이미지</th><th>B · 무료 비디오</th></tr></thead>
+          <tbody>
+            <tr><th>③ 설정</th><td>AI 이미지 <b>켬</b> · 생성 모델 GPT Image 2 Low · 무료 비디오 끔</td><td>AI 이미지 <b>끔</b> · 무료 비디오 <b>켬</b>(원래 소리 자동 음소거)</td></tr>
+            <tr><th>화면</th><td>문장마다 새로 그린 이미지 9장. 사진처럼 보여요</td><td>브루가 문장마다 골라 붙인 실사 자료 영상</td></tr>
+            <tr><th>실제로 본 장면</th><td>그네 운동장 → 창밖을 보며 땀 닦는 아이 → 붉게 달아오른 지구 → 빈 식판 → 가방 멘 등굣길 → 지구본 → 손 드는 교실</td><td>노란 그네 → 물 마시는 아이 → 갈라진 땅 → 어두운 지구 → <b>어른들 악수</b>('할 수 있는 일') → 도시락 → <b>도시 거리를 걷는 어른들</b>('걸어서 등교') → 새싹 심는 손 → 교실</td></tr>
+            <tr><th>좋은 점</th><td>대본 속 장면을 원하는 대로 보여 줘요</td><td>실제 촬영이라 질감이 자연스럽고 크레딧이 들지 않아요</td></tr>
+            <tr><th>살필 점</th><td>실제로 있었던 장면이 아니에요. 'AI 생성' 표시가 필요해요</td><td>대본과 딱 맞지 않는 장면이 섞여요. 우리 학교·우리 반이 아니라는 걸 밝혀야 해요</td></tr>
+            <tr><th>크레딧</th><td>45 (9장 × 5)</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="full">
+        <h5>교실에서는 이렇게</h5>
+        <p class="rx-note">① 두 영상을 소리 끄고 나란히 보며 <b>'AI가 그린 장면'과 '실제로 찍은 장면'</b>을 가려 봐요.<br>② "실제로 찍었으면 사실일까?"를 이야기해요. 실사 영상도 다른 곳에서 찍은 자료라면 우리 이야기의 증거가 될 수 없어요.<br>③ 완성 영상 끝에 출처를 적어요. 예: <b>'장면 일부 AI 생성 · 자료 영상: 브루 무료 비디오'</b><br>④ 한 가지 더: A·B 모두 우리나라 학교 모습은 아니에요. 대본이나 이미지 프롬프트에 <b>'한국 초등학교 교실'</b>처럼 장소를 넣으면 달라져요. '누구의 모습이 기본값이 되는가'도 좋은 토론거리예요.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="nt" hidden>이번엔 LAB 2에서 고친 대본을 그대로 두고 화면만 바꿨어요. A는 AI가 그린 이미지, B는 브루가 넣어 주는 무료 실사 영상이에요. 비디오 꾸미기 화면의 스위치 하나 차이예요.
+('A·B 함께 재생'으로 나란히 보여 주기) A는 사진처럼 보이지만 AI가 그린 그림이고, B는 진짜 촬영이에요. 그런데 B를 보세요. '그래도 우리가 할 수 있는 일이 있어요'에 어른들이 악수를 하고, '걸어서 등교'에는 도시 거리를 걷는 어른들이 나와요.
+질문 하나 드릴게요. B는 실제로 찍은 영상인데, 그럼 B가 더 '사실'일까요?
+(클릭) 진짜처럼 보이는 것과 사실은 달라요. 학생이 이걸 직접 골라 보면 출처를 밝히는 습관이 생겨요. 참고로 AI 이미지는 45크레딧, 무료 비디오는 0크레딧이었어요.</aside>
+</section>
+
+<!-- LAB 4 · 편집 -->
+<section class="slide soft lab-s" data-ep="EP.01" data-title="LAB 4 · 편집: 목소리와 음악" data-plan="13:13–13:14">
+  <div class="head"><span class="eyebrow"><span class="lab-no">LAB 4/5</span>편집 · 대본·그림은 그대로, 목소리와 음악만 바꿨어요</span><h2 class="s-title">목소리와 음악만 바꿨는데, 같은 이야기가 무섭게 들려요</h2></div>
+  <div class="body"><div class="lab">
+    <div class="lab-v">
+      <div class="lab-lb"><span class="ab">A</span><b>KKC · '상쾌한 하루'</b><em>35초</em></div>
+      <div class="vbox" data-vbox><video data-src="v3.mp4" poster="v3.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>A 재생 (소리 켜고)</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+      <div class="lab-in"><p><span class="k">목소리</span>KKC · 기본 속도</p><p><span class="k">음악</span>분위기 '활기찬'에서 브루가 고른 '상쾌한 하루'</p><p><span class="k">그대로</span>LAB 2의 고친 대본 · 이미지 9장 · 자막</p></div>
+    </div>
+    <div class="lab-v">
+      <div class="lab-lb"><span class="ab b">B</span><b>혁 · 'Bitter Streetlight'</b><em>51초</em></div>
+      <div class="vbox" data-vbox><video data-src="v3m.mp4" poster="v3m.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>B 재생 (소리 켜고)</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+      <div class="lab-in"><p><span class="k">목소리</span>'혁'(다정한·중저음) · 한 단계 느리게</p><p><span class="k">음악</span>AI 검색 <q>무서운</q> → #공포 #긴장 곡으로 교체</p><p><span class="k">결과</span>느린 목소리 때문에 16초 길어지고, 같은 운동장이 불안하게 느껴져요</p></div>
+    </div>
+    <aside class="lab-rx">
+      <h4>어떻게 만들었나</h4>
+      <dl>
+        <dt>바꾼 것 한 묶음</dt><dd><b>소리만: AI 목소리 + 배경음악</b></dd>
+        <dt>방법</dt><dd>A 프로젝트를 '다른 이름으로 저장'해 복사본을 만든 뒤, 전체 클립 목소리를 바꾸고 배경음악을 교체했어요</dd>
+        <dt>그대로 둔 것</dt><dd>대본 · 이미지 9장 · 자막 · 16:9</dd>
+      </dl>
+      <p class="cr">이미지 크레딧 <b>0</b> · 새로 만들지 않고 A를 고쳤어요. 목소리를 다시 입힐 때 AI 목소리 크레딧이 조금 들어요</p>
+      <button type="button" class="lab-more" data-rx>편집 순서 자세히 보기</button>
+    </aside>
+    <div class="lab-gain">
+      <p class="q"><span>발문</span>어느 쪽이 더 '행동하고 싶게' 만드나요? 무섭게 만들어 설득하는 건 괜찮을까요?</p>
+      <p class="g" data-step="1"><span>만들어 보면 좋은 점 · 구성 이해</span><b>미디어는 누군가의 선택으로 만들어져요.</b> 소리 하나로 감정이 바뀌는 걸 겪어 보면 광고·뉴스의 연출이 보여요. 공포로 설득하면 기후 불안만 키울 수 있다는 것도 함께 이야기해요.</p>
+    </div>
+  </div></div>
+  <div class="rx-pop" hidden role="dialog" aria-label="LAB 4 제작 레시피">
+    <div class="rx-hd"><h3>LAB 4 제작 레시피 · 소리만 바꾸기</h3><small>새 영상을 만들지 않고 A 프로젝트를 복사해서 고쳤어요</small><button type="button" data-rx-close>닫기 ✕</button></div>
+    <div class="rx-bd">
+      <div class="full"><h5>편집 순서</h5><div class="rx-path"><span>A 프로젝트 열기</span><i>›</i><span>파일 → 다른 이름으로 저장 → 브라우저에 저장(복사본)</span><i>›</i><span class="hot">전체 클립 선택 → AI 목소리 '혁' · 속도 한 단계 느리게</span><i>›</i><span class="hot">배경음악 '상쾌한 하루' 삭제 → AI 검색 '무서운' → 곡 선택 → 적용 범위 '전체 클립'</span></div></div>
+      <div class="full">
+        <table class="rx-tb">
+          <thead><tr><th></th><th>A</th><th>B</th></tr></thead>
+          <tbody>
+            <tr><th>AI 목소리</th><td>KKC · 기본 속도</td><td><b>혁</b>(다정한·중저음) · <b>한 단계 느리게</b></td></tr>
+            <tr><th>배경음악</th><td>상쾌한 하루 (분위기 '활기찬' 자동 추천)</td><td><b>Bitter Streetlight</b> (AI 검색 '무서운' · #공포 #긴장)</td></tr>
+            <tr><th>길이</th><td>35초</td><td>51초 (느린 목소리로 16초 늘어남)</td></tr>
+            <tr><th>그대로</th><td colspan="2">대본 310자 · AI 이미지 9장 · 자막 · 화면 비율 16:9</td></tr>
+            <tr><th>크레딧</th><td colspan="2">이미지는 새로 만들지 않아 0 · 목소리를 다시 입힐 때 AI 목소리 크레딧이 조금 들어요(오늘 실험 전체에서 16)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="full">
+        <h5>교실에서는 이렇게</h5>
+        <p class="rx-note">① 화면을 가리고 소리만 들려준 뒤 "어떤 영상일 것 같아?"를 물어요.<br>② 모둠마다 같은 영상을 받아 <b>목소리·음악만</b> 바꿔 '밝게 / 진지하게 / 무섭게' 세 버전을 만들어요.<br>③ 세 버전을 이어 보고, 광고·뉴스에서 음악이 어떤 역할을 하는지 이야기해요.<br>④ 마지막 질문: "공포로 설득하는 건 괜찮을까?" 기후 불안을 키우지 않는 표현을 함께 정해요.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="nt" hidden>이번엔 소리 실험이에요. 꼭 소리를 켜고 A, B를 10초씩 들려주세요.
+대본도, 그림도, 자막도 똑같아요. A 프로젝트를 복사해서 목소리를 중저음 '혁'으로, 속도를 한 단계 느리게, 배경음악을 '무서운'으로 검색한 곡으로만 바꿨어요. (A 10초 → B 10초)
+같은 운동장인데 B는 좀 불안하죠? 느린 목소리 때문에 영상도 35초에서 51초로 길어졌어요.
+어느 쪽이 더 행동하고 싶게 만드나요? 그리고 무섭게 만들어서 설득하는 건 괜찮을까요?
+(클릭) 미디어는 누군가의 선택으로 만들어져요. 학생이 직접 바꿔 보면 광고나 뉴스의 연출이 보이기 시작해요. 공포로 설득하면 기후 불안만 커질 수 있다는 것도 같이 이야기하면 좋아요.</aside>
+</section>
+
+<!-- LAB 5 · 공유 -->
+<section class="slide lab-s" data-ep="EP.01" data-title="LAB 5 · 공유: 16:9 vs 9:16 쇼츠" data-plan="13:14–13:15">
+  <div class="head"><span class="eyebrow"><span class="lab-no">LAB 5/5</span>공유 · 같은 메시지를 쇼츠로 다시 썼어요</span><h2 class="s-title">보여 줄 곳이 바뀌면, 같은 메시지도 다시 써요</h2></div>
+  <button type="button" class="lab-both" data-both><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>A·B 함께 재생(소리 끔)</button>
+  <div class="body"><div class="lab l5">
+    <div class="lab-v">
+      <div class="lab-lb"><span class="ab">A</span><b>수업 도입용 16:9</b><em>35초 · 310자</em></div>
+      <div class="vbox" data-vbox><video data-src="v3.mp4" poster="v3.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>A 재생</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+      <div class="lab-gain">
+        <p class="q"><span>발문</span>우리 학교 복도 모니터나 학급 SNS에 올린다면 무엇을 바꿀까요?</p>
+        <p class="g" data-step="1"><span>만들어 보면 좋은 점 · 청중과 매체 감각</span><b>누가, 어디서 볼지</b>에 따라 길이·첫 문장·자막이 달라져요. 다시 쓰며 요약과 강조를 배우고, 올리기 전 AI 사용 표시·초상권도 점검해요.</p>
+      </div>
+    </div>
+    <div class="lab-v tall">
+      <div class="lab-lb"><span class="ab b">B</span><b>쇼츠 9:16</b><em>17초 · 133자</em></div>
+      <div class="vbox tall" data-vbox><video data-src="v5.mp4" poster="v5.jpg" loop playsinline></video><button type="button" class="vbtn" data-play><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>B 재생</button><button type="button" class="snd" data-mute>소리 끔</button></div>
+    </div>
+    <aside class="lab-rx">
+      <h4>어떻게 만들었나</h4>
+      <dl>
+        <dt>바꾼 것 두 가지</dt><dd><b>대본을 절반 이하로 다시 쓰기</b> + <b>③ 화면 비율 9:16</b></dd>
+        <dt>보는 곳</dt><dd>A 교실 TV로 함께 보기 · B 복도 모니터·학급 SNS에서 스쳐 보기</dd>
+        <dt>대본</dt><dd>9문장 310자 → 7문장 133자. 첫 마디 <q>텅 빈 운동장.</q> 끝은 <q>너라면 뭘 바꿀래?</q></dd>
+        <dt>브루가 알아서 바꾼 것</dt><dd>자막이 쇼츠용 '중단·짧게·애니메이션'으로 바뀌고, 이미지도 세로로 새로 그려요</dd>
+      </dl>
+      <p class="cr">크레딧 <b>35</b> · 세로 이미지 7장 × 5 · 나머지(KKC·'활기찬'·AI 이미지)는 그대로</p>
+      <button type="button" class="lab-more" data-rx>쇼츠 대본 다시 쓰기 보기</button>
+    </aside>
+  </div></div>
+  <div class="rx-pop" hidden role="dialog" aria-label="LAB 5 제작 레시피">
+    <div class="rx-hd"><h3>LAB 5 제작 레시피 · 쇼츠로 다시 쓰기</h3><small>310자 → 133자 · 35초 → 17초</small><button type="button" data-rx-close>닫기 ✕</button></div>
+    <div class="rx-bd">
+      <div class="full"><h5>클릭 순서</h5><div class="rx-path"><span>새로 만들기</span><i>›</i><span>텍스트로 비디오 만들기</span><i>›</i><span>① 스타일 없이 바로 시작하기</span><i>›</i><span class="hot">② '직접 대본'에 쇼츠 대본 붙여 넣기</span><i>›</i><span class="hot">③ 화면 비율 9:16</span><i>›</i><span>완료 → 확인</span></div></div>
+      <div>
+        <h5>A · 16:9 대본 (310자)</h5>
+        <div class="rx-txt">따가운 햇살 아래 텅 빈 학교 운동장을 보세요. 너무 더워서 친구들과 뛰어놀 수도 없어요. 하루 더운 건 날씨지만, 이렇게 더운 날이 해마다 늘어나는 건 기후변화 때문이에요. 지구를 둘러싼 온실가스가 두꺼운 담요처럼 열을 가두고 있거든요. 그래도 우리가 할 수 있는 일이 있어요. 급식을 남기지 않으면 음식물 쓰레기를 처리하면서 생기는 온실가스를 줄일 수 있어요. 가까운 거리는 걸어서 등교하면 자동차가 내뿜는 온실가스도 줄어요. 우리의 작은 선택이 모이면 지구가 더 뜨거워지는 속도를 늦출 수 있어요. 자, 우리 반은 오늘부터 무엇을 바꿀 수 있을까요?</div>
+      </div>
+      <div>
+        <h5>B · 쇼츠 대본 (133자)</h5>
+        <div class="rx-txt"><mark class="ok">텅 빈 운동장.</mark> 너무 더워서 아무도 못 나와요. 하루 더운 건 날씨, 더운 날이 해마다 늘어나는 건 기후변화! 우리 반이 할 수 있는 건? 급식 남기지 않기, 가까운 길은 걸어서 등교하기. 작은 선택이 모이면 달라져요. <mark class="ok">너라면 뭘 바꿀래?</mark></div>
+        <h5 style="margin-top:16px">다시 쓴 규칙 네 가지</h5>
+        <p class="rx-note">① <b>첫 3초에 장면 하나</b>: "텅 빈 운동장."<br>② <b>한 문장에 한 생각</b>, 설명은 줄이고 핵심 개념(날씨≠기후)만 남기기<br>③ 행동은 <b>명사형 목록</b>으로 짧게<br>④ 끝은 보는 사람에게 <b>직접 묻기</b>: "너라면 뭘 바꿀래?"</p>
+      </div>
+      <div class="full">
+        <table class="rx-tb">
+          <thead><tr><th></th><th>A · 수업 도입용</th><th>B · 쇼츠</th></tr></thead>
+          <tbody>
+            <tr><th>보는 곳</th><td>교실 TV, 함께 보고 이야기</td><td>복도 모니터·학급 SNS, 혼자 스쳐 봄</td></tr>
+            <tr><th>화면·자막</th><td>16:9 · 자막 하단·길게</td><td>9:16 · 자막 중단·짧게·애니메이션(자동)</td></tr>
+            <tr><th>길이</th><td>35초 · 9문장</td><td>17초 · 7문장</td></tr>
+            <tr><th>크레딧</th><td>45 (이미지 9장)</td><td>35 (세로 이미지 7장을 새로 그림)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <aside class="nt" hidden>마지막 실험이에요. 같은 메시지를 이번엔 복도 모니터나 학급 SNS에 올릴 쇼츠로 바꿨어요.
+대본을 310자에서 133자로 절반 이하로 줄였고, 화면 비율만 9:16으로 골랐어요. 자막은 브루가 알아서 쇼츠용으로 바꿔 줘요. ('A·B 함께 재생')
+첫 마디가 "텅 빈 운동장."이고, 끝은 "너라면 뭘 바꿀래?"예요. 스쳐 보는 사람을 붙잡으려고요.
+(클릭) 누가 어디서 볼지에 따라 길이, 첫 문장, 자막이 달라져요. 같은 메시지를 다시 쓰며 요약과 강조를 배우는 거죠.
+다섯 실험을 정리하면 기획, 검증, 생성, 편집, 공유. 앞 장 히트맵의 다섯 단계를 그대로 해 본 거예요. 만드는 과정이 곧 미디어교육이에요.</aside>
 </section>
 
 <!-- 09 MORE EVIDENCE -->
@@ -1161,7 +1580,7 @@ function enterVideos(slide){
   $$('video', slide).forEach(v => { if (!v.closest('[data-vbox]')){ v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {}); } });
 }
 function leaveVideos(slide){ $$('video', slide).forEach(v => { v.pause(); }); $$('[data-vbox]', slide).forEach(b => b.classList.remove('playing')); duckCheck(); }
-function duckCheck(){ const loud = $$('[data-vbox] video').some(v => !v.paused && !v.muted); BGM.duck(loud); }
+function duckCheck(){ const loud = $$('[data-vbox] video, .monitor video').some(v => !v.paused && !v.muted); BGM.duck(loud); }
 $$('[data-vbox]').forEach(box => {
   const v = $('video', box), play = $('[data-play]', box), mute = $('[data-mute]', box);
   const sync = () => { mute.textContent = v.muted ? '소리 켜기' : '소리 끄기'; };
@@ -1242,6 +1661,32 @@ const PT = (function(){
   render();
   return {toggle};
 })();
+
+/* ---------- LAB: recipe pop · one sound at a time · play both ---------- */
+$$('[data-rx]').forEach(b => b.addEventListener('click', () => { const p = $('.rx-pop', b.closest('.slide')); if (p) p.hidden = !p.hidden; }));
+$$('[data-rx-close]').forEach(b => b.addEventListener('click', () => { b.closest('.rx-pop').hidden = true; }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $$('.rx-pop').forEach(p => { p.hidden = true; }); });
+$$('.lab-s [data-play]').forEach(b => b.addEventListener('click', () => {
+  const box = b.closest('[data-vbox]');
+  $$('[data-vbox]', b.closest('.slide')).forEach(o => { if (o !== box){ $('video', o).pause(); o.classList.remove('playing'); } });
+}));
+$$('[data-both]').forEach(b => b.addEventListener('click', () => {
+  const s = b.closest('.slide'); loadVideos(s);
+  $$('[data-vbox]', s).forEach(o => {
+    const v = $('video', o), m = $('[data-mute]', o);
+    v.muted = true; try { v.currentTime = 0; } catch(e){}
+    const p = v.play(); if (p && p.catch) p.catch(() => {});
+    o.classList.add('playing'); if (m) m.textContent = '소리 켜기';
+  });
+  duckCheck();
+}));
+$$('[data-msnd]').forEach(b => b.addEventListener('click', () => {
+  const v = $('video', b.closest('.monitor')); v.muted = !v.muted;
+  if (v.paused){ const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+  b.textContent = v.muted ? '소리 켜기' : '소리 끄기'; duckCheck();
+}));
+const _leaveVideos = leaveVideos;
+leaveVideos = function(s){ _leaveVideos(s); $$('.rx-pop', s).forEach(p => { p.hidden = true; }); $$('[data-msnd]', s).forEach(b => { b.textContent = '소리 켜기'; }); };
 
 /* ---------- confetti ---------- */
 const cv = $('#confetti'), cx = cv.getContext('2d');
