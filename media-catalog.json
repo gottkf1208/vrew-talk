@@ -1,0 +1,91 @@
+{
+  "ham": {
+    "id": "QJAewX4fnPc",
+    "title": "야근의 시발점",
+    "by": "정서불안 김햄찌",
+    "image": "examples/ham.jpg",
+    "tag": "공감형 캐릭터 · 2025→2026",
+    "model": "Sora · HiLuo Premium / 음악: Suno·CapCut sound",
+    "proof": "YouTube 공식 추천작 · 2025년 약 6개월 만에 60만 구독자. 2026년 유튜브 위크 팬 체험으로 확장.",
+    "question": "햄스터가 아니라 내 이야기여서 보게 되는가?",
+    "note": "제작자 설명 기준. 세부 모델 버전 미공개. 유료 프로모션 포함 작품 · 교사 대상 사례 감상.",
+    "sources": [
+      "ham-trend",
+      "ham-2026",
+      "ham-film"
+    ]
+  },
+  "asmr": {
+    "id": "wcGVOo_-_f0",
+    "title": "유리 과일 ASMR",
+    "by": "AI ASMR Cutting Video · 공개 구현 예시",
+    "image": "examples/asmr.jpg",
+    "tag": "감각형 · 2025년 확산",
+    "model": "ChatLLM 사용 공개 / 실제 생성 모델 미공개",
+    "proof": "YouTube가 유리 과일 등 초현실 ASMR을 공식 트렌드로 소개. 이 영상은 해당 형식의 별도 구현 예시.",
+    "question": "화면만 볼 때와 소리까지 들을 때, 느낌이 어떻게 다른가?",
+    "note": "장르와 개별 영상의 흥행을 구분. Veo 3는 이 장르의 대표 기술 예시이며 이 작품의 사용 모델로 단정하지 않음.",
+    "sources": [
+      "asmr-trend",
+      "asmr-film"
+    ]
+  },
+  "time": {
+    "id": "ddAHl3kPVCc",
+    "title": "On This Day…1776",
+    "by": "TIME · Primordial Soup",
+    "image": "examples/time.jpg",
+    "tag": "역사 재현 시리즈 · 2026",
+    "model": "Google DeepMind AI 일부 활용 / 편별 모델·버전 미공개",
+    "proof": "TIME이 2026년에 공개한 역사 재현 시리즈. “Battle of Manhattan” 편을 연결.",
+    "question": "실제 기록과 창작으로 재현한 장면을 어떻게 구분할까?",
+    "note": "실제 촬영 기록이 아닌 AI 재현. 배우 음성과 후반 편집을 결합한 제작 사례이며 바이럴 순위로 소개하지 않음.",
+    "sources": [
+      "time-series"
+    ]
+  },
+  "lily": {
+    "id": "f2d40eY7P1s",
+    "title": "Lily",
+    "by": "Zoubeir ElJlassi",
+    "image": "examples/lily.jpg",
+    "tag": "2026 AI Film Award · 대상",
+    "model": "영상: Veo / 장면 제작·제어: Flow",
+    "proof": "Google·1 Billion Followers Summit AI Film Award 최고상. 2026년 1월 발표, 상금 100만 달러.",
+    "question": "인형 하나가 어떻게 이야기 전체를 끌고 가는가?",
+    "note": "Veo 세부 버전 미공개. Flow는 모델이 아닌 제작 도구. 사고·죄책감 소재로 교사 대상 감상.",
+    "sources": [
+      "lily-award"
+    ]
+  },
+  "face": {
+    "id": "wytfCS-N8Sk",
+    "title": "A Face Only A Mother Could Love",
+    "by": "Robert Gaudette",
+    "image": "examples/face.jpg",
+    "tag": "2026 Runway AIF · Film Grand Prix",
+    "model": "Grok · Nano Banana · Seedance / 음성: ElevenLabs / 음악: Suno",
+    "proof": "Runway 공식 2026 대상작. 시각 도구는 Reply 공식 소개, 음성·음악은 제작자 설명으로 확인.",
+    "question": "얼굴의 일관성뿐 아니라 인물의 마음도 이어지는가?",
+    "note": "시각 모델 버전·장면별 역할 미공개. 원작자의 공개 영상으로 재생.",
+    "sources": [
+      "aif-winners",
+      "reply-models",
+      "face-film"
+    ]
+  },
+  "pixel": {
+    "id": "zpAeygE4d1A",
+    "title": "Total Pixel Space",
+    "by": "Jacob Adler",
+    "image": "examples/pixel.jpg",
+    "tag": "2025 Runway AIFF · Grand Prix",
+    "model": "원작 영상 설명의 상세 모델 목록 미공개",
+    "proof": "원작자가 공개 영상에서 2025년 Grand Prix 수상을 명시. 2026 수상작과 연도 구분.",
+    "question": "“모든 이미지가 숫자로 존재한다면?” 질문 하나가 영화가 될까?",
+    "note": "철학적 에세이. 작품의 가설을 검증된 과학 사실로 가르치지 않기. 모델명은 확인 없이 추정하지 않음.",
+    "sources": [
+      "pixel-film"
+    ]
+  }
+}
