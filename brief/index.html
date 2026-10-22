@@ -93,7 +93,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .chip input:checked+span{background:var(--accent-weak);border-color:var(--accent-line);color:var(--accent-ink);font-weight:600}
 .chip input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
 .chip.multi input:checked+span::before{content:"";width:9px;height:5px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg) translate(1px,-1px)}
-.chips+textarea{margin-top:10px}
+.chips+textarea,.etc+textarea,.chips+label+.etc{margin-top:10px}
 
 .scenes{display:grid;gap:8px;counter-reset:sc}
 .scene{display:grid;grid-template-columns:26px 1fr;align-items:center;gap:10px}
@@ -236,7 +236,10 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
             <label class="chip multi"><input type="checkbox" name="blocks" value="자꾸 헷갈려요"><span>자꾸 헷갈려요</span></label>
             <label class="chip multi"><input type="checkbox" name="blocks" value="반복이 필요해요"><span>반복이 필요해요</span></label>
             <label class="chip multi"><input type="checkbox" name="blocks" value="긴 글이 부담돼요"><span>긴 글이 부담돼요</span></label>
+            <label class="chip multi"><input type="checkbox" name="blocks" value="기타"><span>기타</span></label>
           </div>
+          <label class="sr" for="blockEtc">기타 막히는 지점</label>
+          <input type="text" id="blockEtc" class="etc" placeholder="기타: 예) 실험 순서를 자꾸 놓쳐요" hidden>
           <label class="sr" for="blockNote">막히는 지점 더 적기</label>
           <textarea id="blockNote" rows="2" placeholder="날씨랑 기후를 같은 말로 써요. 그래프가 나오면 손을 놓아요."></textarea>
         </fieldset>
@@ -299,9 +302,9 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
 
       <section class="block" id="s4" aria-labelledby="h4q">
         <div class="block-head"><span class="tag">Q4</span><h2 id="h4q">어떻게 확인할까?</h2></div>
-        <p class="help">만들고 나서, 그리고 아이들에게 보여 주고 나서 볼 것을 골라요.</p>
+        <p class="help">다 만들고 나서 브루에서 선생님 눈과 귀로 확인할 것을 골라요.</p>
         <div class="checks">
-          <label class="check"><input type="checkbox" name="checks" value="아이가 한 문장으로 답할 수 있나">아이가 한 문장으로 답할 수 있나</label>
+          <label class="check"><input type="checkbox" name="checks" value="어려운 말·빠른 말·작은 자막은 없나">어려운 말·빠른 말·작은 자막은 없나</label>
           <label class="check"><input type="checkbox" name="checks" value="숫자·장면·글자를 자료와 맞춰 봤나">숫자·장면·글자를 자료와 맞춰 봤나</label>
           <label class="check"><input type="checkbox" name="checks" value="AI가 그린 장면이라고 밝혔나">AI가 그린 장면이라고 밝혔나</label>
         </div>
@@ -361,9 +364,9 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
   var E='\u0001', A='\u0002', Z='\u0003';
   var $=function(id){return document.getElementById(id)};
   var form=$('brief');
-  var TEXT=['grade','material','blockNote','audience','goal','firstQ','scene1','scene2','scene3','extra'];
-  var CHECK_ALL=['아이가 한 문장으로 답할 수 있나','숫자·장면·글자를 자료와 맞춰 봤나','AI가 그린 장면이라고 밝혔나'];
-  var EMPTY={grade:'',material:'',blockNote:'',audience:'',goal:'',firstQ:'',scene1:'',scene2:'',scene3:'',extra:'',blocks:[],checks:[],len:'30초',screen:'16:9 교실 TV',tone:''};
+  var TEXT=['grade','material','blockEtc','blockNote','audience','goal','firstQ','scene1','scene2','scene3','extra'];
+  var CHECK_ALL=['어려운 말·빠른 말·작은 자막은 없나','숫자·장면·글자를 자료와 맞춰 봤나','AI가 그린 장면이라고 밝혔나'];
+  var EMPTY={grade:'',material:'',blockEtc:'',blockNote:'',audience:'',goal:'',firstQ:'',scene1:'',scene2:'',scene3:'',extra:'',blocks:[],checks:[],len:'30초',screen:'16:9 교실 TV',tone:''};
   var EX={
     andong:{
       grade:'4학년 사회 · 우리 지역 단원 · 우리 지역 자랑을 알려요',
@@ -434,7 +437,7 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
   }
 
   function scenesOf(s){return [s.scene1,s.scene2,s.scene3].map(t).filter(Boolean)}
-  function blockLine(s){return [s.blocks.join(', '),t(s.blockNote)].filter(Boolean).join(' / ')}
+  function blockLine(s){var b=s.blocks.map(function(x){return x==='기타'?(t(s.blockEtc)?'기타: '+t(s.blockEtc):''):x}).filter(Boolean);return [b.join(', '),t(s.blockNote)].filter(Boolean).join(' / ')}
 
   function briefText(s){
     var sc=scenesOf(s), fmt=[s.len,s.screen,s.tone].filter(Boolean), ck=s.checks.slice(), L=[];
@@ -483,6 +486,7 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
     if(SCREEN[s.screen])L.push('- '+SCREEN[s.screen]);
     L.push('','[지켜 주세요]');
     L.push('- 출처를 확인할 수 없는 숫자·연도·통계는 넣지 마세요. 꼭 필요하면 [확인 필요]라고 적어요.');
+    if(s.checks.indexOf(CHECK_ALL[0])>-1)L.push('- 어려운 말은 쉬운 말로 바꾸고, 문장은 짧게 써요.');
     if(s.checks.indexOf(CHECK_ALL[1])>-1)L.push('- 장소·생물·사실은 수업 자료에 있는 내용만 써요.');
     if(s.checks.indexOf(CHECK_ALL[2])>-1)L.push('- 마지막 자막에 ‘AI로 만든 장면이 들어 있어요’라고 밝혀요.');
     return L.join('\n');
@@ -495,7 +499,9 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
   function html(x){return esc(x).replace(/\u0002/g,'<span class="v">').replace(/\u0003/g,'</span>').replace(/\u0001/g,'<span class="ph">비어 있어요</span>')}
 
   var cur={};
+  function syncEtc(){var c=form.querySelector('input[name=blocks][value="기타"]'),e=$('blockEtc');if(!c||!e)return;var was=e.hidden;e.hidden=!c.checked;if(was&&c.checked&&document.activeElement===c)e.focus();}
   function update(){
+    syncEtc();
     var s=read();
     cur.brief=briefText(s); cur.topic=topicText(s); cur.prompt=promptText(s); cur.blank=isBlank(s);
     $('briefOut').innerHTML=html(cur.brief);
