@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>콘텐츠 브리프 빌더</title>
 <meta name="description" content="T셀파 차시 하나를 네 질문으로 정리해 클래스보드와 브루에 바로 붙이는 실습 도구">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M9 10h14M9 16h14M9 22h9' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -10,271 +10,361 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 :root{
-  --bg:#f4f5f9; --surface:#fff; --sunken:#f7f8fb; --line:#e3e6ee; --line-2:#d3d8e3; --line-3:#b9c0cf;
-  --ink:#151821; --ink-2:#434a5c; --ink-3:#7a8194; --ink-4:#a2a8b7;
-  --accent:#4f46e5; --accent-ink:#3a32c7; --accent-weak:#eef0ff; --accent-line:#c5c8fa; --ring:rgba(79,70,229,.18);
-  --r:12px; --r-sm:10px; --top:56px;
+  --bg:#f3f4f8; --surface:#fff; --sunken:#f5f6f9; --line:#dde1ea; --line-2:#c4cad7; --line-3:#9aa2b3;
+  --ink:#1a1d24; --ink-2:#2f3543; --ink-3:#4a5162; --ph:#7a808e;
+  --accent:#4f46e5; --accent-ink:#3a32c7; --accent-weak:#eef0ff; --accent-line:#b8bcf6; --ring:rgba(79,70,229,.24);
+  --r:16px; --r-sm:12px;
+  --pad-x:clamp(16px,3.6vw,56px);
+  --pad-top:clamp(14px,3vh,40px);
+  --pad-bot:clamp(12px,2.2vh,28px);
+  --pager:88px;
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--top) + 16px);scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR","Noto Sans CJK KR",system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+html,body{height:100%;overflow:hidden}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR","Noto Sans CJK KR",system-ui,sans-serif;font-size:20px;line-height:1.55;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
 a{color:var(--accent-ink)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}
+button{font:inherit}
 
-/* top bar */
-.top{position:sticky;top:0;z-index:20;height:var(--top);display:flex;align-items:center;gap:16px;padding:0 20px;background:rgba(255,255,255,.94);backdrop-filter:saturate(1.4) blur(8px);-webkit-backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.01em;white-space:nowrap;flex:1 1 0}
-.brand small{font-size:12.5px;font-weight:500;color:var(--ink-3)}
-.mark{width:24px;height:24px;border-radius:7px;background:var(--accent);display:grid;place-items:center;flex:none}
-.steps{display:flex;align-items:center;gap:2px;padding:3px;background:var(--sunken);border:1px solid var(--line);border-radius:999px}
-.steps a{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-4);text-decoration:none;white-space:nowrap;transition:color .15s,background .15s}
-.steps a:hover{color:var(--ink-2)}
-.steps .dot{width:6px;height:6px;border-radius:50%;border:1.5px solid var(--line-3);transition:.15s}
-.steps a.done{color:var(--ink-2)}
-.steps a.done .dot{background:var(--accent);border-color:var(--accent)}
-.steps a[aria-current="step"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(20,24,40,.08),0 0 0 1px var(--line)}
-.top-right{flex:1 1 0;display:flex;justify-content:flex-end;align-items:center;gap:12px}
-.save{font-size:12px;color:var(--ink-3);white-space:nowrap}
+.app{height:100vh;height:100dvh;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto}
 
-/* buttons */
-.btn{font:inherit;font-size:14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:0 14px;border-radius:var(--r-sm);border:1px solid var(--line-2);background:#fff;color:var(--ink);cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,color .15s}
+/* ── top bar ── */
+.top{display:flex;align-items:center;gap:20px;min-height:72px;padding:10px var(--pad-x);background:var(--surface);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;flex:none;min-width:0}
+.mark{width:36px;height:36px;border-radius:10px;background:var(--accent);display:grid;place-items:center;flex:none}
+.brand strong{display:block;font-size:21px;font-weight:760;letter-spacing:-.02em;line-height:1.25;white-space:nowrap}
+.save{display:block;font-size:15px;line-height:1.35;color:var(--ink-3);white-space:nowrap}
+.steps{flex:1 1 auto;display:flex;justify-content:center;min-width:0}
+.steps ol{display:flex;gap:2px;margin:0;padding:4px;list-style:none;background:var(--sunken);border:1px solid var(--line);border-radius:999px}
+.steps button{display:flex;align-items:center;gap:7px;min-height:44px;padding:0 12px;border:0;border-radius:999px;background:transparent;color:var(--ink-3);font-size:17px;font-weight:650;line-height:1;white-space:nowrap;cursor:pointer;transition:background .15s,color .15s}
+.steps button:hover{background:#e8eaf1;color:var(--ink)}
+.mk{width:18px;height:18px;border-radius:50%;border:2px solid var(--line-3);display:grid;place-items:center;flex:none;color:transparent;transition:background .15s,border-color .15s}
+.mk svg{display:block}
+.steps button.done{color:var(--ink)}
+.steps button.done .mk{background:var(--accent);border-color:var(--accent);color:#fff}
+.steps button[aria-current="step"]{background:var(--accent);color:#fff}
+.steps button[aria-current="step"] .mk{border-color:rgba(255,255,255,.75)}
+.steps button[aria-current="step"].done .mk{background:#fff;border-color:#fff;color:var(--accent)}
+.top-right{display:flex;align-items:center;gap:10px;flex:none}
+
+/* ── buttons ── */
+.btn{font-size:19px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:56px;padding:0 22px;border-radius:var(--r-sm);border:1.5px solid var(--line-2);background:#fff;color:var(--ink);cursor:pointer;text-decoration:none;line-height:1.2;transition:background .15s,border-color .15s,color .15s}
 .btn:hover{background:var(--sunken);border-color:var(--line-3)}
 .btn:active{transform:translateY(1px)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn.primary:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
-.btn.ghost{background:transparent;border-color:transparent;color:var(--ink-2)}
-.btn.ghost:hover{background:var(--sunken)}
-.btn.sm{min-height:32px;font-size:13px;padding:0 11px}
+.btn.tb{min-height:48px;font-size:18px;padding:0 16px}
 .btn svg{flex:none}
 
-/* layout */
-.wrap{max-width:1320px;margin:0 auto;padding:36px 28px 40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,440px);gap:36px;align-items:start}
-.doc{width:100%;max-width:760px;justify-self:center}
+/* ── stage & sliding track ── */
+.stage{position:relative;overflow:hidden;overflow:clip;min-height:0;min-width:0}
+.track{display:flex;height:100%;transition:transform .3s cubic-bezier(.22,.7,.2,1)}
+.track.instant{transition:none}
+.step{flex:0 0 100%;width:100%;height:100%;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:var(--pad-top) var(--pad-x) var(--pad-bot)}
+.step-in{max-width:1120px;margin:0 auto}
 
-/* doc header */
-.eyebrow{font-size:12.5px;font-weight:600;color:var(--accent-ink);letter-spacing:.02em;margin:0}
-h1{font-size:30px;line-height:1.3;letter-spacing:-.03em;margin:6px 0 8px;font-weight:750}
-.lede{color:var(--ink-2);margin:0 0 22px;font-size:15.5px;max-width:58ch}
-.props{display:grid;grid-template-columns:76px 1fr;gap:9px 14px;margin:0 0 22px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13.5px}
-.props dt{color:var(--ink-3)}
-.props dd{margin:0;color:var(--ink-2)}
-.props .arrow{color:var(--ink-4);margin:0 4px}
-.meter{display:inline-flex;align-items:center;gap:10px}
-.meter-bar{width:120px;height:5px;border-radius:9px;background:var(--line);overflow:hidden}
-.meter-bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:inherit;transition:width .25s}
-.examples{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 28px}
-.examples>span{font-size:13px;color:var(--ink-3);margin-right:2px}
-.ex{font-weight:500;font-size:13.5px}
-.ex b{font-weight:700;color:var(--accent-ink)}
+/* step heading */
+.step h2{font-size:38px;line-height:1.25;letter-spacing:-.03em;font-weight:780;margin:0;outline:none}
+.tag{display:inline-block;vertical-align:middle;position:relative;top:-4px;margin-right:14px;font-size:18px;font-weight:760;line-height:1.2;letter-spacing:0;color:var(--accent-ink);background:var(--accent-weak);border-radius:10px;padding:6px 12px}
+.help{font-size:19px;line-height:1.55;color:var(--ink-3);margin:10px 0 0;max-width:46em}
+.help b{color:var(--ink);font-weight:700}
+.body{margin-top:28px}
+.narrow{max-width:880px}
 
-/* blocks */
-.block{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 28px 26px;margin:0 0 14px}
-.block-head{display:flex;gap:10px;align-items:center}
-.tag{font-size:12px;font-weight:700;line-height:1;color:var(--accent-ink);background:var(--accent-weak);border-radius:6px;padding:5px 8px;flex:none;font-variant-numeric:tabular-nums}
-.block h2{font-size:19px;line-height:1.35;margin:0;letter-spacing:-.02em;font-weight:700}
-.help{color:var(--ink-3);font-size:14px;margin:6px 0 18px}
-.field+.field{margin-top:18px}
-.lbl{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin:0 0 7px;padding:0}
-.opt{font-weight:500;color:var(--ink-4);margin-left:4px}
-input[type=text],textarea{display:block;width:100%;font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line-2);border-radius:var(--r-sm);padding:10px 13px;transition:border-color .15s,box-shadow .15s}
-textarea{resize:vertical;min-height:68px;line-height:1.55;overflow:hidden}
-::placeholder{color:var(--ink-4);opacity:1}
+/* fields */
+.field+.field{margin-top:20px}
+.lbl{display:block;font-size:19px;font-weight:700;color:var(--ink-2);margin:0 0 8px;padding:0;line-height:1.4}
+.opt{font-weight:500;font-size:17px;color:var(--ink-3);margin-left:8px}
+input[type=text],textarea{display:block;width:100%;font:inherit;font-size:21px;line-height:1.5;color:var(--ink);background:#fff;border:1.5px solid var(--line-2);border-radius:var(--r-sm);padding:12px 16px;min-height:58px;transition:border-color .15s,box-shadow .15s}
+textarea{resize:none;min-height:92px;max-height:160px;overflow-y:auto}
+::placeholder{color:var(--ph);opacity:1}
 input[type=text]:hover,textarea:hover{border-color:var(--line-3)}
-input[type=text]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--ring)}
 fieldset{border:0;margin:0;padding:0;min-width:0}
 
-.chips{display:flex;flex-wrap:wrap;gap:8px}
+.grid2{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:20px 40px;align-items:start}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{position:relative;display:inline-flex}
 .chip input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
-.chip span{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 14px;border:1px solid var(--line-2);border-radius:999px;font-size:14px;color:var(--ink-2);background:#fff;transition:background .15s,border-color .15s,color .15s;user-select:none;white-space:nowrap}
+.chip span{display:inline-flex;align-items:center;gap:8px;min-height:50px;padding:0 20px;border:1.5px solid var(--line-2);border-radius:999px;font-size:19px;font-weight:550;color:var(--ink-2);background:#fff;transition:background .15s,border-color .15s,color .15s;user-select:none;white-space:nowrap}
 .chip input:hover+span{border-color:var(--line-3);background:var(--sunken)}
-.chip input:checked+span{background:var(--accent-weak);border-color:var(--accent-line);color:var(--accent-ink);font-weight:600}
-.chip input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
-.chip.multi input:checked+span::before{content:"";width:9px;height:5px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg) translate(1px,-1px)}
-.chips+textarea,.etc+textarea,.chips+label+.etc{margin-top:10px}
+.chip input:checked+span{background:var(--accent-weak);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.chip input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+.chip.multi input:checked+span::before{content:"";width:11px;height:6px;border-left:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(-45deg) translate(1px,-2px)}
+.chips~.etc,.chips~textarea{margin-top:12px}
 
-.scenes{display:grid;gap:8px;counter-reset:sc}
-.scene{display:grid;grid-template-columns:26px 1fr;align-items:center;gap:10px}
-.scene b{width:26px;height:26px;border-radius:50%;background:var(--sunken);border:1px solid var(--line-2);display:grid;place-items:center;font-size:12px;color:var(--ink-3);font-weight:700}
-.opts{display:grid;grid-template-columns:auto auto 1fr;gap:16px 28px;margin-top:20px;padding-top:18px;border-top:1px dashed var(--line)}
+/* examples */
+.examples{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:18px}
+.examples>span{font-size:18px;font-weight:600;color:var(--ink-3);margin-right:4px}
+.ex{font-weight:600}
+.ex b{font-weight:760;color:var(--accent-ink)}
 
-.checks{display:grid;gap:8px}
-.checks+.field{margin-top:18px}
-.check{display:flex;gap:12px;align-items:center;padding:11px 14px;border:1px solid var(--line);border-radius:var(--r-sm);cursor:pointer;background:#fff;font-size:14.5px;color:var(--ink-2);transition:background .15s,border-color .15s}
-.check:hover{border-color:var(--line-2)}
-.check input{width:18px;height:18px;accent-color:var(--accent);margin:0;flex:none;cursor:pointer}
-.check:has(input:checked){border-color:var(--accent-line);background:#fafaff;color:var(--ink)}
+/* scenes */
+.scenes{display:grid;gap:12px}
+.scene{display:grid;grid-template-columns:40px 1fr;align-items:center;gap:12px}
+.scene b{width:40px;height:40px;border-radius:50%;background:var(--accent-weak);border:1.5px solid var(--accent-line);display:grid;place-items:center;font-size:18px;color:var(--accent-ink);font-weight:760}
 
-/* preview panel */
-.panel{position:sticky;top:calc(var(--top) + 20px);max-height:calc(100vh - var(--top) - 40px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(20,24,40,.04),0 8px 24px -12px rgba(20,24,40,.10);overscroll-behavior:contain}
-.panel-head{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 18px;background:#fff;border-bottom:1px solid var(--line)}
-.panel-head h2{font-size:14px;margin:0;font-weight:700}
-.live{font-size:12px;color:var(--ink-3);display:flex;align-items:center;gap:6px}
-.live i{width:6px;height:6px;border-radius:50%;background:#22a35a}
-.out{padding:18px}
-.out+.out{border-top:1px solid var(--line)}
-.out-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 10px}
-.out-head h3{font-size:15.5px;margin:0;letter-spacing:-.01em}
-.out-head small{font-size:12px;color:var(--ink-3);text-align:right}
-.text{white-space:pre-wrap;font:inherit;font-size:13.5px;line-height:1.7;background:var(--sunken);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;color:var(--ink-3);margin:0}
-.text .v{color:var(--ink);font-weight:550}
-.text .ph{display:inline-block;color:var(--ink-4);background:#eceef4;border-radius:4px;padding:0 6px;font-size:12px;line-height:1.6;font-weight:500}
-.sub{display:flex;justify-content:space-between;align-items:center;margin:14px 0 6px;font-size:12.5px;font-weight:600;color:var(--ink-3)}
-.out-head+.sub{margin-top:0}
-.text.one{padding:10px 14px}
-.hint{font-size:12.5px;color:var(--ink-3);margin:10px 0 0}
-.hint b{color:var(--ink-2);font-weight:600}
-.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.btn.wide{width:100%;min-height:44px;margin-top:12px}
+/* format */
+.fmt{display:grid;gap:26px}
 
-footer{max-width:1320px;margin:0 auto;padding:8px 28px 40px;font-size:12.5px;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:6px 14px}
-footer a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-2)}
-footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
+/* Q4 checks */
+.checks{display:grid;gap:12px}
+.check{display:flex;gap:16px;align-items:center;min-height:64px;padding:12px 20px;border:1.5px solid var(--line-2);border-radius:14px;cursor:pointer;background:#fff;font-size:20px;font-weight:550;color:var(--ink);transition:background .15s,border-color .15s}
+.check:hover{border-color:var(--line-3)}
+.check input{width:26px;height:26px;accent-color:var(--accent);margin:0;flex:none;cursor:pointer}
+.check:has(input:checked){border-color:var(--accent);background:#f7f7ff}
+.checks+.field{margin-top:24px}
+
+/* output steps */
+.head-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px 28px}
+.act{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none}
+.share{font-size:17px;color:var(--ink-3);margin:0;text-align:right}
+.missing{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0 0;font-size:18px;color:var(--ink-3)}
+.missing[hidden]{display:none}
+.missing button{min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line-2);background:#fff;color:var(--ink);font-size:17px;font-weight:700;cursor:pointer}
+.missing button:hover{border-color:var(--accent);color:var(--accent-ink)}
+
+.pv{margin-top:18px;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:22px 26px;font-size:20px;line-height:1.7;color:var(--ink-3);box-shadow:0 1px 2px rgba(20,24,40,.04)}
+.pv:focus-visible{outline-offset:-3px}
+.pv-cols{columns:3 290px;column-gap:44px;column-rule:1px solid var(--line)}
+.pv-sec{margin:0 0 16px}
+.pv-h{break-after:avoid}
+.pv-sec p{break-inside:avoid}
+.pv-sec:last-child{margin-bottom:0}
+.pv-sec p{margin:0}
+.pv-h{font-weight:760;color:var(--accent-ink)}
+.pv-sec:first-child .pv-h{color:var(--ink)}
+.pv-l.b{position:relative;padding-left:1em}
+.pv-l.b::before{content:"·";position:absolute;left:.25em;color:var(--ink-3);font-weight:700}
+.v{color:var(--ink);font-weight:600}
+.ph{display:inline-block;color:#5a6172;background:#eceef4;border-radius:6px;padding:0 8px;font-size:16px;line-height:1.6;font-weight:600;vertical-align:1px}
+.pv-pre{white-space:pre-wrap;font:inherit;margin:0}
+.pv.one{margin-top:0;padding:14px 20px}
+
+.grid8{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:24px 36px;margin-top:24px}
+.col-l,.col-r{min-width:0}
+.sub-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 10px}
+.sub-row .lbl{margin:0}
+.col-r .pv{margin-top:0}
+.btn.full{width:100%;margin-top:12px}
+.go-vrew{min-height:60px;font-size:20px;padding:0 26px}
+.back{display:block;margin-top:22px;font-size:17px;color:var(--ink-3)}
+.back a{color:var(--ink-2);font-weight:600;text-decoration:none;border-bottom:1.5px solid var(--line-2)}
+.back a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
+
+/* ── pager ── */
+.pager{background:var(--surface);border-top:1px solid var(--line);padding:12px var(--pad-x) calc(12px + env(safe-area-inset-bottom))}
+.pager-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.pager .btn{min-height:62px;min-width:190px;font-size:20px}
+.pos{margin:0;font-size:18px;color:var(--ink-3);font-weight:600;font-variant-numeric:tabular-nums;text-align:center}
+.pos b{font-size:22px;color:var(--ink)}
 
 /* toast */
-.toast{position:fixed;left:50%;bottom:24px;z-index:50;display:flex;align-items:center;gap:14px;padding:10px 16px;border-radius:10px;background:#1a1d27;color:#fff;font-size:14px;box-shadow:0 10px 30px -10px rgba(0,0,0,.4);opacity:0;transform:translate(-50%,10px);pointer-events:none;transition:opacity .18s,transform .18s;white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(var(--pager) + 16px);z-index:50;display:flex;align-items:center;gap:18px;padding:14px 22px;border-radius:12px;background:#1a1d27;color:#fff;font-size:19px;font-weight:600;box-shadow:0 12px 32px -10px rgba(0,0,0,.45);opacity:0;transform:translate(-50%,10px);pointer-events:none;transition:opacity .18s,transform .18s;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
-.toast button{font:inherit;font-weight:600;color:#c9cbff;background:none;border:0;padding:0;cursor:pointer}
+.toast button{font-weight:700;font-size:19px;color:#c9cbff;background:none;border:0;padding:6px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;flex:none}
 .toast button[hidden]{display:none}
 
-.mbar{display:none}
-
-@media (max-width:960px){
-  .wrap{grid-template-columns:1fr;padding:28px 20px 24px;gap:20px}
-  .panel{position:static;max-height:none;overflow:visible}
-  .panel-head{position:static;border-radius:14px 14px 0 0}
-  .mbar{display:grid;grid-template-columns:auto 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--line)}
-  .mbar .btn{min-height:44px}
-  body{padding-bottom:72px}
-  .toast{bottom:84px}
-  .save{display:none}
+/* ── desktop: output steps fill the panel so only the text box scrolls ── */
+@media (min-width:761px){
+  .step.fill .step-in{height:100%;display:flex;flex-direction:column}
+  .step.fill .pv.grow{flex:1 1 auto;min-height:160px;overflow:auto}
+  .grid8{flex:1 1 auto;min-height:0}
+  .col-r{display:flex;flex-direction:column;min-height:0}
 }
-@media (max-width:640px){
-  :root{--top:94px}
-  .top{flex-wrap:wrap;height:auto;padding:8px 16px 10px;row-gap:8px}
-  .brand small{display:none}
-  .steps{order:3;width:100%}
-  .steps a{flex:1;justify-content:center;padding:5px 4px}
-  .top-right{flex:none}
-  .wrap{padding:22px 16px 20px}
-  h1{font-size:25px}
-  .lede{font-size:15px}
-  .props{grid-template-columns:64px 1fr}
+
+/* stepper drops to its own row when the bar gets narrow */
+@media (max-width:1259px){
+  .top{flex-wrap:wrap;row-gap:8px}
+  .brand{flex:1 1 auto}
+  .steps{order:3;flex-basis:100%}
+}
+
+/* short laptop screens: tighten spacing, keep type size */
+@media (max-height:720px) and (min-width:761px){
+  .top{min-height:64px;padding-top:8px;padding-bottom:8px}
+  .step h2{font-size:36px}
+  .help{margin-top:6px}
+  .body{margin-top:20px}
+  .examples{margin-top:12px}
+  .field+.field{margin-top:14px}
+  .fmt{gap:18px}
+  .checks{gap:10px}
+  .checks+.field{margin-top:18px}
+  .grid8{margin-top:18px}
+  .pager{padding-top:10px;padding-bottom:10px}
+  .pager .btn{min-height:58px}
+  :root{--pager:80px}
+}
+
+/* phones */
+@media (max-width:760px){
+  :root{--pager:84px}
+  body{font-size:19px}
+  .top{padding:8px 16px;gap:10px;min-height:0}
+  .save,.top-right .link{display:none}
+  .mark{width:30px;height:30px}
+  .brand strong{font-size:19px}
+  .btn.tb{min-height:44px;font-size:17px;padding:0 14px}
+  .steps ol{width:100%;padding:3px;gap:0}
+  .steps li{flex:1 1 0;min-width:0}
+  .steps button{width:100%;flex-direction:column;justify-content:center;gap:4px;min-height:50px;padding:4px 0;font-size:13.5px}
+  .mk{width:13px;height:13px;border-width:1.5px}
+  .mk svg{width:8px;height:8px}
+  .step{padding:20px 16px 24px}
+  .step h2{font-size:30px}
+  .tag{font-size:16px;top:-3px;margin-right:10px;padding:5px 10px}
+  .help{font-size:18px}
+  .body{margin-top:22px}
+  .grid2,.grid8{grid-template-columns:1fr}
   .examples>span{width:100%}
   .ex{flex:1 1 auto}
-  .block{padding:20px 18px 22px}
-  .block h2{font-size:18px}
-  .opts{grid-template-columns:1fr;gap:16px}
-  .out{padding:16px}
-  footer{padding:4px 16px 28px}
-  .toast{white-space:normal;max-width:calc(100% - 32px)}
+  .chip span{padding:0 16px}
+  .head-row{flex-direction:column;align-items:stretch}
+  .act{align-items:stretch}
+  .share{text-align:left}
+  .pv{padding:16px 18px}
+  .pv-cols{columns:auto}
+  .pager{padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+  .pager .btn{min-width:0;flex:1 1 0;min-height:58px;font-size:19px;padding:0 12px}
+  .pos{flex:none;font-size:16px}
+  .pos b{font-size:19px}
+  .toast{left:16px;right:16px;justify-content:space-between;white-space:normal;transform:translateY(10px)}
+  .toast.show{transform:none}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
+<div class="app">
 
 <header class="top">
   <div class="brand">
-    <span class="mark" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3h8M3 7h8M3 11h5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></span>
-    콘텐츠 브리프 <small>티셀파 워크숍</small>
+    <span class="mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M3 3h8M3 7h8M3 11h5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+    <div>
+      <strong>콘텐츠 브리프</strong>
+      <span class="save" id="saveState" aria-live="polite">이 브라우저에 자동 저장돼요</span>
+    </div>
   </div>
   <nav class="steps" aria-label="브리프 단계">
-    <a href="#s0" data-step="0" aria-current="step"><i class="dot"></i>재료</a>
-    <a href="#s1" data-step="1"><i class="dot"></i>Q1</a>
-    <a href="#s2" data-step="2"><i class="dot"></i>Q2</a>
-    <a href="#s3" data-step="3"><i class="dot"></i>Q3</a>
-    <a href="#s4" data-step="4"><i class="dot"></i>Q4</a>
+    <ol>
+      <li><button type="button" data-go="0"><i class="mk" aria-hidden="true"></i>재료<span class="sr st"></span></button></li>
+      <li><button type="button" data-go="1"><i class="mk" aria-hidden="true"></i>Q1<span class="sr st"></span></button></li>
+      <li><button type="button" data-go="2"><i class="mk" aria-hidden="true"></i>Q2<span class="sr st"></span></button></li>
+      <li><button type="button" data-go="3"><i class="mk" aria-hidden="true"></i>Q3<span class="sr st"></span></button></li>
+      <li><button type="button" data-go="4"><i class="mk" aria-hidden="true"></i>형식<span class="sr st"></span></button></li>
+      <li><button type="button" data-go="5"><i class="mk" aria-hidden="true"></i>Q4<span class="sr st"></span></button></li>
+      <li><button type="button" data-go="6"><i class="mk" aria-hidden="true"></i>브리프<span class="sr st"></span></button></li>
+      <li><button type="button" data-go="7"><i class="mk" aria-hidden="true"></i>브루<span class="sr st"></span></button></li>
+    </ol>
   </nav>
   <div class="top-right">
-    <span class="save" id="saveState">이 브라우저에 자동 저장돼요</span>
-    <a class="btn sm" href="https://vrew.ai/ko/" target="_blank" rel="noopener">브루 열기 ↗</a>
-    <button type="button" class="btn sm" id="reset">새로 쓰기</button>
+    <a class="btn tb link" href="https://www.tsherpa.co.kr/" target="_blank" rel="noopener">T셀파 열기 ↗</a>
+    <a class="btn tb link" href="https://vrew.ai/ko/" target="_blank" rel="noopener">브루 열기 ↗</a>
+    <button type="button" class="btn tb" id="reset">새로 쓰기</button>
   </div>
 </header>
 
-<div class="wrap">
-  <main class="doc">
-    <p class="eyebrow">티셀파 워크숍 · 실습 15분</p>
-    <h1>내 수업 콘텐츠 브리프</h1>
-    <p class="lede">T셀파에서 고른 차시 하나로 네 질문에 답해 보세요. 쓰는 대로 미리보기에 정리돼요. 복사해서 클래스보드 스페이스에 붙이면 끝이에요.</p>
+<main class="stage" id="stage">
+  <form id="brief" class="track" autocomplete="off" onsubmit="return false">
 
-    <dl class="props">
-      <dt>실습 순서</dt>
-      <dd><a href="https://www.tsherpa.co.kr/" target="_blank" rel="noopener">T셀파</a>에서 차시 고르기 5분<span class="arrow">→</span>브리프 쓰기 10분<span class="arrow">→</span>클래스보드에 붙이기</dd>
-      <dt>만들 것</dt>
-      <dd id="propMake">30초 영상 · 16:9 교실 TV · 브루로 만들어요</dd>
-      <dt>채운 칸</dt>
-      <dd class="meter"><span class="meter-bar"><i id="meterFill"></i></span><span id="meterText">0 / 5</span></dd>
-    </dl>
-
-    <div class="examples">
-      <span>예시로 채워 보기</span>
-      <button type="button" class="btn ex" data-ex="andong"><b>안동 간고등어처럼</b> · 우리 지역 홍보</button>
-      <button type="button" class="btn ex" data-ex="dmz"><b>통일 열차</b> · DMZ</button>
-    </div>
-
-    <form id="brief" autocomplete="off" onsubmit="return false">
-
-      <section class="block" id="s0" aria-labelledby="h0">
-        <div class="block-head"><span class="tag">재료</span><h2 id="h0">어떤 차시로 만들까요?</h2></div>
-        <p class="help">T셀파에서 고른 차시를 적어요. 아이들이 어디서 막히는지가 영상의 출발점이 돼요.</p>
-        <div class="field">
-          <label class="lbl" for="grade">학년 · 교과 · 차시</label>
-          <input type="text" id="grade" placeholder="6학년 과학 8. 기후변화 대응 방법을 홍보해 볼까요?">
+    <!-- 1 재료 -->
+    <section class="step" id="pane-1" aria-labelledby="t1">
+      <div class="step-in">
+        <h2 id="t1" tabindex="-1"><span class="tag">재료</span>어떤 차시로 만들까요?</h2>
+        <p class="help">T셀파에서 고른 차시 하나로 네 질문에 답해 보세요. 다 쓰면 클래스보드 스페이스에 올려서, 다른 선생님들은 어떤 영상을 만들고 싶으신지 같이 구경해요.</p>
+        <div class="examples">
+          <span>예시로 채워 보기</span>
+          <button type="button" class="btn ex" data-ex="andong"><b>안동 간고등어처럼</b> · 우리 지역 홍보</button>
+          <button type="button" class="btn ex" data-ex="dmz"><b>통일 열차</b> · DMZ</button>
         </div>
-        <div class="field">
-          <label class="lbl" for="material">T셀파 자료 이름이나 링크<span class="opt">선택</span></label>
-          <input type="text" id="material" placeholder="차시 PPT 12쪽 기온 그래프 / https://www.tsherpa.co.kr/…">
-        </div>
-        <fieldset class="field">
-          <legend class="lbl">아이들이 막히는 지점</legend>
-          <div class="chips">
-            <label class="chip multi"><input type="checkbox" name="blocks" value="눈에 안 보여요"><span>눈에 안 보여요</span></label>
-            <label class="chip multi"><input type="checkbox" name="blocks" value="자꾸 헷갈려요"><span>자꾸 헷갈려요</span></label>
-            <label class="chip multi"><input type="checkbox" name="blocks" value="반복이 필요해요"><span>반복이 필요해요</span></label>
-            <label class="chip multi"><input type="checkbox" name="blocks" value="긴 글이 부담돼요"><span>긴 글이 부담돼요</span></label>
-            <label class="chip multi"><input type="checkbox" name="blocks" value="기타"><span>기타</span></label>
+        <div class="body grid2">
+          <div>
+            <div class="field">
+              <label class="lbl" for="grade">학년 · 교과 · 차시</label>
+              <input type="text" id="grade" placeholder="6학년 과학 8. 기후변화 대응 방법을 홍보해 볼까요?">
+            </div>
+            <div class="field">
+              <label class="lbl" for="material">T셀파 자료 이름이나 링크<span class="opt">선택</span></label>
+              <input type="text" id="material" placeholder="차시 PPT 12쪽 기온 그래프">
+            </div>
           </div>
-          <label class="sr" for="blockEtc">기타 막히는 지점</label>
-          <input type="text" id="blockEtc" class="etc" placeholder="기타: 예) 실험 순서를 자꾸 놓쳐요" hidden>
-          <label class="sr" for="blockNote">막히는 지점 더 적기</label>
-          <textarea id="blockNote" rows="2" placeholder="날씨랑 기후를 같은 말로 써요. 그래프가 나오면 손을 놓아요."></textarea>
-        </fieldset>
-      </section>
+          <fieldset>
+            <legend class="lbl">아이들이 막히는 지점<span class="opt">여기서 영상이 출발해요</span></legend>
+            <div class="chips">
+              <label class="chip multi"><input type="checkbox" name="blocks" value="눈에 안 보여요"><span>눈에 안 보여요</span></label>
+              <label class="chip multi"><input type="checkbox" name="blocks" value="자꾸 헷갈려요"><span>자꾸 헷갈려요</span></label>
+              <label class="chip multi"><input type="checkbox" name="blocks" value="반복이 필요해요"><span>반복이 필요해요</span></label>
+              <label class="chip multi"><input type="checkbox" name="blocks" value="긴 글이 부담돼요"><span>긴 글이 부담돼요</span></label>
+              <label class="chip multi"><input type="checkbox" name="blocks" value="기타"><span>기타</span></label>
+            </div>
+            <label class="sr" for="blockEtc">기타 막히는 지점</label>
+            <input type="text" id="blockEtc" class="etc" placeholder="기타: 예) 실험 순서를 자꾸 놓쳐요" hidden>
+            <label class="sr" for="blockNote">막히는 지점 더 적기</label>
+            <textarea id="blockNote" rows="2" placeholder="더 적어도 좋아요. 예) 그래프가 나오면 손을 놓아요."></textarea>
+          </fieldset>
+        </div>
+      </div>
+    </section>
 
-      <section class="block" id="s1" aria-labelledby="h1q">
-        <div class="block-head"><span class="tag">Q1</span><h2 id="h1q">누구에게?</h2></div>
+    <!-- 2 Q1 -->
+    <section class="step" id="pane-2" aria-labelledby="t2">
+      <div class="step-in">
+        <h2 id="t2" tabindex="-1"><span class="tag">Q1</span>누구에게?</h2>
         <p class="help">학년만 쓰면 막연해요. 이 영상을 볼 우리 반 아이들을 떠올려 적어요.</p>
-        <label class="sr" for="audience">누구에게 보여 줄까요</label>
-        <input type="text" id="audience" placeholder="어제 통일 열차 수업을 한 우리 반">
-      </section>
-
-      <section class="block" id="s2" aria-labelledby="h2q">
-        <div class="block-head"><span class="tag">Q2</span><h2 id="h2q">보고 나면 무엇이 달라질까?</h2></div>
-        <p class="help">‘이해해요’ 대신 아이가 말하거나 해 볼 수 있는 모습으로 적어요.</p>
-        <label class="sr" for="goal">보고 나면 아이들이 할 수 있는 것</label>
-        <textarea id="goal" rows="2" placeholder="날씨랑 기후가 어떻게 다른지 한 문장으로 말해요"></textarea>
-      </section>
-
-      <section class="block" id="s3" aria-labelledby="h3q">
-        <div class="block-head"><span class="tag">Q3</span><h2 id="h3q">어떤 경험을 줄까?</h2></div>
-        <p class="help">첫 질문으로 궁금하게 만들고, 장면은 세 개면 충분해요.</p>
-        <div class="field">
-          <label class="lbl" for="firstQ">첫 질문</label>
-          <input type="text" id="firstQ" placeholder="DMZ에는 누가 살고 있을까?">
+        <div class="body narrow">
+          <label class="lbl" for="audience">이 영상을 볼 아이들</label>
+          <input type="text" id="audience" placeholder="어제 통일 열차 수업을 한 우리 반">
         </div>
-        <fieldset class="field">
-          <legend class="lbl">장면<span class="opt">최대 3개</span></legend>
-          <div class="scenes">
-            <div class="scene"><b aria-hidden="true">1</b><label class="sr" for="scene1">장면 1</label><input type="text" id="scene1" placeholder="통일 열차 창밖으로 들판이 지나가요"></div>
-            <div class="scene"><b aria-hidden="true">2</b><label class="sr" for="scene2">장면 2</label><input type="text" id="scene2" placeholder="열차가 멈추고 조용한 숲이 보여요"></div>
-            <div class="scene"><b aria-hidden="true">3</b><label class="sr" for="scene3">장면 3</label><input type="text" id="scene3" placeholder="숲에서 두루미가 날아올라요"></div>
+      </div>
+    </section>
+
+    <!-- 3 Q2 -->
+    <section class="step" id="pane-3" aria-labelledby="t3">
+      <div class="step-in">
+        <h2 id="t3" tabindex="-1"><span class="tag">Q2</span>보고 나면 뭐가 달라질까?</h2>
+        <p class="help">‘이해해요’ 대신 아이가 말하거나 해 볼 수 있는 모습으로 적어요.</p>
+        <div class="body narrow">
+          <label class="lbl" for="goal">보고 나서 아이가 할 수 있는 것</label>
+          <textarea id="goal" rows="2" placeholder="날씨랑 기후가 어떻게 다른지 한 문장으로 말해요"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Q3 경험 -->
+    <section class="step" id="pane-4" aria-labelledby="t4">
+      <div class="step-in">
+        <h2 id="t4" tabindex="-1"><span class="tag">Q3</span>어떤 경험을 줄까?</h2>
+        <p class="help">첫 질문으로 궁금하게 만들고, 장면은 세 개면 충분해요.</p>
+        <div class="body narrow">
+          <div class="field">
+            <label class="lbl" for="firstQ">첫 질문</label>
+            <input type="text" id="firstQ" placeholder="DMZ에는 누가 살고 있을까?">
           </div>
-        </fieldset>
-        <div class="opts">
+          <fieldset class="field">
+            <legend class="lbl">장면<span class="opt">세 개까지</span></legend>
+            <div class="scenes">
+              <div class="scene"><b aria-hidden="true">1</b><label class="sr" for="scene1">장면 1</label><input type="text" id="scene1" placeholder="통일 열차 창밖으로 들판이 지나가요"></div>
+              <div class="scene"><b aria-hidden="true">2</b><label class="sr" for="scene2">장면 2</label><input type="text" id="scene2" placeholder="열차가 멈추고 조용한 숲이 보여요"></div>
+              <div class="scene"><b aria-hidden="true">3</b><label class="sr" for="scene3">장면 3</label><input type="text" id="scene3" placeholder="숲에서 두루미가 날아올라요"></div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 Q3 형식 -->
+    <section class="step" id="pane-5" aria-labelledby="t5">
+      <div class="step-in">
+        <h2 id="t5" tabindex="-1"><span class="tag">Q3 형식</span>길이 · 화면 · 분위기</h2>
+        <p class="help">처음 만들 땐 30초면 충분해요. 길수록 영상이 수업 시간을 가져가요.</p>
+        <div class="body fmt">
           <fieldset>
             <legend class="lbl">길이</legend>
             <div class="chips">
@@ -290,7 +380,7 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
             </div>
           </fieldset>
           <fieldset>
-            <legend class="lbl">말투</legend>
+            <legend class="lbl">분위기</legend>
             <div class="chips">
               <label class="chip"><input type="radio" name="tone" value="차분하게"><span>차분하게</span></label>
               <label class="chip"><input type="radio" name="tone" value="밝게"><span>밝게</span></label>
@@ -298,62 +388,88 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
             </div>
           </fieldset>
         </div>
-      </section>
-
-      <section class="block" id="s4" aria-labelledby="h4q">
-        <div class="block-head"><span class="tag">Q4</span><h2 id="h4q">어떻게 확인할까?</h2></div>
-        <p class="help">다 만들고 나서 브루에서 선생님 눈과 귀로 확인할 것을 골라요.</p>
-        <div class="checks">
-          <label class="check"><input type="checkbox" name="checks" value="어려운 말·빠른 말·작은 자막은 없나">어려운 말·빠른 말·작은 자막은 없나</label>
-          <label class="check"><input type="checkbox" name="checks" value="숫자·장면·글자를 자료와 맞춰 봤나">숫자·장면·글자를 자료와 맞춰 봤나</label>
-          <label class="check"><input type="checkbox" name="checks" value="AI가 그린 장면이라고 밝혔나">AI가 그린 장면이라고 밝혔나</label>
-        </div>
-        <div class="field">
-          <label class="lbl" for="extra">하나 더<span class="opt">선택</span></label>
-          <input type="text" id="extra" placeholder="끝 질문에 아이들이 생물 이름을 넣어 답하는지 봐요">
-        </div>
-      </section>
-    </form>
-  </main>
-
-  <aside class="panel" id="preview" aria-labelledby="pv">
-    <div class="panel-head">
-      <h2 id="pv">미리보기</h2>
-      <span class="live"><i aria-hidden="true"></i>쓰는 대로 바뀌어요</span>
-    </div>
-
-    <section class="out" aria-labelledby="oa">
-      <div class="out-head"><h3 id="oa">콘텐츠 브리프</h3><small>클래스보드 스페이스에 붙여요</small></div>
-      <pre class="text" id="briefOut"></pre>
-      <button type="button" class="btn primary wide" id="copyBrief">
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 3.2V3a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.2" stroke="currentColor" stroke-width="1.5"/></svg>
-        클래스보드에 붙일 글 복사
-      </button>
-    </section>
-
-    <section class="out" aria-labelledby="ob">
-      <div class="out-head"><h3 id="ob">브루에 넣을 글</h3><small>쉬는 시간 뒤 브루에서 써요</small></div>
-      <div class="sub">주제</div>
-      <pre class="text one" id="topicOut"></pre>
-      <div class="sub">대본 프롬프트</div>
-      <pre class="text" id="promptOut"></pre>
-      <p class="hint"><a href="https://vrew.ai/ko/" target="_blank" rel="noopener">브루</a>에서 <b>텍스트로 비디오 만들기</b>를 열고 화면 비율을 <b id="hintRatio">16:9</b>로 골라요. 주제와 대본 프롬프트를 각각 붙여 넣으면 돼요.</p>
-      <div class="btn-row">
-        <button type="button" class="btn" id="copyTopic">주제 복사</button>
-        <button type="button" class="btn" id="copyPrompt">대본 프롬프트 복사</button>
       </div>
     </section>
-  </aside>
-</div>
 
-<footer>
-  <span>쿼카연구회 · 2026 티셀파 워크숍</span>
-  <a href="https://gottkf1208.github.io/vrew-talk/">강의 자료로 돌아가기 ↗</a>
-</footer>
+    <!-- 6 Q4 -->
+    <section class="step" id="pane-6" aria-labelledby="t6">
+      <div class="step-in">
+        <h2 id="t6" tabindex="-1"><span class="tag">Q4</span>어떻게 확인할까?</h2>
+        <p class="help">다 만들고 나서 브루에서 선생님 눈과 귀로 확인할 것을 골라요.</p>
+        <div class="body narrow">
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="checks" value="숫자·장면·글자를 자료와 맞춰 봤나">숫자·장면·글자를 자료와 맞춰 봤나</label>
+            <label class="check"><input type="checkbox" name="checks" value="어려운 말·빠른 말·작은 자막은 없나">어려운 말·빠른 말·작은 자막은 없나</label>
+            <label class="check"><input type="checkbox" name="checks" value="AI가 그린 장면이라고 밝혔나">AI가 그린 장면이라고 밝혔나</label>
+          </div>
+          <div class="field">
+            <label class="lbl" for="extra">하나 더<span class="opt">선택</span></label>
+            <input type="text" id="extra" placeholder="자막이 교실 뒷자리에서도 읽히는지 봐요">
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="mbar">
-  <a class="btn" href="#preview">미리보기</a>
-  <button type="button" class="btn primary" id="copyBriefM">클래스보드에 붙일 글 복사</button>
+    <!-- 7 최종 브리프 -->
+    <section class="step fill" id="pane-7" aria-labelledby="t7">
+      <div class="step-in">
+        <div class="head-row">
+          <div>
+            <h2 id="t7" tabindex="-1"><span class="tag">브리프</span>콘텐츠 브리프</h2>
+            <p class="missing" id="missing" hidden></p>
+          </div>
+          <div class="act">
+            <button type="button" class="btn primary" id="copyBrief">
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 3.2V3a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.2" stroke="currentColor" stroke-width="1.6"/></svg>
+              클래스보드에 붙일 글 복사
+            </button>
+            <p class="share">클래스보드 스페이스에 올리고, 다른 선생님 브리프도 하나 읽어 봐요.</p>
+          </div>
+        </div>
+        <div class="pv grow" id="briefBox" tabindex="0" role="region" aria-label="콘텐츠 브리프 미리보기">
+          <div class="pv-cols" id="briefOut"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 브루 -->
+    <section class="step fill" id="pane-8" aria-labelledby="t8">
+      <div class="step-in">
+        <div class="head-row">
+          <div>
+            <h2 id="t8" tabindex="-1"><span class="tag">브루</span>브루에 넣을 글</h2>
+            <p class="help"><b>텍스트로 비디오 만들기</b>를 열고 화면 비율을 <b id="hintRatio">16:9</b>로 골라요. 주제와 대본 프롬프트를 각각 붙여 넣으면 돼요.</p>
+          </div>
+          <div class="act">
+            <a class="btn primary go-vrew" href="https://vrew.ai/ko/" target="_blank" rel="noopener">브루 열기 ↗</a>
+          </div>
+        </div>
+        <div class="grid8">
+          <div class="col-l">
+            <div class="sub-row"><span class="lbl" id="lTopic">주제</span></div>
+            <div class="pv one" aria-labelledby="lTopic"><pre class="pv-pre" id="topicOut"></pre></div>
+            <button type="button" class="btn full" id="copyTopic">주제 복사</button>
+            <p class="back">쿼카연구회 · 2026 티셀파 워크숍<br><a href="https://gottkf1208.github.io/vrew-talk/">강의 자료로 돌아가기 ↗</a></p>
+          </div>
+          <div class="col-r">
+            <div class="sub-row"><span class="lbl" id="lPrompt">대본 프롬프트</span><button type="button" class="btn" id="copyPrompt">대본 프롬프트 복사</button></div>
+            <div class="pv grow" tabindex="0" role="region" aria-labelledby="lPrompt"><pre class="pv-pre" id="promptOut"></pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </form>
+</main>
+
+<nav class="pager" aria-label="단계 이동">
+  <div class="pager-in">
+    <button type="button" class="btn" id="prev">← 이전</button>
+    <p class="pos"><b id="posN">1</b> / 8<span class="sr" id="posName" aria-live="polite"></span></p>
+    <button type="button" class="btn primary" id="next">다음 →</button>
+  </div>
+</nav>
+
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button type="button" id="toastUndo" hidden>되돌리기</button></div>
@@ -363,9 +479,11 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
   var KEY='tsherpa-content-brief-v1';
   var E='\u0001', A='\u0002', Z='\u0003';
   var $=function(id){return document.getElementById(id)};
+  var all=function(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))};
   var form=$('brief');
   var TEXT=['grade','material','blockEtc','blockNote','audience','goal','firstQ','scene1','scene2','scene3','extra'];
-  var CHECK_ALL=['어려운 말·빠른 말·작은 자막은 없나','숫자·장면·글자를 자료와 맞춰 봤나','AI가 그린 장면이라고 밝혔나'];
+  var CK={fact:'숫자·장면·글자를 자료와 맞춰 봤나', easy:'어려운 말·빠른 말·작은 자막은 없나', ai:'AI가 그린 장면이라고 밝혔나'};
+  var CHECK_ALL=[CK.fact,CK.easy,CK.ai];
   var EMPTY={grade:'',material:'',blockEtc:'',blockNote:'',audience:'',goal:'',firstQ:'',scene1:'',scene2:'',scene3:'',extra:'',blocks:[],checks:[],len:'30초',screen:'16:9 교실 TV',tone:''};
   var EX={
     andong:{
@@ -381,7 +499,7 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
       scene3:'‘평택이면, ____’ 빈칸 포스터에서 화면이 멈춰요',
       len:'30초', screen:'16:9 교실 TV', tone:'밝게',
       checks:CHECK_ALL.slice(),
-      extra:'아이들이 빈칸에 넣은 낱말을 칠판에 모으고, 서로 이유를 물어봐요'
+      extra:'시장·공원 장면이 우리 동네랑 너무 다르지 않은지 봐요'
     },
     dmz:{
       grade:'4학년 도덕 8단원 · 통일 열차 수업 도입',
@@ -408,11 +526,13 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
     '16:9 교실 TV':'교실 TV로 다 같이 보는 가로 화면이에요. 자막은 한 줄로 짧게 써요.',
     '9:16 쇼츠':'세로 쇼츠 화면이에요. 한 화면에 한 가지만, 자막은 아주 짧게 써요.'
   };
+  var NAMES=['재료','Q1 누구에게?','Q2 보고 나면 뭐가 달라질까?','Q3 어떤 경험을 줄까?','Q3 형식','Q4 어떻게 확인할까?','최종 브리프','브루에 넣을 글'];
+  var SHORT=['재료','Q1','Q2','Q3','형식','Q4','브리프','브루'];
 
   function t(x){return (x||'').trim()}
   function val(x){x=t(x);return x?A+x+Z:E}
   function quote(x){x=t(x);return /^[“"‘']/.test(x)?x:'“'+x+'”'}
-  function qs(sel){return Array.prototype.slice.call(form.querySelectorAll(sel))}
+  function qs(sel){return all(sel,form)}
 
   function read(){
     var s={};
@@ -438,15 +558,16 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
 
   function scenesOf(s){return [s.scene1,s.scene2,s.scene3].map(t).filter(Boolean)}
   function blockLine(s){var b=s.blocks.map(function(x){return x==='기타'?(t(s.blockEtc)?'기타: '+t(s.blockEtc):''):x}).filter(Boolean);return [b.join(', '),t(s.blockNote)].filter(Boolean).join(' / ')}
+  function has(s,v){return s.checks.indexOf(v)>-1}
 
   function briefText(s){
-    var sc=scenesOf(s), fmt=[s.len,s.screen,s.tone].filter(Boolean), ck=s.checks.slice(), L=[];
+    var sc=scenesOf(s), fmt=[s.len,s.screen,s.tone].filter(Boolean), ck=CHECK_ALL.filter(function(v){return has(s,v)}), L=[];
     if(t(s.extra))ck.push(t(s.extra));
     L.push('[콘텐츠 브리프] '+val(s.grade));
     if(t(s.material))L.push('T셀파 자료: '+val(s.material));
     L.push('막히는 지점: '+val(blockLine(s)));
     L.push('','Q1 누구에게?',val(s.audience));
-    L.push('','Q2 보고 나면 무엇이 달라질까?',val(s.goal));
+    L.push('','Q2 보고 나면 뭐가 달라질까?',val(s.goal));
     L.push('','Q3 어떤 경험을 줄까?');
     L.push('· 첫 질문: '+(t(s.firstQ)?A+quote(s.firstQ)+Z:E));
     if(sc.length)sc.forEach(function(x,i){L.push('· 장면 '+(i+1)+': '+val(x))});
@@ -486,9 +607,9 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
     if(SCREEN[s.screen])L.push('- '+SCREEN[s.screen]);
     L.push('','[지켜 주세요]');
     L.push('- 출처를 확인할 수 없는 숫자·연도·통계는 넣지 마세요. 꼭 필요하면 [확인 필요]라고 적어요.');
-    if(s.checks.indexOf(CHECK_ALL[0])>-1)L.push('- 어려운 말은 쉬운 말로 바꾸고, 문장은 짧게 써요.');
-    if(s.checks.indexOf(CHECK_ALL[1])>-1)L.push('- 장소·생물·사실은 수업 자료에 있는 내용만 써요.');
-    if(s.checks.indexOf(CHECK_ALL[2])>-1)L.push('- 마지막 자막에 ‘AI로 만든 장면이 들어 있어요’라고 밝혀요.');
+    if(has(s,CK.fact))L.push('- 장소·생물·사실은 수업 자료에 있는 내용만 써요.');
+    if(has(s,CK.easy))L.push('- 어려운 말은 쉬운 말로 바꾸고, 문장은 짧게 써요.');
+    if(has(s,CK.ai))L.push('- 마지막 자막에 ‘AI로 만든 장면이 들어 있어요’라고 밝혀요.');
     return L.join('\n');
   }
 
@@ -497,34 +618,118 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
   function copyPrompt(x){return strip(x.split('\n').filter(function(l){return l.indexOf(E)<0}).join('\n')).replace(/\n{3,}/g,'\n\n')}
   function esc(x){return x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
   function html(x){return esc(x).replace(/\u0002/g,'<span class="v">').replace(/\u0003/g,'</span>').replace(/\u0001/g,'<span class="ph">비어 있어요</span>')}
+  function briefHTML(x){
+    return x.split('\n\n').map(function(g){
+      var ls=g.split('\n');
+      return '<section class="pv-sec"><p class="pv-h">'+html(ls[0])+'</p>'+ls.slice(1).map(function(l){
+        var b=l.indexOf('· ')===0;
+        return '<p class="pv-l'+(b?' b':'')+'">'+html(b?l.slice(2):l)+'</p>';
+      }).join('')+'</section>';
+    }).join('');
+  }
 
+  /* ── 단계 넘기기 ── */
+  var N=8, step=0;
+  var track=$('brief'), stage=$('stage');
+  var panes=all('.step',track), stepBtns=all('.steps button');
+  var done=[];
+
+  function go(i,opt){
+    opt=opt||{};
+    i=Math.max(0,Math.min(N-1,i|0));
+    step=i;
+    if(opt.instant)track.classList.add('instant');
+    track.style.transform='translateX('+(-i*100)+'%)';
+    if(opt.instant){void track.offsetWidth;track.classList.remove('instant')}
+    panes.forEach(function(p,k){if(k===i)p.removeAttribute('inert');else p.setAttribute('inert','')});
+    stepBtns.forEach(function(b,k){if(k===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
+    var prev=$('prev'), next=$('next'), a=document.activeElement;
+    prev.style.visibility=i===0?'hidden':'';
+    next.style.visibility=i===N-1?'hidden':'';
+    next.classList.toggle('primary',i<6);
+    $('posN').textContent=i+1;
+    $('posName').textContent=(i+1)+' / 8 단계, '+NAMES[i];
+    if((a===prev&&i===0)||(a===next&&i===N-1)||(a&&a!==document.body&&a.closest&&a.closest('.step')&&!panes[i].contains(a))){
+      var h=panes[i].querySelector('h2');
+      try{h.focus({preventScroll:true})}catch(e){h.focus()}
+    }
+    stage.scrollLeft=0;
+    if(!opt.noHash){try{history.replaceState(null,'','#step-'+(i+1))}catch(e){}}
+  }
+  function fromHash(){var m=/^#step-(\d+)$/.exec(location.hash||'');return m?Math.max(1,Math.min(N,+m[1]))-1:0}
+
+  $('prev').addEventListener('click',function(){go(step-1)});
+  $('next').addEventListener('click',function(){go(step+1)});
+  stepBtns.forEach(function(b){b.addEventListener('click',function(){go(+b.getAttribute('data-go'))})});
+  $('missing').addEventListener('click',function(e){var b=e.target.closest('button[data-go]');if(b)go(+b.getAttribute('data-go'))});
+  window.addEventListener('hashchange',function(){var i=fromHash();if(i!==step)go(i,{noHash:true})});
+  /* overflow:clip가 없는 브라우저에서 포커스 때문에 옆으로 밀리는 것 막기 */
+  stage.addEventListener('scroll',function(){if(stage.scrollLeft)stage.scrollLeft=0});
+
+  function inTextField(el){
+    if(!el)return false;
+    if(el.isContentEditable)return true;
+    if(el.tagName==='TEXTAREA'||el.tagName==='SELECT')return true;
+    return el.tagName==='INPUT'&&!/^(checkbox|button|submit|reset)$/i.test(el.type);
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;
+    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+    if(inTextField(document.activeElement))return;
+    e.preventDefault();
+    go(step+(e.key==='ArrowRight'?1:-1));
+  });
+
+  var sx=null, sy=0;
+  stage.addEventListener('touchstart',function(e){
+    if(e.touches.length!==1||e.target.closest('input[type=text],textarea')){sx=null;return}
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY;
+  },{passive:true});
+  stage.addEventListener('touchend',function(e){
+    if(sx==null)return;
+    var p=e.changedTouches[0], dx=p.clientX-sx, dy=p.clientY-sy;
+    sx=null;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(step+(dx<0?1:-1));
+  },{passive:true});
+  stage.addEventListener('touchcancel',function(){sx=null},{passive:true});
+
+  /* ── 미리보기 ── */
   var cur={};
   function syncEtc(){var c=form.querySelector('input[name=blocks][value="기타"]'),e=$('blockEtc');if(!c||!e)return;var was=e.hidden;e.hidden=!c.checked;if(was&&c.checked&&document.activeElement===c)e.focus();}
+  var CHECK_SVG='<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.3l2.3 2.3 4.7-5.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   function update(){
     syncEtc();
     var s=read();
     cur.brief=briefText(s); cur.topic=topicText(s); cur.prompt=promptText(s); cur.blank=isBlank(s);
-    $('briefOut').innerHTML=html(cur.brief);
+    $('briefOut').innerHTML=briefHTML(cur.brief);
     $('topicOut').innerHTML=html(cur.topic);
     $('promptOut').innerHTML=html(cur.prompt);
     $('hintRatio').textContent=s.screen?s.screen.split(' ')[0]:'16:9';
-    $('propMake').textContent=[s.len||'30초',s.screen||'16:9 교실 TV'].join(' 영상 · ')+' · 브루로 만들어요';
-    var done=[
+    done=[
       !!t(s.grade),
       !!t(s.audience),
       !!t(s.goal),
       !!t(s.firstQ)&&scenesOf(s).length>0,
+      !!(s.len&&s.screen&&s.tone),
       s.checks.length>0||!!t(s.extra)
     ];
-    var n=done.filter(Boolean).length;
-    Array.prototype.forEach.call(document.querySelectorAll('.steps a'),function(a,i){
-      a.classList.toggle('done',done[i]);
-      a.title=done[i]?'채웠어요':'아직 비어 있어요';
+    var ready=done.every(Boolean);
+    done.push(ready,ready);
+    stepBtns.forEach(function(b,i){
+      b.classList.toggle('done',done[i]);
+      var mk=b.querySelector('.mk');
+      if(mk.innerHTML!==(done[i]?CHECK_SVG:''))mk.innerHTML=done[i]?CHECK_SVG:'';
+      b.querySelector('.st').textContent=done[i]?' (채움)':'';
+      b.title=i<6?(done[i]?'채웠어요':'아직 비어 있어요'):(ready?'다 채웠어요':'앞 단계를 채우면 완성돼요');
     });
-    $('meterFill').style.width=(n/5*100)+'%';
-    $('meterText').textContent=n+' / 5';
+    var miss=[];
+    for(var i=0;i<6;i++)if(!done[i])miss.push('<button type="button" data-go="'+i+'">'+SHORT[i]+'</button>');
+    var m=$('missing');
+    if(miss.length&&!cur.blank){m.innerHTML='아직 빈 곳 '+miss.join('');m.hidden=false}
+    else{m.innerHTML='';m.hidden=true}
   }
 
+  /* ── 자동 저장 ── */
   var saveTimer, canStore=true;
   function setSave(m){$('saveState').textContent=m}
   function save(){
@@ -540,8 +745,9 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
     return false;
   }
 
-  function grow(el){el.style.height='auto';el.style.height=(el.scrollHeight+2)+'px'}
+  function grow(el){el.style.height='auto';el.style.height=(el.scrollHeight+3)+'px'}
 
+  /* ── 토스트 ── */
   var toastTimer, undoFn=null;
   function toast(msg,undo){
     $('toastMsg').textContent=msg;
@@ -556,6 +762,7 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
     $('toast').classList.remove('show');
   });
 
+  /* ── 복사 ── */
   function copy(text){
     var ok=function(){toast('복사했어요')};
     var fallback=function(){
@@ -563,11 +770,12 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
       ta.value=text; ta.setAttribute('readonly','');
       ta.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;';
       document.body.appendChild(ta);
-      ta.focus(); ta.select(); ta.setSelectionRange(0,text.length);
-      var done=false;
-      try{done=document.execCommand('copy')}catch(e){}
+      try{ta.focus({preventScroll:true})}catch(e){ta.focus()}
+      ta.select(); ta.setSelectionRange(0,text.length);
+      var d=false;
+      try{d=document.execCommand('copy')}catch(e){}
       document.body.removeChild(ta);
-      done?ok():toast('복사가 막혔어요. 미리보기 글을 드래그해서 복사해 주세요');
+      d?ok():toast('복사가 막혔어요. 글을 드래그해서 복사해 주세요');
     };
     try{
       if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(ok,fallback)}
@@ -580,27 +788,29 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
       copy(fn());
     };
   }
-  var copyB=guardCopy(function(){return copyBrief(cur.brief)});
-  $('copyBrief').addEventListener('click',copyB);
-  $('copyBriefM').addEventListener('click',copyB);
+  $('copyBrief').addEventListener('click',guardCopy(function(){return copyBrief(cur.brief)}));
   $('copyTopic').addEventListener('click',guardCopy(function(){return copyPrompt(cur.topic)}));
   $('copyPrompt').addEventListener('click',guardCopy(function(){return copyPrompt(cur.prompt)}));
 
+  /* ── 예시 · 새로 쓰기 ── */
   function replaceAll(next,msg){
     var prev=read();
     write(next); update(); save();
     toast(msg,function(){write(prev);update();save();toast('되돌렸어요')});
   }
-  Array.prototype.forEach.call(document.querySelectorAll('[data-ex]'),function(b){
+  all('[data-ex]').forEach(function(b){
     b.addEventListener('click',function(){
       replaceAll(EX[b.getAttribute('data-ex')],'예시로 채웠어요');
     });
   });
+  var finePointer=window.matchMedia&&matchMedia('(pointer: fine)').matches;
   $('reset').addEventListener('click',function(){
-    if(isBlank(read())){write(EMPTY);update();save();$('grade').focus();return}
-    replaceAll(EMPTY,'새로 쓸 수 있게 비웠어요');
-    $('grade').focus({preventScroll:true});
-    window.scrollTo({top:0});
+    var blank=isBlank(read());
+    go(0);
+    if(blank){write(EMPTY);update();save()}
+    else replaceAll(EMPTY,'새로 쓸 수 있게 비웠어요');
+    panes[0].scrollTop=0;
+    if(finePointer){try{$('grade').focus({preventScroll:true})}catch(e){$('grade').focus()}}
   });
 
   form.addEventListener('input',function(e){
@@ -609,25 +819,11 @@ footer a:hover{color:var(--accent-ink);border-color:var(--accent-line)}
   });
   form.addEventListener('change',function(){update();save()});
 
-  /* 지금 보고 있는 단계 표시 */
-  var links=Array.prototype.slice.call(document.querySelectorAll('.steps a'));
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if(!en.isIntersecting)return;
-        links.forEach(function(a){
-          if(a.getAttribute('href')==='#'+en.target.id)a.setAttribute('aria-current','step');
-          else a.removeAttribute('aria-current');
-        });
-      });
-    },{rootMargin:'-35% 0px -55% 0px'});
-    ['s0','s1','s2','s3','s4'].forEach(function(id){io.observe($(id))});
-  }
-
   if(!load())write(EMPTY);
   try{localStorage.setItem(KEY+'-t','1');localStorage.removeItem(KEY+'-t')}
   catch(e){canStore=false;setSave('저장이 안 돼요 · 복사해 두세요')}
   update();
+  go(fromHash(),{instant:true,noHash:!/^#step-\d+$/.test(location.hash||'')});
   window.addEventListener('resize',function(){qs('textarea').forEach(grow)});
 })();
 </script>
