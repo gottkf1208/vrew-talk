@@ -2131,28 +2131,92 @@ SCENES.vcompare = P => (function slWbVCompare(api) {
   return frame;
 });
 
+// 4) 웜업 퀴즈: 왼쪽 세로 영상, 오른쪽 문제와 보기 4개. 1단계에 보기, 2단계에 정답
+SCENES.quiz = P => (function slWbQuiz(api) {
+  const ADDRESS = P.ADDRESS || '', PAGE = P.PAGE || '', APP = P.APP, NAV = P.NAV, NAV_ON = P.NAV_ON || 0, CURSOR = P.CURSOR || '';
+  const KICKER = P.KICKER || '', TITLE = P.TITLE || '', BADGE = P.BADGE || '';
+  const OPTIONS = (P.OPTIONS || []).slice(0, 4), CORRECT = P.CORRECT || 0, RIGHT = P.RIGHT || '정답!';
+  const LOOP = P.LOOP || 12;
+  const g = slWbKit(api), sk = g.sk, u = g.u, mp = g.mp, mw = g.mw, mh = g.mh;
+  const w = g.win({ address: ADDRESS, page: PAGE, app: APP, nav: NAV, on: NAV_ON, cursor: CURSOR }), M = w.main;
+  const fh = mh - mp * 1.4, fw = Math.min(fh * 9 / 16, mw * 0.36), fx = mp, fy = (mh - fh) / 2;
+  const frameEl = g.div(M, `position:absolute;left:${fx}px;top:${fy}px;width:${fw}px;height:${fh}px;border-radius:${u * 0.02}px;overflow:hidden;background:#0f1626;box-shadow:0 0 0 1px ${g.line},0 ${u * 0.02}px ${u * 0.05}px -${u * 0.02}px ${g.rgba(g.ink, 0.4)};`);
+  const inner = g.div(frameEl, 'position:absolute;left:0;top:0;width:100%;height:100%;transform-origin:50% 40%;');
+  const vids = [qvVideo(inner, P.VIDEO, P.POSTER, api)];
+  qvSound(g, frameEl, vids, 0);
+  const badge = BADGE ? g.text(frameEl, BADGE, `position:absolute;left:${u * 0.014}px;top:${u * 0.014}px;padding:${u * 0.008}px ${u * 0.016}px;border-radius:999px;background:rgba(255,255,255,.92);font:700 ${u * 0.019}px/1.2 ${g.body};white-space:nowrap;color:${g.ink};opacity:0;`) : null;
+  const ix = fx + fw + mp * 1.1, iw = mw - ix - mp;
+  const head = g.head(M, KICKER, TITLE, { x: ix, w: iw, size: u * 0.052 });
+  const ly = head.bottom() + u * 0.04, gp = u * 0.016, rh = Math.min(u * 0.085, (mh - ly - mp * 0.7 - gp * 3) / 4);
+  const rows = OPTIONS.map((s, i) => {
+    const ok = i === CORRECT, y = ly + i * (rh + gp);
+    const el = g.div(M, `position:absolute;left:${ix}px;top:${y}px;width:${iw}px;height:${rh}px;box-sizing:border-box;display:flex;align-items:center;gap:${u * 0.02}px;padding:0 ${u * 0.024}px;border-radius:${u * 0.016}px;opacity:0;` + g.card(0.2));
+    const hi = g.div(el, `position:absolute;left:0;top:0;width:100%;height:100%;border-radius:inherit;background:${g.tint};box-shadow:inset 0 0 0 ${Math.max(2, u * 0.003)}px ${g.ac};opacity:0;`);
+    const nb = g.div(el, `position:relative;flex:none;width:${u * 0.05}px;height:${u * 0.05}px;border-radius:50%;box-sizing:border-box;box-shadow:inset 0 0 0 ${Math.max(1.5, u * 0.003)}px ${g.ac};display:flex;align-items:center;justify-content:center;`);
+    const nfill = g.div(nb, `position:absolute;left:0;top:0;width:100%;height:100%;border-radius:50%;background:${g.ac};transform:scale(0);`);
+    const num = g.text(nb, String(i + 1), `position:relative;font:800 ${u * 0.026}px/1 ${g.body};color:${g.ac};`);
+    const numOn = g.text(nb, String(i + 1), `position:absolute;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font:800 ${u * 0.026}px/1 ${g.body};color:${g.acOn};opacity:0;`);
+    g.text(el, s, `position:relative;font:800 ${u * 0.042}px/1.2 ${g.body};letter-spacing:-0.03em;white-space:nowrap;color:${g.ink};`);
+    const tag = ok ? g.text(el, RIGHT, `position:relative;margin-left:auto;padding:${u * 0.01}px ${u * 0.02}px;border-radius:999px;background:${g.ac};color:${g.acOn};font:800 ${u * 0.024}px/1 ${g.body};white-space:nowrap;opacity:0;`) : null;
+    return { el: el, hi: hi, nfill: nfill, num: num, numOn: numOn, tag: tag, ok: ok, nb: nb };
+  });
+  const C = rows[CORRECT] ? g.pos(rows[CORRECT].nb) : { cx: g.mx + ix, cy: g.my + ly };
+  const R0 = rows[0] ? g.pos(rows[0].el) : C;
+  const pts = [{ x: R0.x + R0.w * 0.5, y: R0.y + R0.h * 0.9 + u * 0.02, fx: g.mx + ix + iw / 2, fy: g.my + ly + (rh + gp) * 2, s: 1.04 }, { x: C.cx + u * 0.004, y: C.cy + u * 0.006, fx: C.cx + iw * 0.3, fy: C.cy }];
+  const rest = { x: g.mx + fx + fw * 0.7, y: g.my + fy + fh * 0.85 };
+  const steps = 3, pace = 1.6;
+  function frame(t) {
+    const c = g.cue(t, steps, pace, LOOP), l0 = g.lt(c, 0), l1 = g.lt(c, 1), l2 = g.lt(c, 2);
+    w.back(t);
+    w.open(sk.seg(l0, 0, 1.3), t);
+    head.set(sk.seg(l0, 0.55, 1.45));
+    const lq = sk.io(sk.seg(l0, 0.5, 1.3));
+    inner.style.clipPath = `inset(0 0 ${((1 - lq) * 100).toFixed(2)}% 0)`;
+    if (badge) g.pop(badge, sk.seg(l0, 1.1, 1.6), u * 0.01, 0.1);
+    if (!vids[0].thumb && !vids[0].started && l0 > 0.9) { vids[0].started = true; const p = vids[0].el.play(); if (p && p.catch) p.catch(() => {}); }
+    w.tour(c, t, pts, rest);
+    const on = sk.expo(sk.seg(l2, 0.5, 0.9));
+    rows.forEach((x, i) => {
+      g.pop(x.el, sk.seg(l1, 0.1 + i * 0.12, 0.6 + i * 0.12), u * 0.03, 0.04);
+      if (x.ok) {
+        x.hi.style.opacity = on.toFixed(3); x.nfill.style.transform = `scale(${on.toFixed(4)})`;
+        x.numOn.style.opacity = on.toFixed(3); x.num.style.opacity = (1 - on).toFixed(3);
+        if (x.tag) { const q = sk.seg(l2, 0.8, 1.2); x.tag.style.opacity = q > 0 ? 1 : 0; x.tag.style.transform = `scale(${q <= 0 ? 0.6 : (0.6 + 0.4 * api.spring(q)).toFixed(3)})`; }
+      } else if (l2 > 0) x.el.style.opacity = (1 - 0.45 * on).toFixed(3);
+    });
+    w.leave(c.leave);
+  }
+  frame.steps = steps;
+  frame.fonts = true;
+  return frame;
+});
+
 </script>
 <script>
 // ===== 강의 내용: 장마다 장면 종류(s) · 제목(t) · 메뉴(nav) · 시간(time) · 대본(note) · 자료(links) · 그림(img) · 문구(P) =====
 const DECK = [
 // ───────── OPENING ─────────
-{ s: 'cover', t: '표지', nav: 0, path: '', time: '00:00–00:40',
+{ s: 'cover', t: '표지', nav: 0, path: '', time: '00:00–00:30',
   P: { KICKER: 'TSHERPA WORKSHOP · 40 MIN', TITLE: 'AI 콘텐츠 창작의 세계,\n교실로 가져오기', SUB: '요즘 AI 콘텐츠부터 쌤티나는 기획, 그리고 브루까지', BUTTON: '특강 시작하기', WHO: '쿼카연구회 두목쿼카 김햇살', DATE: '2026. 10. 24 토요일' },
   note: '안녕하세요, 쿼카연구회 두목쿼카 김햇살입니다 : ) 점심 드시고 바로 오셔서 살짝 졸리실 시간이죠 ㅎㅎ\n\n오늘 40분은 요즘 AI 콘텐츠가 어디까지 왔는지 같이 보고, 우리 수업으로 가져올 영상 하나를 기획해 보는 시간이에요. (클릭) 쉬는 시간 뒤 브루 연수에서 오늘 쓴 기획으로 바로 만드실 거예요.',
   links: [['쿼카의 AI 개념극장', 'https://www.youtube.com/@quokaAIedu']] },
-{ s: 'agenda', t: '오늘의 흐름', nav: 0, path: 'agenda', time: '00:40–01:20',
+{ s: 'quiz', t: '웜업 퀴즈 · 연구회 이름은?', nav: 0, path: 'warm-up', time: '00:30–01:30',
+  P: { KICKER: 'WARM-UP QUIZ', TITLE: '오늘 티셀파와 함께\n워크숍을 운영하는\nAI융합연구회 이름은?', VIDEO: 'quoka-xmas.mp4', POSTER: 'quoka-xmas.jpg', BADGE: 'AI 영상 · 두목쿼카 제작', OPTIONS: ['퀸카', '코카', '쿼카', '퀴카'], CORRECT: 2, RIGHT: '정답!' },
+  note: '시작하기 전에 몸 풀기 퀴즈 하나 할게요 : ) 이 영상은 제가 AI로 만든 영상이에요. 소리 켜고 잠깐 보실게요 ㅎㅎ\n\n(클릭) 문제! 오늘 티셀파와 함께 워크숍을 운영하는 AI융합연구회의 이름은? 1번 퀸카, 2번 코카, 3번 쿼카, 4번 퀴카. 손가락으로 번호 하나 들어 주세요!\n\n(클릭) 정답은 3번, 쿼카예요! 큐·유·오·케이·에이, 쿼카연구회예요. 혼자 밤마다 씨름하기보다 함께 웃으면서 연구하자고 모인 선생님들이에요. 오늘 영상 속 쿼카들처럼 즐겁게 가 볼게요.',
+  links: [['쿼카 크리스마스 영상 파일', 'quoka-xmas.mp4']] },
+{ s: 'agenda', t: '오늘의 흐름', nav: 0, path: 'agenda', time: '01:30–02:00',
   P: { KICKER: 'AGENDA', TITLE: '오늘의 흐름', LEAD: '40분 특강', NOW: 4, ITEMS: [['AI 콘텐츠의 세계', '요즘 화제인 AI 콘텐츠 둘러보기', '5분'], ['요즘 트렌드', '2026년 흐름 · 공모전 · 2027년', '6분'], ['쌤티나는 기획', '좋은 AI 콘텐츠를 만드는 네 가지 질문', '7분'], ['실습', 'T셀파 자료로 콘텐츠 브리프 쓰기', '15분'], ['왜 브루?', 'AI에게는 눈과 귀가 없으니까요', '4분']] },
   note: '오늘은 이렇게 가요. (클릭) 요즘 화제인 AI 콘텐츠를 둘러보고, (클릭) 올해 흐름과 공모전, 2027년 이야기까지 짧게 볼게요.\n\n(클릭) 그다음이 오늘의 핵심, 쌤티나는 기획이에요. 네 가지 질문만 기억하시면 돼요. (클릭) 그 질문으로 15분 동안 직접 콘텐츠 브리프를 써 보고, (클릭) 마지막에 왜 하필 브루인지 짚고 연수로 넘어갈게요.' },
 
 // ───────── 01 AI 콘텐츠의 세계 ─────────
-{ s: 'section', t: '01 · AI 콘텐츠의 세계', nav: 1, path: 'part-01', time: '01:20–01:35',
+{ s: 'section', t: '01 · AI 콘텐츠의 세계', nav: 1, path: 'part-01', time: '02:00–02:10',
   P: { NUM: '01', KICKER: 'PART 01', TITLE: 'AI 콘텐츠의\n세계', DESC: '보고 듣고 읽고 쓰는 모든 것이\n콘텐츠가 되는 시대', TAGS: ['웹앱', 'AI 영상', '모션그래픽'] },
   note: '첫 번째, AI 콘텐츠의 세계예요. (클릭) 요즘은 보고 듣고 읽고 쓰는 거의 모든 게 AI와 함께 만들어져요.' },
-{ s: 'media', t: '퀴즈 · 진짜 촬영일까?', nav: 1, path: 'quiz', time: '01:35–02:40',
-  P: { KICKER: 'WARM-UP QUIZ', TITLE: '이 영상,\n진짜 찍은 걸까요?', VIDEO: 'valley.mp4', POSTER: 'valley.jpg', BADGE: '드론 촬영? AI?', ANSWER: true, ITEMS: [['손 한번 들어 주세요', '진짜 찍었다 vs AI가 만들었다'], ['너무 자연스럽죠', '빛도, 안개도, 물결도요'], ['정답은 AI', '영어 프롬프트 몇 줄, 5초짜리예요']] },
-  note: '워밍업 퀴즈예요. 가을 아침, 안개 낀 계곡이에요. 드론으로 찍은 진짜 영상일까요? (클릭) 진짜라고 생각하시면 손 한번 들어 주세요. AI라고 생각하시면요?\n\n(클릭) 빛이 번지는 것도, 물결도 정말 자연스럽죠. (클릭) 정답은 AI예요. 프롬프트 몇 줄로 만들었어요.\n\n만들기가 이렇게 쉬워졌다는 건, 가려내기는 그만큼 어려워졌다는 뜻이기도 해요. 우리 아이들이 매일 보는 화면이 바로 이래요.',
+{ s: 'media', t: '퀴즈 · 진짜 촬영일까?', nav: 1, path: 'quiz', time: '02:10–03:00',
+  P: { KICKER: 'QUIZ', TITLE: '이 영상,\n진짜 찍은 걸까요?', VIDEO: 'valley.mp4', POSTER: 'valley.jpg', BADGE: '드론 촬영? AI?', ANSWER: true, ITEMS: [['손 한번 들어 주세요', '진짜 찍었다 vs AI가 만들었다'], ['너무 자연스럽죠', '빛도, 안개도, 물결도요'], ['정답은 AI', '영어 프롬프트 몇 줄, 5초짜리예요']] },
+  note: '퀴즈 하나 더요. 가을 아침, 안개 낀 계곡이에요. 드론으로 찍은 진짜 영상일까요? (클릭) 진짜라고 생각하시면 손 한번 들어 주세요. AI라고 생각하시면요?\n\n(클릭) 빛이 번지는 것도, 물결도 정말 자연스럽죠. (클릭) 정답은 AI예요. 프롬프트 몇 줄로 만들었어요.\n\n만들기가 이렇게 쉬워졌다는 건, 가려내기는 그만큼 어려워졌다는 뜻이기도 해요. 우리 아이들이 매일 보는 화면이 바로 이래요.',
   links: [['이 영상 파일', 'valley.mp4']] },
-{ s: 'gallery', t: '요즘 AI 콘텐츠 세 갈래', nav: 1, path: 'formats', time: '02:40–03:50',
+{ s: 'gallery', t: '요즘 AI 콘텐츠 세 갈래', nav: 1, path: 'formats', time: '03:00–03:50',
   img: ['showcase-assets/gugu.jpg', 'deck-assets/gakjugugeom.jpg', 'motion-lab-preview.jpg'],
   P: { LINKS: ['https://xn--2e0ba141d.kr/', 'https://www.youtube.com/shorts/dJH_C7lv5pk', 'https://gottkf1208.github.io/quoka-motion-lab/'], KICKER: 'FORMATS', TITLE: '요즘 AI 콘텐츠, 이 세 갈래', NOTE: '실제 사례', POS: ['center', 'center 28%', 'left top'], ITEMS: [['웹앱 · 구구땅', '인디스쿨에서 화제인 구구단 게임'], ['AI 영상 · 각주구검', '무빅 · 사자성어를 교실 장면으로'], ['AI 모션그래픽 · 쿼카 모션랩', '지금 보시는 이 강의안도 모션랩으로']] },
   note: '요즘 선생님들 사이에서 화제인 AI 콘텐츠는 크게 세 갈래예요. (클릭) 첫째, 웹앱. 인디스쿨에서 요즘 핫한 구구땅처럼, 선생님이 AI랑 같이 직접 만든 게임과 앱이에요.\n\n(클릭) 둘째, AI 영상. 이건 ‘무빅’ 채널의 각주구검 쇼츠예요. 옛이야기 장면을 보여 주고, “교실이 바뀌었다는 알림을 받고도 작년 교실에 가서 친구들을 기다린다면? 그게 바로 각주구검!” 하고 요즘 교실로 데려와요. 끝에 생성형 AI로 만들었다고 밝힌 것까지 좋더라고요. (클릭) 셋째, AI 모션그래픽. 사실 지금 보고 계신 이 강의안도 제가 만든 쿼카 모션랩 코드로 움직이고 있어요 : )\n\n오늘 브루로는 영상을 만들지만, 기획은 세 갈래 모두 똑같아요.',
