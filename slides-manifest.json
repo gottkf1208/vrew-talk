@@ -73,144 +73,150 @@
  },
  {
   "slide": 13,
-  "title": "도구는 고치기로 오고 있어요",
-  "scene": "flow",
-  "time": "08:55–09:55"
+  "title": "브루 업데이트 ① 4.0–4.4",
+  "scene": "agenda",
+  "time": "08:55–09:25"
  },
  {
   "slide": 14,
+  "title": "브루 업데이트 ② 4.5–4.8",
+  "scene": "agenda",
+  "time": "09:25–09:55"
+ },
+ {
+  "slide": 15,
   "title": "2026 AI 콘텐츠 공모전",
   "scene": "gallery",
   "time": "09:55–10:55"
  },
  {
-  "slide": 15,
+  "slide": 16,
   "title": "2026에서 2027로",
   "scene": "compare",
   "time": "10:55–12:00"
  },
  {
-  "slide": 16,
+  "slide": 17,
   "title": "03 · 쌤티나는 기획",
   "scene": "section",
   "time": "12:00–12:15"
  },
  {
-  "slide": 17,
+  "slide": 18,
   "title": "기획 팁 ① 일상을 수업 재료로",
   "scene": "media",
   "time": "12:15–13:15"
  },
  {
-  "slide": 18,
+  "slide": 19,
   "title": "기획 팁 ② 잘했던 수업부터",
   "scene": "flow",
   "time": "13:15–14:05"
  },
  {
-  "slide": 19,
+  "slide": 20,
   "title": "좋은 AI 콘텐츠를 만드는 네 가지 질문",
   "scene": "agenda",
   "time": "14:05–14:35"
  },
  {
-  "slide": 20,
+  "slide": 21,
   "title": "Q1 · 누구에게?",
   "scene": "compare",
   "time": "14:35–15:20"
  },
  {
-  "slide": 21,
+  "slide": 22,
   "title": "Q2 · 보고 나면 뭐가 달라질까?",
   "scene": "compare",
   "time": "15:20–16:05"
  },
  {
-  "slide": 22,
+  "slide": 23,
   "title": "Q3 · 어떤 경험을 줄까?",
   "scene": "flow",
   "time": "16:05–16:50"
  },
  {
-  "slide": 23,
+  "slide": 24,
   "title": "Q4 · 어떻게 확인할까?",
   "scene": "points",
   "time": "16:50–17:35"
  },
  {
-  "slide": 24,
+  "slide": 25,
   "title": "네 질문을 브리프 한 장으로",
   "scene": "agenda",
   "time": "17:35–18:25"
  },
  {
-  "slide": 25,
+  "slide": 26,
   "title": "LAB · 브리프 한 줄 차이",
   "scene": "vcompare",
   "time": "18:25–19:30"
  },
  {
-  "slide": 26,
+  "slide": 27,
   "title": "04 · 실습 · 콘텐츠 브리프 쓰기",
   "scene": "section",
   "time": "19:30–19:45"
  },
  {
-  "slide": 27,
+  "slide": 28,
   "title": "브리프가 영상이 되면 · DMZ",
-  "scene": "photo",
+  "scene": "media",
   "time": "19:45–20:45"
  },
  {
-  "slide": 28,
+  "slide": 29,
   "title": "실습 1 · T셀파에서 재료 찾기",
   "scene": "media",
   "time": "20:45–21:30"
  },
  {
-  "slide": 29,
+  "slide": 30,
   "title": "실습 순서",
   "scene": "flow",
   "time": "21:30–22:00"
  },
  {
-  "slide": 30,
+  "slide": 31,
   "title": "실습 · 15분",
   "scene": "closing",
   "time": "22:00–35:00"
  },
  {
-  "slide": 31,
+  "slide": 32,
   "title": "05 · 브루, 왜 써야 할까?",
   "scene": "section",
   "time": "35:00–35:15"
  },
  {
-  "slide": 32,
+  "slide": 33,
   "title": "생성형 AI에게는 눈과 귀가 없어요",
   "scene": "media",
   "time": "35:15–36:30"
  },
  {
-  "slide": 33,
+  "slide": 34,
   "title": "같은 장면, 다른 소리",
   "scene": "vcompare",
   "time": "36:30–37:50"
  },
  {
-  "slide": 34,
+  "slide": 35,
   "title": "브루에서는 이렇게 고쳐요",
   "scene": "points",
   "time": "37:50–38:40"
  },
  {
-  "slide": 35,
+  "slide": 36,
   "title": "핵심 · 선생님의 눈과 귀",
   "scene": "quote",
   "time": "38:40–39:10"
  },
  {
-  "slide": 36,
+  "slide": 37,
   "title": "마무리",
   "scene": "closing",
   "time": "39:10–40:00"

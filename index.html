@@ -31,6 +31,14 @@
 .qtm-t{font:800 34px/1 ui-monospace,Menlo,monospace;letter-spacing:.02em;min-width:118px;font-variant-numeric:tabular-nums}
 .qtm.done .qtm-t{color:#e8a0ad}
 .qtm-b{display:flex;gap:6px}.qtm-b button{height:34px!important;padding:0 12px!important;font-weight:700!important}
+.qv{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;background:rgba(5,7,12,.78);padding:24px}
+.qv-box{width:min(1280px,94vw);height:min(86vh,calc(94vw*0.6));display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:#0f1626;box-shadow:0 30px 80px -20px rgba(0,0,0,.9)}
+.qv.tall .qv-box{width:min(520px,94vw);height:min(90vh,920px)}
+.qv-box header{display:flex;justify-content:flex-end;align-items:center;gap:10px;padding:10px 12px;background:#141a2a}
+.qv-box header a{color:#cfe0ff;font:600 15px/1 "Pretendard Variable",Pretendard,system-ui,sans-serif;text-decoration:none;margin-right:auto;padding:8px 10px}
+.qv-box header button{height:38px!important;font-size:15px!important;font-weight:700!important}
+.qv-box iframe{flex:1;width:100%;border:0;background:#fff}
+.qv[hidden],.qtm[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -1925,6 +1933,20 @@ function qvSound(g, parent, vids, k, label) {
   return b;
 }
 
+// 원본 보기: 카드·화면 위를 덮는 링크 (누르면 팝업 또는 새 탭, 장 넘김 없음)
+function qvOpen(g, parent, url, label) {
+  if (!url) return null;
+  const u = g.u, a = document.createElement('a');
+  a.href = url; a.target = '_blank'; a.rel = 'noopener';
+  a.setAttribute('data-noadv', ''); a.setAttribute('data-open', url);
+  a.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;z-index:3;cursor:pointer;pointer-events:auto;';
+  const pill = document.createElement('span');
+  pill.textContent = '▶ ' + (label || '보기');
+  pill.style.cssText = `position:absolute;right:${u * 0.012}px;bottom:${u * 0.012}px;padding:${u * 0.008}px ${u * 0.016}px;border-radius:999px;background:rgba(15,22,38,.86);color:#fff;font:700 ${u * 0.02}px/1 ${g.body};letter-spacing:-0.01em;white-space:nowrap;box-shadow:0 ${u * 0.004}px ${u * 0.012}px rgba(0,0,0,.3);`;
+  a.appendChild(pill);
+  parent.appendChild(a);
+  return a;
+}
 // 1) 사진 갤러리: 카드 2~4장 (그림 + 제목 + 출처). 커서가 하나씩 눌러 펼침
 SCENES.gallery = P => (function slWbGallery(api) {
   const ADDRESS = P.ADDRESS || '', PAGE = P.PAGE || '', APP = P.APP, NAV = P.NAV, NAV_ON = P.NAV_ON || 0, CURSOR = P.CURSOR || '';
@@ -1953,6 +1975,7 @@ SCENES.gallery = P => (function slWbGallery(api) {
     const el = g.div(M, `position:absolute;left:${cx}px;top:${cy}px;width:${cw}px;height:${ch}px;box-sizing:border-box;overflow:hidden;opacity:0;` + g.card(0.4));
     const ph = g.div(el, `position:absolute;left:0;top:0;width:100%;height:${ch - txH}px;overflow:hidden;background:${g.fill};`);
     const img = g.div(ph, `position:absolute;left:0;top:0;width:100%;height:100%;background:${g.photo(i)};background-position:${(P.POS && P.POS[i]) || 'center top'};background-size:cover;transform-origin:50% 30%;`);
+    qvOpen(g, ph, (P.LINKS || [])[i], '보기');
     const num = g.text(el, String(i + 1).padStart(2, '0'), `position:absolute;left:${cp}px;top:${cp}px;padding:${u * 0.006}px ${u * 0.012}px;border-radius:999px;background:rgba(255,255,255,.92);font:750 ${u * 0.017}px/1.2 ${g.body};letter-spacing:.06em;font-variant-numeric:tabular-nums;color:${g.ink};`);
     const tb = g.div(el, `position:absolute;left:${cp}px;right:${cp}px;top:${ch - txH + u * 0.016}px;display:flex;flex-direction:column;gap:${u * 0.006}px;`);
     const tl = g.lines(tb, it[0], `font:750 ${u * (rowsN > 1 ? 0.027 : 0.032)}px/1.25 ${g.body};letter-spacing:-0.025em;color:${g.ink};`);
@@ -2011,6 +2034,7 @@ SCENES.media = P => (function slWbMedia(api) {
   let vids = null;
   if (VIDEO) { vids = [qvVideo(inner, VIDEO, POSTER, api)]; qvSound(g, frameEl, vids, 0); }
   else g.div(inner, `position:absolute;left:0;top:0;width:100%;height:100%;background:${g.photo(0)};`);
+  if (P.LINK) qvOpen(g, frameEl, P.LINK, P.LINK_LABEL || '원본 보기');
   const badge = BADGE ? g.text(frameEl, BADGE, `position:absolute;left:${u * 0.014}px;top:${u * 0.014}px;padding:${u * 0.008}px ${u * 0.016}px;border-radius:999px;background:rgba(255,255,255,.92);font:700 ${u * 0.018}px/1.2 ${g.body};letter-spacing:-0.01em;white-space:nowrap;color:${g.ink};opacity:0;`) : null;
   const ly = (wide ? head.bottom() : fyy + fh) + u * 0.045, list = g.div(M, `position:absolute;left:${ix}px;top:${ly}px;width:${iw}px;display:flex;flex-direction:column;gap:${u * 0.02}px;`);
   const rows = IT.map((it, i) => {
@@ -2130,19 +2154,19 @@ const DECK = [
   links: [['이 영상 파일', 'valley.mp4']] },
 { s: 'gallery', t: '요즘 AI 콘텐츠 세 갈래', nav: 1, path: 'formats', time: '02:40–03:50',
   img: ['showcase-assets/gugu.jpg', 'deck-assets/gakjugugeom.jpg', 'motion-lab-preview.jpg'],
-  P: { KICKER: 'FORMATS', TITLE: '요즘 AI 콘텐츠, 이 세 갈래', NOTE: '실제 사례', POS: ['center', 'center 28%', 'left top'], ITEMS: [['웹앱 · 구구땅', '인디스쿨에서 화제인 구구단 게임'], ['AI 영상 · 각주구검', '무빅 · 사자성어를 교실 장면으로'], ['AI 모션그래픽 · 쿼카 모션랩', '지금 보시는 이 강의안도 모션랩으로']] },
+  P: { LINKS: ['https://xn--2e0ba141d.kr/', 'https://www.youtube.com/shorts/dJH_C7lv5pk', 'https://gottkf1208.github.io/quoka-motion-lab/'], KICKER: 'FORMATS', TITLE: '요즘 AI 콘텐츠, 이 세 갈래', NOTE: '실제 사례', POS: ['center', 'center 28%', 'left top'], ITEMS: [['웹앱 · 구구땅', '인디스쿨에서 화제인 구구단 게임'], ['AI 영상 · 각주구검', '무빅 · 사자성어를 교실 장면으로'], ['AI 모션그래픽 · 쿼카 모션랩', '지금 보시는 이 강의안도 모션랩으로']] },
   note: '요즘 선생님들 사이에서 화제인 AI 콘텐츠는 크게 세 갈래예요. (클릭) 첫째, 웹앱. 인디스쿨에서 요즘 핫한 구구땅처럼, 선생님이 AI랑 같이 직접 만든 게임과 앱이에요.\n\n(클릭) 둘째, AI 영상. 이건 ‘무빅’ 채널의 각주구검 쇼츠예요. 옛이야기 장면을 보여 주고, “교실이 바뀌었다는 알림을 받고도 작년 교실에 가서 친구들을 기다린다면? 그게 바로 각주구검!” 하고 요즘 교실로 데려와요. 끝에 생성형 AI로 만들었다고 밝힌 것까지 좋더라고요. (클릭) 셋째, AI 모션그래픽. 사실 지금 보고 계신 이 강의안도 제가 만든 쿼카 모션랩 코드로 움직이고 있어요 : )\n\n오늘 브루로는 영상을 만들지만, 기획은 세 갈래 모두 똑같아요.',
   links: [['구구땅', 'https://xn--2e0ba141d.kr/'], ['무빅 · 각주구검 [刻舟求劍] (YouTube Shorts)', 'https://www.youtube.com/shorts/dJH_C7lv5pk'], ['쿼카 모션랩', 'https://gottkf1208.github.io/quoka-motion-lab/'], ['쿼카 모션랩 · 코드와 설명', 'https://github.com/gottkf1208/quoka-motion-lab']] },
 { s: 'gallery', t: '단편 · 수상작 · 비평', nav: 1, path: 'films', time: '03:50–04:50',
   img: ['instagram-assets/ig09.jpg', 'instagram-assets/ig10.jpg', 'instagram-assets/ig11.jpg', 'instagram-assets/ig12.jpg', 'instagram-assets/ig14.jpg', 'instagram-assets/ig15.jpg'],
-  P: { KICKER: 'FILMS · AWARDS · CRITICS', TITLE: '단편, 수상작, 비평을 나란히', NOTE: '원본 게시물', POS: ['center top', 'center', 'center', 'center top', 'center', 'center'], ITEMS: [['〈10seconds〉', '김선웅 감독 · 발리 AI 국제영화제 금상'], ['On This Day… 1776', '역사 재현 영상에 쏟아진 비평'], ['Total Pixel Space', 'Runway AI 영화제 2025 대상'], ['Runway AI 영화제 2026', '수상작 모음'], ['대한민국 AI 콘텐츠 어워즈', '단편 부문 수상작'], ['대한민국 AI 콘텐츠 어워즈', '중편 부문 수상작']] },
+  P: { LINKS: ['https://www.instagram.com/reel/DeOx833AhLE/', 'https://www.instagram.com/reel/DUimLleD0A8/', 'https://www.instagram.com/reel/DcB6MZsCXJ2/', 'https://www.instagram.com/reel/DaD6A3KqfVv/', 'https://www.instagram.com/p/DeluWcHmftL/', 'https://www.instagram.com/p/DeoLYNDmZO_/'], KICKER: 'FILMS · AWARDS · CRITICS', TITLE: '단편, 수상작, 비평을 나란히', NOTE: '원본 게시물', POS: ['center top', 'center', 'center', 'center top', 'center', 'center'], ITEMS: [['〈10seconds〉', '김선웅 감독 · 발리 AI 국제영화제 금상'], ['On This Day… 1776', '역사 재현 영상에 쏟아진 비평'], ['Total Pixel Space', 'Runway AI 영화제 2025 대상'], ['Runway AI 영화제 2026', '수상작 모음'], ['대한민국 AI 콘텐츠 어워즈', '단편 부문 수상작'], ['대한민국 AI 콘텐츠 어워즈', '중편 부문 수상작']] },
   note: 'AI로 만든 영화도 이제 상을 받고, 비평도 받아요. (클릭) 김선웅 감독의 〈10seconds〉는 발리 AI 국제영화제에서 금상을 받았어요. (클릭) 반대로 미국 독립 250주년을 앞두고 나온 역사 재현 영상은 “그럴듯한데 근거가 없다”는 비판을 많이 받았고요.\n\n(클릭) 런웨이 AI 영화제 대상작 Total Pixel Space는 화려한 영상이 아니라 수학 개념을 다룬 에세이예요. (클릭) 올해 수상작들도 있고, (클릭)(클릭) 경기도가 연 대한민국 AI 콘텐츠 어워즈 수상작도 있어요.\n\n상 받은 작품이랑 비판받은 작품을 나란히 보면, 아이들과 “좋은 AI 콘텐츠는 뭘까?”를 이야기하기 좋아요.',
-  links: [['〈10seconds〉 수상 소식', 'showcase.html?case=ig09'], ['On This Day… 1776 비평', 'showcase.html?case=ig10'], ['Total Pixel Space', 'showcase.html?case=ig11'], ['Runway AI 영화제 수상작', 'showcase.html?case=ig12'], ['AI 콘텐츠 어워즈 단편', 'showcase.html?case=ig14'], ['AI 콘텐츠 어워즈 중편', 'showcase.html?case=ig15']] },
+  links: [['〈10seconds〉 수상 소식', 'https://www.instagram.com/reel/DeOx833AhLE/'], ['On This Day… 1776 비평', 'https://www.instagram.com/reel/DUimLleD0A8/'], ['Total Pixel Space', 'https://www.instagram.com/reel/DcB6MZsCXJ2/'], ['Runway AI 영화제 수상작', 'https://www.instagram.com/reel/DaD6A3KqfVv/'], ['AI 콘텐츠 어워즈 단편', 'https://www.instagram.com/p/DeluWcHmftL/'], ['AI 콘텐츠 어워즈 중편', 'https://www.instagram.com/p/DeoLYNDmZO_/']] },
 { s: 'gallery', t: '브루 AI 숏폼 챌린지 수상작', nav: 1, path: 'vrew-awards', time: '04:50–05:40',
   img: ['instagram-assets/bonus1.jpg', 'instagram-assets/bonus2.jpg', 'instagram-assets/bonus3.jpg', 'instagram-assets/bonus4.jpg', 'instagram-assets/bonus5.jpg'],
-  P: { KICKER: 'VREW AI SHORTS CHALLENGE', TITLE: '브루로 만든 수상작 5편', NOTE: 'Vrew 공식 수상작', POS: ['center top', 'center top', 'center top', 'center top', 'center top'], ITEMS: [['저승사자와 국밥', '대상 · @airini_studio'], ['한국의 가장 이상한 단어', '최우수상 · @yo.ojid'], ['1947년의 소원, 2026년의 한류', '우수상 · @일인작업실'], ['항상 국밥이 있었다', '우수상 · @maicroaim'], ['K CULTURE', '우수상 · @nanumcom']] },
+  P: { LINKS: ['https://www.instagram.com/reel/Dd0bNNXx7fl/', 'https://www.instagram.com/reel/Dd0lQ1AzHoG', 'https://youtube.com/shorts/vaq5rPwE9Dw', 'https://www.instagram.com/reel/Dd0kwMLSyNB/', 'https://youtube.com/shorts/9BiasmevrKc'], KICKER: 'VREW AI SHORTS CHALLENGE', TITLE: '브루로 만든 수상작 5편', NOTE: 'Vrew 공식 수상작', POS: ['center top', 'center top', 'center top', 'center top', 'center top'], ITEMS: [['저승사자와 국밥', '대상 · @airini_studio'], ['한국의 가장 이상한 단어', '최우수상 · @yo.ojid'], ['1947년의 소원, 2026년의 한류', '우수상 · @일인작업실'], ['항상 국밥이 있었다', '우수상 · @maicroaim'], ['K CULTURE', '우수상 · @nanumcom']] },
   note: '오늘 쓸 브루로 만든 수상작들도 있어요. (클릭) 대상은 저승사자와 국밥, (클릭) 한국어 단어의 재미를 다룬 영상, (클릭) 1947년과 2026년을 잇는 영상, (클릭) 또 국밥, (클릭) 한국 문화 소개까지요.\n\n주제가 전부 우리 이야기예요. 국밥, 한국어, 역사, 문화. 화려한 기술보다 우리 이야기가 상을 받았어요. 교실에서 만들 수 있는 주제랑 멀지 않죠 : )',
-  links: [['저승사자와 국밥', 'showcase.html?case=bonus1'], ['한국의 가장 이상한 단어', 'showcase.html?case=bonus2'], ['1947년의 소원, 2026년의 한류', 'showcase.html?case=bonus3'], ['항상 국밥이 있었다', 'showcase.html?case=bonus4'], ['K CULTURE', 'showcase.html?case=bonus5']] },
+  links: [['저승사자와 국밥', 'https://www.instagram.com/reel/Dd0bNNXx7fl/'], ['한국의 가장 이상한 단어', 'https://www.instagram.com/reel/Dd0lQ1AzHoG'], ['1947년의 소원, 2026년의 한류', 'https://youtube.com/shorts/vaq5rPwE9Dw'], ['항상 국밥이 있었다', 'https://www.instagram.com/reel/Dd0kwMLSyNB/'], ['K CULTURE', 'https://youtube.com/shorts/9BiasmevrKc']] },
 { s: 'quote', t: '한 문장 · 무엇을 만들지', nav: 1, path: 'one-line', time: '05:40–06:00',
   P: { KICKER: 'ONE LINE', TEXT: '만드는 건 쉬워졌어요.\n그래서 무엇을 만들지가\n더 중요해졌어요', KEY: '무엇을 만들지', WHO: '오늘 특강의 첫 문장', ROLE: '쿼카연구회 두목쿼카' },
   note: '(클릭) 만드는 건 쉬워졌어요. 그래서 무엇을 만들지가 더 중요해졌어요. 이 말 하나만 들고 다음으로 넘어갈게요.' },
@@ -2153,9 +2177,9 @@ const DECK = [
   note: '두 번째, 요즘 트렌드예요. (클릭) 올해 많이 본 콘텐츠, 공모전, 2027년 이야기까지 빠르게 훑어볼게요.' },
 { s: 'gallery', t: '2026, 많이 본 AI 콘텐츠', nav: 2, path: 'trend', time: '06:15–07:15',
   img: ['instagram-assets/ig01.jpg', 'instagram-assets/ig04.jpg'],
-  P: { KICKER: '2026 TREND', TITLE: '올해 많이 본 AI 콘텐츠', NOTE: '원본 캡처', POS: ['center', 'center'], ITEMS: [['김햄찌', '직장인 햄스터의 하루'], ['유리 과일 ASMR', '현실에 없는 소리와 질감']] },
+  P: { LINKS: ['https://www.instagram.com/reel/DXrDlhBCSor/', 'https://www.instagram.com/reel/DXF51IXiBe8/'], KICKER: '2026 TREND', TITLE: '올해 많이 본 AI 콘텐츠', NOTE: '원본 캡처', POS: ['center', 'center'], ITEMS: [['김햄찌', '직장인 햄스터의 하루'], ['유리 과일 ASMR', '현실에 없는 소리와 질감']] },
   note: '올해 많이 보셨을 거예요. (클릭) 직장인 햄스터 김햄찌, (클릭) 유리로 된 과일을 써는 ASMR까지요.\n\n뭐가 뜨는지 보면, 아이들이 어디에 마음을 뺏기는지도 보여요.',
-  links: [['김햄찌', 'showcase.html?case=ig01'], ['유리 과일 ASMR', 'showcase.html?case=ig04']] },
+  links: [['김햄찌', 'https://www.instagram.com/reel/DXrDlhBCSor/'], ['유리 과일 ASMR', 'https://www.instagram.com/reel/DXF51IXiBe8/']] },
 { s: 'points', t: '왜 이런 콘텐츠가 뜰까', nav: 2, path: 'why', time: '07:15–08:05',
   P: { KICKER: 'READING TRENDS', TITLE: '뜨는 이유를 세 단어로', ADD: '이유 더하기', ITEMS: [['공감', '햄스터라서 오히려\n내 이야기처럼 웃겨요'], ['감각', '현실에 없는\n소리와 질감이 신기해요'], ['시간 여행', '못 가 보는 곳과 시대를\n눈앞에 데려와요']] },
   note: '왜 이런 콘텐츠가 뜰까요? 세 단어로 볼게요. (클릭) 공감. 햄스터라서 오히려 내 이야기처럼 웃을 수 있어요. (클릭) 감각. 현실에 없는 소리와 질감이 신기하죠. (클릭) 시간 여행. 못 가 보는 곳과 시대를 눈앞에 데려와요.\n\n이 세 단어는 그대로 수업이 돼요. 공감은 도덕, 감각은 과학과 미술, 시간 여행은 역사와 통일 수업으로요.',
@@ -2164,15 +2188,19 @@ const DECK = [
   P: { KICKER: 'BY THE NUMBERS', TITLE: '숫자로 보면 이래요', NOTE: '공식 발표 · 확인일 기준', ITEMS: [['60', '만', '김햄찌 구독자', '약 6개월 만 · YouTube 공식 블로그(2025.11)'], ['135', '만 회', '‘야근의 시발점’ 조회', '김햄찌 대표작 · 2026.10.21 확인']] },
   note: '숫자로도 볼게요. (클릭) 김햄찌는 약 6개월 만에 구독자 60만을 넘겼다고 유튜브가 직접 소개했어요. (클릭) 대표작 하나가 135만 회 넘게 재생됐고요.\n\nAI 콘텐츠는 이제 신기한 실험 단계를 지났어요. 하나의 창작 장르가 됐어요.',
   links: [['YouTube · 김햄찌 제작자 인터뷰 (2025.11.07)', 'https://blog.youtube/intl/ko-kr/creator-and-artist-stories/creator-of-the-month-november/'], ['김햄찌 · 야근의 시발점', 'https://www.youtube.com/watch?v=QJAewX4fnPc']] },
-{ s: 'flow', t: '도구는 고치기로 오고 있어요', nav: 2, path: 'tools', time: '08:55–09:55',
-  P: { KICKER: '2026 TOOLS', TITLE: '도구는 ‘만들기’에서 ‘고치기’로', ITEMS: [['2026.05', 'Runway Agent\n말로 장면을 고쳐요'], ['2026.07', '타임라인에서\n장면을 이어 붙여요'], ['2026.09', 'Premiere 안에서\n영상을 만들어요'], ['그다음은?', '만드는 힘보다\n고르고 고치는 힘']] },
-  note: '도구 쪽도 볼게요. 올해 발표를 보면 방향이 하나예요. (클릭) 5월에 런웨이가 말로 장면을 만들고 고치는 에이전트를 내놨고, (클릭) 7월엔 그 에이전트가 타임라인에서 장면을 이어 붙이게 됐어요. (클릭) 9월엔 어도비 프리미어 안에서 바로 영상과 효과음을 만들게 됐고요.\n\n(클릭) 만드는 기능이 편집 화면 안으로 들어오고 있어요. 그래서 앞으로는 고르고 고치는 힘이 더 중요해져요. 오늘 브루 연수가 딱 그 연습이에요.',
-  links: [['Runway · 공식 업데이트 기록', 'https://runway.com/changelog'], ['Adobe · Premiere 생성 기능 (2026.09.08)', 'https://blog.adobe.com/en/publish/2026/09/08/generate-create-directly-in-your-timeline-with-new-ai-powered-innovations-in-premiere-after-effects']] },
+{ s: 'agenda', t: '브루 업데이트 ① 4.0–4.4', nav: 2, path: 'vrew-updates-1', time: '08:55–09:25',
+  P: { KICKER: 'VREW UPDATES', TITLE: '브루는 이렇게 바뀌어 왔어요 ①', LEAD: '공식 업데이트 노트', NOW: 5, ITEMS: [['4.0', '이미지를 영상으로 · 크레딧 하나로', 'AI 영상'], ['4.1', '세로 9:16 AI 이미지·영상', '쇼츠'], ['4.2', 'AI 자막 교정 · 말로 음악 찾기', '자막'], ['4.3', 'AI 이미지·영상 패널 · 받아쓰기 강화', '받아쓰기'], ['4.4', '브루 에이전트 정식 출시', '에이전트']] },
+  note: '이번엔 오늘 쓸 브루가 어떻게 바뀌어 왔는지 볼게요. 공식 업데이트 노트를 버전 순서로 정리했어요. (클릭) 4.0에서 이미지를 영상으로 바꾸는 기능이 들어왔고, (클릭) 4.1에서 쇼츠용 세로 화면이 생겼어요.\n\n(클릭) 4.2에서는 AI가 자막 속 이름이나 용어를 고쳐 주는 기능, 원하는 음악을 말로 찾는 기능이 생겼고요. (클릭) 4.3에서 받아쓰기 엔진이 좋아졌어요. (클릭) 그리고 4.4에서 말로 편집을 시키는 브루 에이전트가 정식으로 나왔어요.',
+  links: [['Vrew 업데이트 노트 전체', 'https://docs.channel.io/vrew-us/en/categories/Release-Notes-3bfe869d'], ['Vrew 4.0.0', 'https://docs.channel.io/vrew-us/en/articles/Vrew-400-Update-cffb7626'], ['Vrew 4.1.0', 'https://docs.channel.io/vrew-us/en/articles/Vrew-410-Update-08066985'], ['Vrew 4.2.0', 'https://docs.channel.io/vrew-us/en/articles/Vrew-420-Update-3425c357'], ['Vrew 4.3.0', 'https://docs.channel.io/vrew-us/en/articles/Vrew-430-Update-4d804e8c'], ['Vrew 4.4.0', 'https://docs.channel.io/vrew-us/en/articles/Vrew-440-Update-1d011454']] },
+{ s: 'agenda', t: '브루 업데이트 ② 4.5–4.8', nav: 2, path: 'vrew-updates-2', time: '09:25–09:55',
+  P: { KICKER: 'VREW UPDATES', TITLE: '브루는 이렇게 바뀌어 왔어요 ②', LEAD: '오늘 쓸 최신 버전까지', NOW: 4, ITEMS: [['4.5', 'AI 영상 만들고, 고치고, 늘리기', 'AI 영상'], ['4.6', '감정을 담은 AI 목소리 53종', '목소리'], ['4.7', '목소리 고르는 화면 새 단장', '목소리'], ['4.8', '텍스트로 비디오에 AI 영상까지', '최신']] },
+  note: '(클릭) 4.5부터는 AI 영상을 만들고, 고치고, 늘리는 것까지 돼요. 소리도 같이요. (클릭) 4.6에서 감정을 담은 AI 목소리가 53개 늘었고, (클릭) 4.7에서는 목소리를 고르는 화면이 바뀌었어요. (클릭) 최신 4.8에서는 텍스트로 비디오 만들기 안에서 AI 영상까지 바로 만들어요.\n\n보시면 만드는 기능만 늘어난 게 아니에요. 자막, 목소리, 음악을 고르고 고치는 기능도 같이 늘어나요. 결국 마지막에 보고 듣고 고르는 건 선생님 몫이라는 거죠. 이 이야기는 마지막에 다시 할게요.',
+  links: [['Vrew 4.5.0', 'https://docs.channel.io/vrew-us/en/articles/Vrew-450-Update-7c4f8823'], ['Vrew 4.6.0', 'https://docs.channel.io/vrew-us/en/articles/Vrew-460-Update-5742ce6a'], ['Vrew 4.7.0', 'https://docs.channel.io/vrew-us/en/articles/Vrew-470-Update-89335f6d'], ['Vrew 4.8.0', 'https://docs.channel.io/vrew-us/en/articles/Vrew-480-Update-a1af98d7']] },
 { s: 'gallery', t: '2026 AI 콘텐츠 공모전', nav: 2, path: 'contests', time: '09:55–10:55',
   img: ['instagram-assets/ig16.jpg', 'instagram-assets/ig17.jpg', 'instagram-assets/ig18.jpg', 'instagram-assets/ig19.jpg'],
-  P: { KICKER: 'CONTESTS', TITLE: '공모전도 이렇게 많아졌어요', NOTE: '공식 게시물', POS: ['center', 'center', 'center top', 'center top'], ITEMS: [['서울국제AI영화제', 'SIAFF 수상자 발표'], ['경기관광 AI 영상', '실사와 민화를 섞은 수상작'], ['경기관광 국제 AI 영상 공모전', '공모 공고'], ['국회 미래로 AI 영상 공모전', '공공기관 공모전']] },
+  P: { LINKS: ['https://www.instagram.com/reel/DRuKZOlgFz-/', 'https://www.instagram.com/reel/DdTOxMhNrtT/', 'https://www.instagram.com/p/DSmMHxuEn0i/', 'https://www.instagram.com/p/DQqmA8HkpZ7/'], KICKER: 'CONTESTS', TITLE: '공모전도 이렇게 많아졌어요', NOTE: '공식 게시물', POS: ['center', 'center', 'center top', 'center top'], ITEMS: [['서울국제AI영화제', 'SIAFF 수상자 발표'], ['경기관광 AI 영상', '실사와 민화를 섞은 수상작'], ['경기관광 국제 AI 영상 공모전', '공모 공고'], ['국회 미래로 AI 영상 공모전', '공공기관 공모전']] },
   note: '공모전도 많아졌어요. (클릭) 서울국제AI영화제, (클릭) 지역 관광을 알리는 AI 영상 수상작, (클릭) 그 공모전 공고, (클릭) 국회 AI 영상 공모전까지요. 아까 본 대한민국 AI 콘텐츠 어워즈는 바로 지난주에 시상식이 있었어요.\n\n공고문을 읽어 보면 재밌어요. 누구에게 보여 줄지, 몇 분짜리인지, 어떤 도구를 썼는지 밝히라고 해요. 이게 그대로 우리 수업 프로젝트 조건이 돼요.',
-  links: [['한국관광공사 · 2026 대한민국 AI 콘텐츠 어워즈', 'https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=200288'], ['SIAFF 수상자 발표', 'showcase.html?case=ig16'], ['경기관광 AI 수상작', 'showcase.html?case=ig17'], ['경기관광 국제AI영상 공모전', 'showcase.html?case=ig18'], ['국회 미래로 AI영상 공모전', 'showcase.html?case=ig19']] },
+  links: [['한국관광공사 · 2026 대한민국 AI 콘텐츠 어워즈', 'https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=200288'], ['SIAFF 수상자 발표', 'https://www.instagram.com/reel/DRuKZOlgFz-/'], ['경기관광 AI 수상작', 'https://www.instagram.com/reel/DdTOxMhNrtT/'], ['경기관광 국제AI영상 공모전', 'https://www.instagram.com/p/DSmMHxuEn0i/'], ['국회 미래로 AI영상 공모전', 'https://www.instagram.com/p/DQqmA8HkpZ7/']] },
 { s: 'compare', t: '2026에서 2027로', nav: 2, path: '2027', time: '10:55–12:00',
   P: { KICKER: '2026 → 2027', TITLE: '2027년엔 이렇게 달라질 거예요', LEFT: '2026 · 지금', LEFT_ITEMS: ['장면 하나, 영상 한 편을 만들어요', 'AI 영화제와 공모전이 생겼어요', 'AI 생성물 표시가 법이 됐어요'], RIGHT: '2027 · 전망', RIGHT_ITEMS: ['만들기와 고치기가 한 화면에서', '서울·칸 WAIFF처럼 축제로 커져요', '만든 과정을 밝히는 게 기본'] },
   note: '그럼 2027년은 어떨까요? 확인된 것과 전망을 나눠서 말씀드릴게요. (클릭) 지금은 장면 하나, 영상 한 편을 만드는 단계예요. 영화제와 공모전이 막 생겼고, 올해 1월 시행된 AI 기본법으로 AI 생성물 표시가 법의 영역으로 들어왔어요.\n\n(클릭) 2027년엔 만들기와 고치기가 한 화면에서 이어질 거예요. 세계 AI 영화제 WAIFF는 2027년 3월 서울, 4월 칸 일정을 이미 공지했고요. 그리고 누가, 어떤 도구로, 어디를 고쳤는지 밝히는 게 기본이 될 거예요.\n\n예언이라기보다 지금 흐름을 이어 본 거예요. 그래서 교실에서도 지금부터 ‘만든 과정 남기기’를 연습해 두면 좋아요.',
@@ -2184,9 +2212,9 @@ const DECK = [
   note: '세 번째, 오늘의 핵심이에요. (클릭) ‘쌤티’는 우리 반을 아는 사람이 만든 티예요. 제가 기획할 때 쓰는 습관 두 가지랑, 좋은 AI 콘텐츠를 만드는 네 가지 질문을 예시로 풀어 볼게요.' },
 { s: 'media', t: '기획 팁 ① 일상을 수업 재료로', nav: 3, path: 'tip-1', time: '12:15–13:15',
   img: ['instagram-assets/ig28.jpg'],
-  P: { KICKER: 'TIP 1 · 일상에서 찾기', TITLE: '광고 한 장도\n수업 재료가 돼요', BADGE: '@ai.hansul · 안동 관광 포스터', ITEMS: [['수업 눈으로 보기', '“안동이면, 간고등어.” 한 줄'], ['우리 반 버전으로', '“평택이면?” 우리 지역 자랑'], ['사회·미술 수업으로', '포스터에서 30초 영상까지']] },
+  P: { LINK: 'https://www.instagram.com/reel/DeLLKyPP7v2/', KICKER: 'TIP 1 · 일상에서 찾기', TITLE: '광고 한 장도\n수업 재료가 돼요', BADGE: '@ai.hansul · 안동 관광 포스터', ITEMS: [['수업 눈으로 보기', '“안동이면, 간고등어.” 한 줄'], ['우리 반 버전으로', '“평택이면?” 우리 지역 자랑'], ['사회·미술 수업으로', '포스터에서 30초 영상까지']] },
   note: '첫 번째 습관은 일상을 수업 재료로 보는 거예요. 저는 광고나 식당 포스터를 봐도 “이거 수업에 쓰면?” 하고 봐요.\n\n(클릭) 이 안동 관광 포스터는 “안동이면, 간고등어.” 한 줄이랑 그림 하나로 지역을 다 설명해요. (클릭) 이걸 우리 반 버전으로 바꾸면 “평택이면?”이 돼요. 아이들이 우리 지역 자랑을 한 장면으로 정하는 거죠. (클릭) 그러면 사회 지역 단원, 미술 포스터 수업이 되고, 브루로 30초 홍보 영상까지 이어져요.',
-  links: [['안동 관광 포스터 AI (@ai.hansul)', 'showcase.html?case=ig28']] },
+  links: [['안동 관광 포스터 AI (@ai.hansul)', 'https://www.instagram.com/reel/DeLLKyPP7v2/']] },
 { s: 'flow', t: '기획 팁 ② 잘했던 수업부터', nav: 3, path: 'tip-2', time: '13:15–14:05',
   P: { KICKER: 'TIP 2 · 잘했던 수업부터', TITLE: '새로 찾기 전에, 잘했던 수업부터', ITEMS: [['꺼내기', '아이들이\n좋아했던 수업'], ['한 문장으로', '누가 뭘 궁금해하고\n뭘 알면 될까'], ['표현 넓히기', '활동지·PPT를\n영상·모션으로'], ['장면 순서', '질문으로 열고\n활동으로 닫아요']] },
   note: '두 번째 습관은 새 주제를 찾기 전에, 잘했던 수업부터 꺼내는 거예요. (클릭) 내가 해 봤고 아이들이 좋아했던 수업이요. 저는 통일 열차 수업이었어요.\n\n(클릭) 그 수업을 한 문장으로 줄여요. 누가 뭘 궁금해하고, 뭘 알면 될까. (클릭) 그다음 활동지랑 PPT로 하던 걸 영상이나 모션으로 넓혀요. (클릭) 순서는 질문으로 열고, 살펴보고, 활동으로 닫아요.\n\n익숙한 좋은 수업에, AI로 가능해진 장면 하나를 더하는 거예요.' },
@@ -2218,14 +2246,14 @@ const DECK = [
 { s: 'section', t: '04 · 실습 · 콘텐츠 브리프 쓰기', nav: 4, path: 'part-04', time: '19:30–19:45',
   P: { NUM: '04', KICKER: 'PART 04 · 실습', TITLE: '내 수업으로\n브리프 한 장', DESC: 'T셀파에서 재료를 찾고,\n클래스보드에서 서로 나눠요', TAGS: ['5분 찾기', '10분 쓰기', '클래스보드에서 나누기'] },
   note: '네 번째, 이제 직접 해 볼 시간이에요. (클릭) T셀파에서 재료를 찾고, 브리프를 써서, 클래스보드에 모을 거예요. 그 전에 브리프가 실제 영상이 되면 어떤지 하나만 보여 드릴게요.' },
-{ s: 'photo', t: '브리프가 영상이 되면 · DMZ', nav: 4, path: 'dmz', time: '19:45–20:45',
+{ s: 'media', t: '브리프가 영상이 되면 · DMZ', nav: 4, path: 'dmz', time: '19:45–20:45',
   img: ['deck-assets/dmz.jpg'],
-  P: { KICKER: '예시 · 4학년 도덕 8단원', TITLE: '못 가 보는 DMZ,\n영상으로 먼저 가 봐요', SPOTS: [[0.3, 0.42], [0.62, 0.7], [0.83, 0.42]], ITEMS: [['처음 30초만 틀어요', '“DMZ에는 누가 살고 있을까?”'], ['로봇한테 맡겨 볼까?', '“두루미 수 세는 일은 로봇이 해도 될까?”'], ['그래도 사람이 정할 건?', '“어디까지 들어가도 될지는 누가 정할까?”']] },
+  P: { LINK: 'https://www.youtube.com/watch?v=pqPqqmFI3YA', LINK_LABEL: '영상 보기', KICKER: '예시 · 4학년 도덕 8단원', TITLE: '못 가 보는 DMZ,\n영상으로 먼저 가 봐요', ITEMS: [['처음 30초만 틀어요', '“DMZ에는 누가 살고 있을까?”'], ['로봇한테 맡겨 볼까?', '“두루미 수 세는 일은 로봇이 해도 될까?”'], ['그래도 사람이 정할 건?', '“어디까지 들어가도 될지는 누가 정할까?”']] },
   note: '아까 그 브리프로 만든 4학년 도덕 8단원 영상이에요. 아이들은 DMZ에 가 볼 수가 없잖아요. 그래서 AI로 먼저 데려가 봤어요.\n\n(클릭) 영상을 끝까지 틀지 않아요. 처음 30초만 보여 주고 “DMZ에는 누가 살고 있을까?” 물어요. (클릭) 그다음 “두루미 수 세는 일은 로봇이 해도 될까?” (클릭) “그럼 어디까지 들어가도 될지는 누가 정해야 할까?”\n\n아이들이 로봇 이야기를 하다 보면, 결국 사람이 정해야 하는 것들로 넘어가요. 원래 하던 통일 열차 수업에 장면 하나 더했을 뿐인데, 아이들 눈빛이 달라지더라고요 : )',
   links: [['4학년 도덕 8단원 · 평화와 생명의 땅 (YouTube)', 'https://www.youtube.com/watch?v=pqPqqmFI3YA']] },
 { s: 'media', t: '실습 1 · T셀파에서 재료 찾기', nav: 4, path: 'find', time: '20:45–21:30',
   img: ['tsherpa_lesson.jpg'],
-  P: { KICKER: '실습 1 · 5분', TITLE: 'T셀파에서\n이런 차시를 찾아요', BADGE: 'T셀파 · 과학 6-1 기후변화 차시', ITEMS: [['눈에 안 보이는 것', 'DMZ, 세포처럼 못 가 보는 곳'], ['자꾸 헷갈리는 것', '날씨와 기후처럼 비슷해서 섞이는 개념'], ['지루해지기 쉬운 것', '구구단, 맞춤법처럼 반복이 필요한 것']] },
+  P: { LINK: 'https://www.tsherpa.co.kr/', LINK_LABEL: 'T셀파 열기', KICKER: '실습 1 · 5분', TITLE: 'T셀파에서\n이런 차시를 찾아요', BADGE: 'T셀파 · 과학 6-1 기후변화 차시', ITEMS: [['눈에 안 보이는 것', 'DMZ, 세포처럼 못 가 보는 곳'], ['자꾸 헷갈리는 것', '날씨와 기후처럼 비슷해서 섞이는 개념'], ['지루해지기 쉬운 것', '구구단, 맞춤법처럼 반복이 필요한 것']] },
   note: '먼저 5분 동안 T셀파에서 재료를 찾아요. 내 학년, 내 교과 차시를 열어서 “이건 영상으로 보여 주면 좋겠다” 싶은 걸 하나만 골라요.\n\n(클릭) 눈에 안 보이는 것. DMZ나 세포, 옛날 장터처럼 못 가 보는 곳이요. (클릭) 자꾸 헷갈리는 것. 날씨랑 기후처럼 비슷해서 섞이는 개념이요. (클릭) 지루해지기 쉬운 것. 구구단이나 맞춤법처럼 반복이 필요한 거요.\n\n화면처럼 6학년 과학 기후변화 차시를 열면 도입 영상, 활동지, 노래까지 재료가 이미 다 있어요. 그중에 우리 반한테 30초 영상이 필요한 장면 하나만 찾으시면 돼요.',
   links: [['T셀파', 'https://www.tsherpa.co.kr/']] },
 { s: 'flow', t: '실습 순서', nav: 4, path: 'how', time: '21:30–22:00',
@@ -2306,12 +2334,31 @@ const DECK = [
   }
   function paintLinks() {
     const d = DECK[cur], L = d.links || [];
-    links.innerHTML = (L.length ? '<h4>이 장의 자료</h4>' + L.map(x => `<a href="${esc(abs(x[1]))}" target="_blank" rel="noopener">${esc(x[0])}<small>${esc(abs(x[1]))}</small></a>`).join('') : '') +
+    links.innerHTML = (L.length ? '<h4>이 장의 자료</h4>' + L.map(x => `<a href="${esc(abs(x[1]))}" data-open="${esc(x[1])}" target="_blank" rel="noopener">${esc(x[0])}<small>${esc(abs(x[1]))}</small></a>`).join('') : '') +
       '<h4>강의 전체</h4>' + GLOBAL.map(x => `<a href="${esc(abs(x[1]))}" target="_blank" rel="noopener">${esc(x[0])}</a>`).join('');
   }
   const toggleNotes = () => { notes.hidden = !notes.hidden; if (!notes.hidden) { links.hidden = true; paintNotes(); } bNote.setAttribute('aria-pressed', !notes.hidden); };
   const toggleLinks = () => { links.hidden = !links.hidden; if (!links.hidden) { notes.hidden = true; bNote.setAttribute('aria-pressed', false); paintLinks(); } bLink.setAttribute('aria-pressed', !links.hidden); };
   bNote.addEventListener('click', toggleNotes); bLink.addEventListener('click', toggleLinks);
+  // 원본 보기 팝업 (같은 사이트 페이지·유튜브는 팝업, 그 밖은 새 탭)
+  const mv = document.createElement('div'); mv.className = 'qv'; mv.hidden = true;
+  mv.innerHTML = '<div class="qv-box"><header><a class="qv-new" target="_blank" rel="noopener">새 탭에서 열기 ↗</a><button type="button" class="qv-x">닫기 ✕</button></header><iframe allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe></div>';
+  box.appendChild(mv);
+  const ifr = mv.querySelector('iframe'), mvNew = mv.querySelector('.qv-new');
+  const ytId = u => { const m = /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{6,})/.exec(u); return m ? m[1] : null; };
+  const closeView = () => { mv.hidden = true; ifr.src = 'about:blank'; };
+  function openView(url) {
+    const id = ytId(url), full = abs(url), same = !/^https?:/.test(url) || /^https:\/\/gottkf1208\.github\.io\//.test(url);
+    const ig = /^https:\/\/www\.instagram\.com\/(reel|p)\/([\w-]+)/.exec(url);
+    if (!id && !same && !ig) { window.open(full, '_blank', 'noopener'); return; }
+    ifr.src = id ? 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1' : ig ? 'https://www.instagram.com/' + ig[1] + '/' + ig[2] + '/embed/' : full;
+    mvNew.href = id ? (/shorts\//.test(url) ? url : 'https://www.youtube.com/watch?v=' + id) : full;
+    mv.classList.toggle('tall', !!((id && /shorts\//.test(url)) || ig));
+    mv.hidden = false;
+  }
+  document.addEventListener('click', e => { const o = e.target.closest && e.target.closest('[data-open]'); if (!o) return; e.preventDefault(); e.stopPropagation(); openView(o.getAttribute('data-open')); }, true);
+  mv.addEventListener('click', e => { if (e.target === mv || e.target.closest('.qv-x')) closeView(); });
+  document.addEventListener('keydown', e => { if (!mv.hidden) { e.stopPropagation(); if (e.key === 'Escape') closeView(); } }, true);
   // 실습 타이머 (장 데이터에 timer: [['5분 찾기', 300], ...] 가 있으면 화면 오른쪽 위에 뜸)
   const tm = document.createElement('div'); tm.className = 'qtm'; tm.hidden = true; box.appendChild(tm);
   let tLeft = 0, tRun = false, tLast = 0, tTot = 0;
