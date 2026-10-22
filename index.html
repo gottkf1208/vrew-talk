@@ -818,7 +818,7 @@ function slWbKit(api) {
   };
   // 작은 영문 라벨 (포인트 색, 자간 넓은 대문자). 가림막에서 올라옴
   g.kick = (parent, text, css) => {
-    const fs = u * 0.019, m = g.div(parent, `position:relative;overflow:hidden;font-size:${fs}px;line-height:1.2;padding:.3em 0;margin:-.3em 0;` + (css || ''));
+    const fs = u * 0.023, m = g.div(parent, `position:relative;overflow:hidden;font-size:${fs}px;line-height:1.2;padding:.3em 0;margin:-.3em 0;` + (css || ''));
     const c = g.text(m, text, `font:700 ${fs}px/1.2 ${g.body};letter-spacing:${api.ko(text) ? '0.04em' : '0.16em'};text-transform:uppercase;white-space:nowrap;color:${ac};`);
     if (!String(text || '').trim()) m.style.display = 'none';
     return { el: m, set: p => { c.style.transform = `translate3d(0,${((1 - sk.expo(p)) * 130).toFixed(1)}%,0)`; } };
@@ -1411,7 +1411,7 @@ SCENES.points = PD => (function slWbPoints(api) {
     if (!tight) { const dots = g.div(tp, `display:flex;gap:${u * 0.006}px;`); [0, 1, 2].forEach(() => g.div(dots, `width:${u * 0.007}px;height:${u * 0.007}px;border-radius:50%;background:${g.rgba(g.ink, 0.22)};`)); }
     const tc = tight ? g.div(el, `position:relative;display:flex;flex-direction:column;gap:${u * 0.008}px;min-width:0;`) : el;
     const tl = g.lines(tc, it[0], `font:750 ${u * 0.04}px/1.25 ${g.body};letter-spacing:-0.03em;color:${g.ink};margin-top:${tight ? 0 : u * 0.006}px;`);
-    const ds = g.lines(tc, tight ? String(it[1] || '').replace(/\n/g, ' ') : it[1] || '', `font:500 ${u * 0.028}px/1.45 ${g.body};letter-spacing:-0.015em;color:${g.sub};`);
+    const ds = g.lines(tc, tight ? String(it[1] || '').replace(/\n/g, ' ') : it[1] || '', `font:500 ${u * 0.031}px/1.45 ${g.body};letter-spacing:-0.015em;color:${g.sub};`);
     if (!tight) {
       const ft = g.div(el, `position:absolute;left:${cp}px;right:${cp}px;bottom:${u * 0.022}px;display:flex;align-items:center;gap:${u * 0.016}px;padding-top:${u * 0.014}px;box-shadow:inset 0 1px 0 ${g.line};`);
       g.glyph(ft, 'heart', u * 0.022, g.faint); g.glyph(ft, 'chat', u * 0.022, g.faint);
@@ -1556,7 +1556,7 @@ SCENES.data = PD => (function slWbData(api) {
     if (!row) lab.style.top = cp * 0.8 + 'px';
     const roll = sk.roll(nrow, it[0], `position:relative;font:800 ${fs}px/1.08 ${g.body};letter-spacing:-0.04em;color:${g.ink};`);
     const unit = g.text(nrow, it[1] || '', `position:relative;font:700 ${fs * 0.36}px/1 ${g.body};letter-spacing:-0.02em;color:${g.sub};`);
-    const note = row ? g.text(el, it[3] || '', `position:absolute;left:${cp}px;right:${cp}px;top:${cp + u * 0.05 + fs * 1.1}px;font:500 ${u * 0.023}px/1.4 ${g.body};letter-spacing:-0.01em;color:${g.faint};`) : null;
+    const note = row ? g.text(el, it[3] || '', `position:absolute;left:${cp}px;right:${cp}px;top:${cp + u * 0.05 + fs * 1.1}px;font:500 ${u * 0.026}px/1.4 ${g.body};letter-spacing:-0.01em;color:${g.sub};`) : null;
     // 작은 막대 그래프 (마지막 막대가 포인트 색)
     const gw = row ? cw - cp * 2 : cw * 0.34, gh = row ? Math.max(u * 0.05, ch - (cp + u * 0.06 + fs * 1.1 + u * 0.07) - cp) : ch - cp * 2, gx = row ? cp : cw - cp - gw, gy = row ? ch - cp - gh : cp;
     const chart = g.div(el, `position:absolute;left:${gx}px;top:${gy}px;width:${gw}px;height:${gh}px;display:flex;align-items:flex-end;gap:${gw * 0.035}px;`);
@@ -1632,7 +1632,7 @@ SCENES.photo = PD => (function slWbPhoto(api) {
     g.text(nb, String(i + 1), `position:relative;font:750 ${u * 0.02}px/1 ${g.body};font-variant-numeric:tabular-nums;color:${g.ac};`);
     const tx = g.div(core, `position:relative;display:flex;flex-direction:column;gap:${u * 0.006}px;min-width:0;`);
     g.text(tx, it[0], `position:relative;font:750 ${u * 0.035}px/1.3 ${g.body};letter-spacing:-0.025em;color:${g.ink};`);
-    if (it[1] && (wide || g.tall)) g.text(tx, it[1], `position:relative;font:500 ${u * 0.026}px/1.45 ${g.body};letter-spacing:-0.015em;color:${g.sub};`);
+    if (it[1] && (wide || g.tall)) g.text(tx, it[1], `position:relative;font:500 ${u * 0.029}px/1.45 ${g.body};letter-spacing:-0.015em;color:${g.sub};`);
     return core;
   });
   g.shrink(list, mh - ly - mp * 0.7, 0.6);
@@ -1778,7 +1778,7 @@ SCENES.flow = PD => (function slWbFlow(api) {
     const card = g.div(M, `position:absolute;left:${bx}px;top:${by}px;width:${bw}px;height:${bh}px;box-sizing:border-box;padding:${u * (tight ? 0.018 : 0.028)}px ${u * 0.028}px;overflow:hidden;display:flex;flex-direction:column;justify-content:${row ? 'flex-start' : 'center'};gap:${u * (tight ? 0.006 : 0.012)}px;opacity:0;transform-origin:${row ? '50% 0' : '0 50%'};` + g.card(0.4));
     const tag = tight ? null : g.text(card, 'STEP ' + String(i + 1).padStart(2, '0'), `position:relative;font:700 ${u * 0.019}px/1.2 ${g.body};letter-spacing:.16em;color:${g.ac};opacity:0;`);
     const nm = g.lines(card, it[0], `font:750 ${u * 0.042}px/1.25 ${g.body};letter-spacing:-0.03em;color:${g.ink};`);
-    const ds = g.lines(card, tight || g.tall ? String(it[1] || '').replace(/\n/g, ' ') : it[1] || '', `font:500 ${u * 0.029}px/1.45 ${g.body};letter-spacing:-0.015em;color:${g.sub};`);
+    const ds = g.lines(card, tight || g.tall ? String(it[1] || '').replace(/\n/g, ' ') : it[1] || '', `font:500 ${u * 0.032}px/1.45 ${g.body};letter-spacing:-0.015em;color:${g.sub};`);
     g.shrink(card, bh, 0.55);
     return { node: node, fillN: fillN, num: num, numOn: numOn, halo: halo, slot: slot, card: card, tag: tag, nm: nm, ds: ds,
       P: { x: g.mx + N.x + nr * 0.2, y: g.my + N.y + nr * 0.25, fx: g.mx + (row ? N.x : bx + bw * 0.4), fy: g.my + (row ? by + bh * 0.35 : N.y) } };
@@ -1946,7 +1946,7 @@ SCENES.gallery = P => (function slWbGallery(api) {
   const cols = g.wide ? (n > 5 ? 3 : n) : Math.min(2, n), rowsN = Math.ceil(n / Math.max(1, cols));
   const aw = mw - mp * 2, ah = mh - y0 - mp * 0.75;
   const cw = (aw - gp * (cols - 1)) / Math.max(1, cols), ch = (ah - gp * (rowsN - 1)) / Math.max(1, rowsN);
-  const txH = Math.min(ch * 0.36, u * 0.12), cp = u * 0.02;
+  const txH = Math.min(ch * 0.4, u * 0.135), cp = u * 0.02;
   const cards = IT.map((it, i) => {
     const cx = mp + (i % cols) * (cw + gp), cy = y0 + Math.floor(i / cols) * (ch + gp);
     const slot = g.div(M, `position:absolute;left:${cx}px;top:${cy}px;width:${cw}px;height:${ch}px;box-sizing:border-box;border-radius:${u * 0.016}px;border:${Math.max(1, u * 0.0016)}px dashed ${g.rgba(g.ink, 0.16)};opacity:0;`);
@@ -1955,8 +1955,8 @@ SCENES.gallery = P => (function slWbGallery(api) {
     const img = g.div(ph, `position:absolute;left:0;top:0;width:100%;height:100%;background:${g.photo(i)};background-position:${(P.POS && P.POS[i]) || 'center top'};background-size:cover;transform-origin:50% 30%;`);
     const num = g.text(el, String(i + 1).padStart(2, '0'), `position:absolute;left:${cp}px;top:${cp}px;padding:${u * 0.006}px ${u * 0.012}px;border-radius:999px;background:rgba(255,255,255,.92);font:750 ${u * 0.017}px/1.2 ${g.body};letter-spacing:.06em;font-variant-numeric:tabular-nums;color:${g.ink};`);
     const tb = g.div(el, `position:absolute;left:${cp}px;right:${cp}px;top:${ch - txH + u * 0.016}px;display:flex;flex-direction:column;gap:${u * 0.006}px;`);
-    const tl = g.lines(tb, it[0], `font:750 ${u * (rowsN > 1 ? 0.024 : 0.028)}px/1.25 ${g.body};letter-spacing:-0.025em;color:${g.ink};`);
-    const ds = g.lines(tb, it[1] || '', `font:500 ${u * 0.019}px/1.35 ${g.body};letter-spacing:-0.01em;color:${g.sub};`);
+    const tl = g.lines(tb, it[0], `font:750 ${u * (rowsN > 1 ? 0.027 : 0.032)}px/1.25 ${g.body};letter-spacing:-0.025em;color:${g.ink};`);
+    const ds = g.lines(tb, it[1] || '', `font:500 ${u * 0.022}px/1.35 ${g.body};letter-spacing:-0.01em;color:${g.sub};`);
     g.shrink(tb, txH - u * 0.022, 0.6);
     const Pp = g.pos(el);
     return { slot: slot, el: el, img: img, num: num, tl: tl, ds: ds, P: { x: Pp.x + Pp.w * 0.62, y: Pp.y + (ch - txH) * 0.55, fx: Pp.cx, fy: Pp.cy } };
@@ -2020,8 +2020,8 @@ SCENES.media = P => (function slWbMedia(api) {
     const nb = g.div(core, `flex:none;width:${u * 0.044}px;height:${u * 0.044}px;border-radius:50%;box-sizing:border-box;${last ? `background:${g.ac};` : `box-shadow:inset 0 0 0 ${Math.max(1.5, u * 0.0028)}px ${g.ac};`}display:flex;align-items:center;justify-content:center;`);
     if (last) g.glyph(nb, 'check', u * 0.022, g.acOn, '', 3); else g.text(nb, String(i + 1), `position:relative;font:750 ${u * 0.02}px/1 ${g.body};font-variant-numeric:tabular-nums;color:${g.ac};`);
     const tx = g.div(core, `position:relative;display:flex;flex-direction:column;gap:${u * 0.006}px;min-width:0;`);
-    g.text(tx, it[0], `position:relative;font:750 ${u * 0.032}px/1.3 ${g.body};letter-spacing:-0.025em;color:${g.ink};`);
-    if (it[1]) g.text(tx, it[1], `position:relative;font:500 ${u * 0.024}px/1.45 ${g.body};letter-spacing:-0.015em;color:${g.sub};`);
+    g.text(tx, it[0], `position:relative;font:750 ${u * 0.035}px/1.3 ${g.body};letter-spacing:-0.025em;color:${g.ink};`);
+    if (it[1]) g.text(tx, it[1], `position:relative;font:500 ${u * 0.027}px/1.45 ${g.body};letter-spacing:-0.015em;color:${g.sub};`);
     return { m: m, core: core, nb: nb };
   });
   g.shrink(list, mh - ly - mp * 0.6, 0.6);
@@ -2065,13 +2065,13 @@ SCENES.vcompare = P => (function slWbVCompare(api) {
     const lab = g.div(el, `position:relative;display:flex;align-items:center;gap:${u * 0.012}px;`);
     const ch = g.div(lab, `flex:none;width:${u * 0.04}px;height:${u * 0.04}px;border-radius:${u * 0.01}px;background:${i ? g.ac : g.rgba(g.ink, 0.1)};display:flex;align-items:center;justify-content:center;`);
     g.text(ch, i ? 'B' : 'A', `position:relative;font:800 ${u * 0.022}px/1 ${g.body};color:${i ? g.acOn : g.ink};`);
-    const nm = g.text(lab, o.label || '', `position:relative;font:750 ${u * 0.027}px/1.25 ${g.body};letter-spacing:-0.025em;white-space:nowrap;color:${g.ink};`);
+    const nm = g.text(lab, o.label || '', `position:relative;font:750 ${u * 0.03}px/1.25 ${g.body};letter-spacing:-0.025em;white-space:nowrap;color:${g.ink};`);
     sk.fit(nm, cw - u * 0.09, 0.6);
     const vh = Math.min((cw - u * 0.032) * 9 / 16, ah * 0.6);
     const fr = g.div(el, `position:relative;flex:none;width:100%;height:${vh}px;border-radius:${u * 0.012}px;overflow:hidden;background:#0f1626;`);
     const v = qvVideo(fr, o.video, o.poster, api, o.fit ? 'object-fit:' + o.fit + ';' : ''); vids.push(v);
     const tx = g.div(el, `position:relative;display:flex;flex-direction:column;gap:${u * 0.006}px;min-height:0;overflow:hidden;`);
-    (o.lines || []).slice(0, 3).forEach(s => g.text(tx, s, `position:relative;font:${i ? 600 : 500} ${u * 0.022}px/1.4 ${g.body};letter-spacing:-0.015em;color:${i ? g.ink : g.sub};`));
+    (o.lines || []).slice(0, 3).forEach(s => g.text(tx, s, `position:relative;font:${i ? 600 : 500} ${u * 0.025}px/1.4 ${g.body};letter-spacing:-0.015em;color:${i ? g.ink : g.sub};`));
     g.shrink(tx, ah - vh - u * 0.1, 0.6);
     return { el: el, fr: fr, i: i };
   });
@@ -2129,10 +2129,10 @@ const DECK = [
   note: '워밍업 퀴즈예요. 가을 아침, 안개 낀 계곡이에요. 드론으로 찍은 진짜 영상일까요? (클릭) 진짜라고 생각하시면 손 한번 들어 주세요. AI라고 생각하시면요?\n\n(클릭) 빛이 번지는 것도, 물결도 정말 자연스럽죠. (클릭) 정답은 AI예요. 프롬프트 몇 줄로 만들었어요.\n\n만들기가 이렇게 쉬워졌다는 건, 가려내기는 그만큼 어려워졌다는 뜻이기도 해요. 우리 아이들이 매일 보는 화면이 바로 이래요.',
   links: [['이 영상 파일', 'valley.mp4']] },
 { s: 'gallery', t: '요즘 AI 콘텐츠 세 갈래', nav: 1, path: 'formats', time: '02:40–03:50',
-  img: ['showcase-assets/gugu.jpg', 'instagram-assets/ig08.jpg', 'motion-lab-preview.jpg'],
-  P: { KICKER: 'FORMATS', TITLE: '요즘 선생님들이 만드는 AI 콘텐츠', NOTE: '실제 사례', POS: ['center', 'center', 'left top'], ITEMS: [['웹앱 · 구구땅', '인디스쿨에서 화제인 구구단 게임'], ['AI 영상 · 역사', '역사 속 장면을 눈앞에 데려와요'], ['AI 모션그래픽 · 쿼카 모션랩', '지금 보시는 이 강의안도 모션랩으로']] },
-  note: '요즘 선생님들 사이에서 화제인 AI 콘텐츠는 크게 세 갈래예요. (클릭) 첫째, 웹앱. 인디스쿨에서 요즘 핫한 구구땅처럼, 선생님이 AI랑 같이 직접 만든 게임과 앱이에요.\n\n(클릭) 둘째, AI 영상. 역사 공부하는 영상들이 특히 많이 나와요. 갈 수 없는 시대를 눈앞에 데려오니까요. (클릭) 셋째, AI 모션그래픽. 사실 지금 보고 계신 이 강의안도 제가 만든 쿼카 모션랩 코드로 움직이고 있어요 : )\n\n오늘 브루로는 영상을 만들지만, 기획은 세 갈래 모두 똑같아요.',
-  links: [['구구땅', 'https://xn--2e0ba141d.kr/'], ['쿼카 모션랩', 'https://gottkf1208.github.io/quoka-motion-lab/'], ['쿼카 모션랩 · 코드와 설명', 'https://github.com/gottkf1208/quoka-motion-lab']] },
+  img: ['showcase-assets/gugu.jpg', 'deck-assets/dmz.jpg', 'motion-lab-preview.jpg'],
+  P: { KICKER: 'FORMATS', TITLE: '요즘 선생님들이 만드는 AI 콘텐츠', NOTE: '실제 사례', POS: ['center', 'left center', 'left top'], ITEMS: [['웹앱 · 구구땅', '인디스쿨에서 화제인 구구단 게임'], ['AI 영상 · 수업 도입', '4학년 도덕 · 못 가 보는 DMZ로'], ['AI 모션그래픽 · 쿼카 모션랩', '지금 보시는 이 강의안도 모션랩으로']] },
+  note: '요즘 선생님들 사이에서 화제인 AI 콘텐츠는 크게 세 갈래예요. (클릭) 첫째, 웹앱. 인디스쿨에서 요즘 핫한 구구땅처럼, 선생님이 AI랑 같이 직접 만든 게임과 앱이에요.\n\n(클릭) 둘째, AI 영상. 못 가 보는 곳, 못 가 보는 시대를 눈앞에 데려오는 영상들이 많이 나와요. 이건 제가 4학년 도덕 수업에 쓰려고 만든 DMZ 영상이에요. 뒤에서 다시 보여 드릴게요. (클릭) 셋째, AI 모션그래픽. 사실 지금 보고 계신 이 강의안도 제가 만든 쿼카 모션랩 코드로 움직이고 있어요 : )\n\n오늘 브루로는 영상을 만들지만, 기획은 세 갈래 모두 똑같아요.',
+  links: [['구구땅', 'https://xn--2e0ba141d.kr/'], ['4학년 도덕 · DMZ 영상', 'https://www.youtube.com/watch?v=pqPqqmFI3YA'], ['쿼카 모션랩', 'https://gottkf1208.github.io/quoka-motion-lab/'], ['쿼카 모션랩 · 코드와 설명', 'https://github.com/gottkf1208/quoka-motion-lab']] },
 { s: 'gallery', t: '단편 · 수상작 · 비평', nav: 1, path: 'films', time: '03:50–04:50',
   img: ['instagram-assets/ig09.jpg', 'instagram-assets/ig10.jpg', 'instagram-assets/ig11.jpg', 'instagram-assets/ig12.jpg', 'instagram-assets/ig14.jpg', 'instagram-assets/ig15.jpg'],
   P: { KICKER: 'FILMS · AWARDS · CRITICS', TITLE: '단편, 수상작, 비평을 나란히', NOTE: '원본 게시물', POS: ['center top', 'center', 'center', 'center top', 'center', 'center'], ITEMS: [['〈10seconds〉', '김선웅 감독 · 발리 AI 국제영화제 금상'], ['On This Day… 1776', '역사 재현 영상에 쏟아진 비평'], ['Total Pixel Space', 'Runway AI 영화제 2025 대상'], ['Runway AI 영화제 2026', '수상작 모음'], ['대한민국 AI 콘텐츠 어워즈', '단편 부문 수상작'], ['대한민국 AI 콘텐츠 어워즈', '중편 부문 수상작']] },
@@ -2191,7 +2191,7 @@ const DECK = [
   P: { KICKER: 'TIP 2 · 잘했던 수업부터', TITLE: '새로 찾기 전에, 잘했던 수업부터', ITEMS: [['꺼내기', '내가 해 봤고\n아이들이 좋아한 수업'], ['한 문장으로', '누가 뭘 궁금해하고\n뭘 알면 될까'], ['표현 넓히기', '활동지·PPT로 하던 걸\n영상·모션으로'], ['장면 순서', '질문으로 열고\n활동으로 닫아요']] },
   note: '두 번째 습관은 새 주제를 찾기 전에, 잘했던 수업부터 꺼내는 거예요. (클릭) 내가 해 봤고 아이들이 좋아했던 수업이요. 저는 통일 열차 수업이었어요.\n\n(클릭) 그 수업을 한 문장으로 줄여요. 누가 뭘 궁금해하고, 뭘 알면 될까. (클릭) 그다음 활동지랑 PPT로 하던 걸 영상이나 모션으로 넓혀요. (클릭) 순서는 질문으로 열고, 살펴보고, 활동으로 닫아요.\n\n익숙한 좋은 수업에, AI로 가능해진 장면 하나를 더하는 거예요.' },
 { s: 'agenda', t: '좋은 AI 콘텐츠를 만드는 네 가지 질문', nav: 3, path: 'four-questions', time: '14:05–14:35',
-  P: { KICKER: 'FOUR QUESTIONS', TITLE: '좋은 AI 콘텐츠, 네 가지 질문', LEAD: '생성 버튼 누르기 전에', NOW: 1, ITEMS: [['누구에게?', '학년 · 알고 있는 것 · 아이가 막히는 곳', 'Q1'], ['보고 나면 뭐가 달라질까?', '보고 나서 아이가 할 수 있는 것', 'Q2'], ['어떤 경험을 줄까?', '첫 질문 · 장면 · 형식 · 길이', 'Q3'], ['어떻게 확인할까?', '아이 반응 + 선생님의 마지막 확인', 'Q4']] },
+  P: { KICKER: 'FOUR QUESTIONS', TITLE: '좋은 AI 콘텐츠, 네 가지 질문', LEAD: '생성 버튼 누르기 전에', NOW: 1, ITEMS: [['누구에게?', '학년 · 알고 있는 것 · 아이가 막히는 곳', 'Q1'], ['보고 나면 뭐가 달라질까?', '보고 나서 아이가 할 수 있는 것', 'Q2'], ['어떤 경험을 줄까?', '첫 질문 · 장면 · 형식 · 길이', 'Q3'], ['어떻게 확인할까?', '사실 · 눈높이 · AI 표시', 'Q4']] },
   note: '이제 네 가지 질문이에요. 생성 버튼 누르기 전에 이것만 정하면 돼요.\n\n(클릭) 누구에게 보여 줄까. (클릭) 보고 나면 뭐가 달라질까. (클릭) 어떤 경험을 줄까. (클릭) 그리고 어떻게 확인할까.\n\n하나씩, 제 통일 열차 수업을 예로 풀어 볼게요.' },
 { s: 'compare', t: 'Q1 · 누구에게?', nav: 3, path: 'q1', time: '14:35–15:20',
   P: { KICKER: 'Q1 · 누구에게?', TITLE: '누구에게 보여 줄까요?', LEFT: '흐릿한 대상', LEFT_ITEMS: ['“초등학생용으로”', '“아이들이 보기 좋게”', '“누구나 이해하게”'], RIGHT: '쌤티나는 대상', RIGHT_ITEMS: ['DMZ를 처음 만나는 4학년', '긴 글, 빠른 말이 버거운 아이', '어제 통일 열차 수업을 한 우리 반'] },
@@ -2203,8 +2203,8 @@ const DECK = [
   P: { KICKER: 'Q3 · 어떤 경험?', TITLE: '어떤 경험을 줄까요?', ITEMS: [['첫 질문', '“DMZ에는\n누가 살고 있을까?”'], ['장면 세 개', '통일 열차 창밖 → 숲\n→ 날아오르는 두루미'], ['멈춤', '질문 뒤 3초,\n화면을 멈춰요'], ['아이가 할 일', '로봇한테 맡길 일 하나,\n그 이유 말하기']] },
   note: '세 번째, 어떤 경험을 줄까? 저는 영상 순서를 이렇게 정해요. (클릭) 설명 말고 질문으로 시작해요. “DMZ에는 누가 살고 있을까?”\n\n(클릭) 장면은 딱 세 개. 통일 열차 창밖, 숲, 날아오르는 두루미. (클릭) 질문 뒤에는 3초 멈춤을 넣어요. 이 멈춤이 있어야 영상이 수업이 돼요. (클릭) 끝은 아이가 할 일 하나로 닫아요.\n\n길이는 30초면 충분해요. 길게 만들수록 영상이 수업 시간을 가져가요.' },
 { s: 'points', t: 'Q4 · 어떻게 확인할까?', nav: 3, path: 'q4', time: '16:50–17:35',
-  P: { KICKER: 'Q4 · 어떻게 확인?', TITLE: '어떻게 확인할까요?', ADD: '확인 더하기', ITEMS: [['아이 반응 보기', '보고 나서 한 문장으로\n답이 나오나요?'], ['사실 맞춰 보기', '숫자·장면·글자가\n자료랑 맞나요?'], ['AI 표시', 'AI가 그린 장면이라고\n밝혔나요?']] },
-  note: '네 번째, 어떻게 확인할까? (클릭) 첫째는 아이 반응이에요. 영상을 보고 나서 Q2에서 정한 걸 한 문장으로 말할 수 있으면 성공이에요.\n\n(클릭) 둘째는 사실 맞춰 보기. AI는 숫자랑 글자를 그럴듯하게 지어내요. 자료랑 꼭 맞춰 봐요. (클릭) 셋째는 AI 표시. DMZ 숲은 AI가 그린 장면이니까 그렇다고 밝혀요.\n\n이 확인은 AI가 못 해요. 우리 반을 아는 선생님만 할 수 있어요.' },
+  P: { KICKER: 'Q4 · 어떻게 확인?', TITLE: '어떻게 확인할까요?', ADD: '확인 더하기', ITEMS: [['사실 맞춰 보기', '숫자·장면·글자가\n자료랑 맞나요?'], ['눈높이 맞추기', '어려운 말, 빠른 말,\n작은 자막은 없나요?'], ['AI 표시', 'AI가 그린 장면이라고\n밝혔나요?']] },
+  note: '네 번째, 어떻게 확인할까? 다 만들고 나서 선생님이 직접 보고 들으면서 확인하는 거예요. (클릭) 첫째, 사실 맞춰 보기. AI는 숫자랑 글자를 그럴듯하게 지어내요. 자료랑 꼭 맞춰 봐요.\n\n(클릭) 둘째, 눈높이 맞추기. 어려운 말, 너무 빠른 말, 작게 지나가는 자막이 없는지 들어 보고 봐요. (클릭) 셋째, AI 표시. DMZ 숲은 AI가 그린 장면이니까 그렇다고 밝혀요.\n\n이 확인은 AI가 못 해요. 우리 반을 아는 선생님만 할 수 있어요.' },
 { s: 'agenda', t: '네 질문을 브리프 한 장으로', nav: 3, path: 'brief', time: '17:35–18:25',
   P: { KICKER: 'CONTENT BRIEF · 예시', TITLE: '통일 열차 수업의 브리프', LEAD: '브리프 = 짧은 제작 설명서', NOW: 5, ITEMS: [['누구에게', 'DMZ를 처음 만나는 4학년', 'Q1'], ['보고 나면', '“DMZ를 지키려면 나는?”에 이유까지 답해요', 'Q2'], ['어떤 경험', '“DMZ에는 누가 살고 있을까?” · 30초 · 장면 세 개', 'Q3'], ['확인', '자료랑 맞춰 보기 · 쉬운 말 자막 · AI 표시', 'Q4'], ['AI에게 부탁', '장면별 화면·내레이션·자막·질문을 표로', 'AI']] },
   note: '네 가지 답을 모으면 이렇게 브리프 한 장이 돼요. 브리프는 AI한테 일을 맡기기 전에 건네는 짧은 제작 설명서예요.\n\n(클릭) 누구에게, (클릭) 보고 나면 뭐가 달라질지, (클릭) 어떤 경험을, (클릭) 어떻게 확인할지. (클릭) 그리고 마지막 줄에 AI한테 부탁할 걸 써요. “장면별로 화면, 내레이션, 자막, 질문을 표로 정리해 줘.”\n\n“통일교육 영상 재밌게 만들어 줘”랑 비교해 보세요. 기획은 선생님이 하고, AI는 그 조건에 맞춰 초안을 만들어요.',
@@ -2216,7 +2216,7 @@ const DECK = [
 
 // ───────── 04 실습 ─────────
 { s: 'section', t: '04 · 실습 · 콘텐츠 브리프 쓰기', nav: 4, path: 'part-04', time: '19:30–19:45',
-  P: { NUM: '04', KICKER: 'PART 04 · 실습', TITLE: '내 수업으로\n브리프 한 장', DESC: 'T셀파에서 재료를 찾고,\n클래스보드에 모아요', TAGS: ['5분 찾기', '10분 쓰기', '클래스보드에 올리기'] },
+  P: { NUM: '04', KICKER: 'PART 04 · 실습', TITLE: '내 수업으로\n브리프 한 장', DESC: 'T셀파에서 재료를 찾고,\n클래스보드에서 서로 나눠요', TAGS: ['5분 찾기', '10분 쓰기', '클래스보드에서 나누기'] },
   note: '네 번째, 이제 직접 해 볼 시간이에요. (클릭) T셀파에서 재료를 찾고, 브리프를 써서, 클래스보드에 모을 거예요. 그 전에 브리프가 실제 영상이 되면 어떤지 하나만 보여 드릴게요.' },
 { s: 'photo', t: '브리프가 영상이 되면 · DMZ', nav: 4, path: 'dmz', time: '19:45–20:45',
   img: ['deck-assets/dmz.jpg'],
@@ -2229,12 +2229,12 @@ const DECK = [
   note: '먼저 5분 동안 T셀파에서 재료를 찾아요. 내 학년, 내 교과 차시를 열어서 “이건 영상으로 보여 주면 좋겠다” 싶은 걸 하나만 골라요.\n\n(클릭) 눈에 안 보이는 것. DMZ나 세포, 옛날 장터처럼 못 가 보는 곳이요. (클릭) 자꾸 헷갈리는 것. 날씨랑 기후처럼 비슷해서 섞이는 개념이요. (클릭) 지루해지기 쉬운 것. 구구단이나 맞춤법처럼 반복이 필요한 거요.\n\n화면처럼 6학년 과학 기후변화 차시를 열면 도입 영상, 활동지, 노래까지 재료가 이미 다 있어요. 그중에 우리 반한테 30초 영상이 필요한 장면 하나만 찾으시면 돼요.',
   links: [['T셀파', 'https://www.tsherpa.co.kr/']] },
 { s: 'flow', t: '실습 순서', nav: 4, path: 'how', time: '21:30–22:00',
-  P: { KICKER: '실습 · 15분', TITLE: '15분, 이렇게 해요', ITEMS: [['5분 · 찾기', 'T셀파에서\n차시 하나 고르기'], ['10분 · 쓰기', '브리프 빌더에\n네 질문 채우기'], ['올리기', '복사해서\n클래스보드 스페이스에'], ['쉬는 시간 뒤', '이 브리프로\n브루에서 바로 만들어요']] },
-  note: '순서는 이래요. (클릭) 5분 동안 T셀파에서 차시 하나 고르기. (클릭) 10분 동안 브리프 빌더에 네 가지 질문 채우기. 예시 버튼을 누르면 안동 간고등어랑 통일 열차 예시가 채워지니까, 막히면 그걸 보고 바꾸시면 돼요.\n\n(클릭) 다 쓰면 ‘클래스보드에 붙일 글 복사’를 눌러서 클래스보드 스페이스에 붙여 주세요. T셀파에서 찾은 자료 링크도 같이요. (클릭) 쉬는 시간 뒤 브루 연수에서는 빌더 아래 ‘브루에 넣을 글’을 그대로 붙여 넣고 시작하시면 돼요.',
+  P: { KICKER: '실습 · 15분', TITLE: '15분, 이렇게 해요', ITEMS: [['5분 · 찾기', 'T셀파에서\n차시 하나 고르기'], ['10분 · 쓰기', '브리프 빌더에\n네 질문 채우기'], ['나누기', '클래스보드 스페이스에\n올리고 서로 구경해요'], ['쉬는 시간 뒤', '이 브리프로\n브루에서 바로 만들어요']] },
+  note: '순서는 이래요. (클릭) 5분 동안 T셀파에서 차시 하나 고르기. (클릭) 10분 동안 브리프 빌더에 네 가지 질문 채우기. 예시 버튼을 누르면 안동 간고등어랑 통일 열차 예시가 채워지니까, 막히면 그걸 보고 바꾸시면 돼요.\n\n(클릭) 다 쓰면 ‘클래스보드에 붙일 글 복사’를 눌러서 클래스보드 스페이스에 올려 주세요. T셀파에서 찾은 자료 링크도 같이요. 올리고 나서 다른 선생님들은 어떤 영상을 만들고 싶으신지 구경해 보세요. 마음에 드는 브리프엔 댓글도 하나씩 남겨 주시고요 : ) (클릭) 쉬는 시간 뒤 브루 연수에서는 빌더 아래 ‘브루에 넣을 글’을 그대로 붙여 넣고 시작하시면 돼요.',
   links: [['콘텐츠 브리프 빌더', 'brief/'], ['T셀파', 'https://www.tsherpa.co.kr/']] },
 { s: 'closing', t: '실습 · 15분', nav: 4, path: 'practice', time: '22:00–35:00', timer: [['5분 찾기', 300], ['10분 쓰기', 600]],
-  P: { KICKER: '실습 · 15분', TITLE: '내 수업, 브리프 한 장', SUB: '5분 찾고, 10분 쓰고,\n클래스보드 스페이스에 올려요', FIELD: '“DMZ에는 누가 살고 있을까?”처럼, 첫 질문 한 줄', CONTACTS: [['브리프 빌더', 'gottkf1208.github.io/vrew-talk/brief'], ['클래스보드', '화면의 스페이스 링크로 들어와요']] },
-  note: '자, 시작할게요! 화면 오른쪽 위 타이머로 5분, 10분 재 드릴게요. (클릭) 브리프 빌더 주소는 화면에 있어요. 클래스보드 스페이스 링크도 지금 같이 띄워 드릴게요.\n\n돌아다니면서 도와드릴게요. 대상이 “초등학생”으로 끝나 있으면 제가 “몇 학년, 어떤 아이요?” 하고 여쭤볼 거예요 ㅎㅎ\n\n(실습 끝나고) 스페이스에 올라온 브리프 두세 개만 같이 읽어 볼게요. 첫 질문이 있는지, 보고 나서 아이가 할 일이 보이는지만 봐요.',
+  P: { KICKER: '실습 · 15분', TITLE: '내 수업, 브리프 한 장', SUB: '5분 찾고, 10분 쓰고,\n클래스보드에서 서로 나눠요', FIELD: '“DMZ에는 누가 살고 있을까?”처럼, 첫 질문 한 줄', CONTACTS: [['브리프 빌더', 'gottkf1208.github.io/vrew-talk/brief'], ['클래스보드', '화면의 스페이스 링크로 들어와요']] },
+  note: '자, 시작할게요! 화면 오른쪽 위 타이머로 5분, 10분 재 드릴게요. (클릭) 브리프 빌더 주소는 화면에 있어요. 클래스보드 스페이스 링크도 지금 같이 띄워 드릴게요.\n\n돌아다니면서 도와드릴게요. 대상이 “초등학생”으로 끝나 있으면 제가 “몇 학년, 어떤 아이요?” 하고 여쭤볼 거예요 ㅎㅎ\n\n(실습 끝나고) 스페이스에 올라온 브리프 두세 개를 같이 읽어 볼게요. 어떤 선생님은 어떤 영상을 만들고 싶으신지 서로 나눠 보면, 내 수업 아이디어도 하나 더 생겨요.',
   links: [['콘텐츠 브리프 빌더', 'brief/'], ['T셀파', 'https://www.tsherpa.co.kr/']] },
 
 // ───────── 05 왜 브루? ─────────
